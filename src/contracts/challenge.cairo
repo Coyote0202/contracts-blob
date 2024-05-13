@@ -18,7 +18,8 @@ mod challenge_actions {
     use super::IChallengeActions;
     use starknet::ContractAddress;
     use blob_arena::{
-        components::{combat::Move, world::World}, systems::challenge::ChallengeSystemTrait,
+        components::{combat::Move, world::World},
+        systems::challenge::{Challenge, ChallengeSystemTrait},
     };
     #[abi(embed_v0)]
     impl ChallengeActionsImpl of IChallengeActions<ContractState> {
@@ -26,37 +27,52 @@ mod challenge_actions {
             self.get_world().send_challenge_invite(receiver, blobert_id)
         }
         fn rescind_invite(self: @ContractState, challenge_id: u128) {
-            self.get_world().rescind_challenge_invite(challenge_id);
+            let mut challenge = self._get_open_challenge(challenge_id);
+            challenge.rescind_challenge_invite();
         }
         fn respond_invite(self: @ContractState, challenge_id: u128, blobert_id: u128) {
-            self.get_world().respond_challenge_invite(challenge_id, blobert_id);
+            let mut challenge = self._get_open_challenge(challenge_id);
+            challenge.respond_challenge_invite(blobert_id);
         }
         fn rescind_response(self: @ContractState, challenge_id: u128) {
-            self.get_world().rescind_challenge_response(challenge_id);
+            let mut challenge = self._get_open_challenge(challenge_id);
+            challenge.rescind_challenge_response();
         }
         fn reject_invite(self: @ContractState, challenge_id: u128) {
-            self.get_world().reject_challenge_invite(challenge_id);
+            let mut challenge = self._get_open_challenge(challenge_id);
+            challenge.reject_challenge_invite();
         }
         fn reject_response(self: @ContractState, challenge_id: u128) {
-            self.get_world().reject_challenge_response(challenge_id);
+            let mut challenge = self._get_open_challenge(challenge_id);
+            challenge.reject_challenge_response();
         }
         fn accept_response(self: @ContractState, challenge_id: u128) -> u128 {
-            self.get_world().accept_challenge_response(challenge_id)
+            let mut challenge = self._get_open_challenge(challenge_id);
+            challenge.accept_challenge_response()
         }
         fn commit_move(self: @ContractState, challenge_id: u128, hash: felt252) {
-            self.get_world().commit_challenge_move(challenge_id, hash);
+            let challenge = self._get_running_challenge(challenge_id);
+            challenge.commit_challenge_move(hash);
         }
         fn reveal_move(self: @ContractState, challenge_id: u128, move: Move, salt: felt252) {
-            self.get_world().reveal_challenge_move(challenge_id, move, salt);
+            let challenge = self._get_running_challenge(challenge_id);
+            challenge.reveal_challenge_move(move, salt);
         }
         fn forfeit(self: @ContractState, challenge_id: u128) {
-            self.get_world().forfeit_challenge(challenge_id);
+            let challenge = self._get_running_challenge(challenge_id);
+            challenge.forfeit_challenge();
         }
     }
     #[generate_trait]
     impl WorldImpl of WorldTrait {
         fn get_world(self: @ContractState) -> World {
             self.world_dispatcher.read()
+        }
+        fn _get_open_challenge(self: @ContractState, challenge_id: u128) -> Challenge {
+            self.get_world().get_open_challenge(challenge_id)
+        }
+        fn _get_running_challenge(self: @ContractState, challenge_id: u128) -> Challenge {
+            self.get_world().get_running_challenge(challenge_id)
         }
     }
 }
