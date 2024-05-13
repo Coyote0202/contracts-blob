@@ -20,6 +20,7 @@ struct ChallengeInvite {
     sender: ContractAddress,
     receiver: ContractAddress,
     blobert_id: u128,
+    phase_time: u64,
     open: bool
 }
 
@@ -31,6 +32,7 @@ struct ChallengeResponse {
     open: bool,
     combat_id: u128,
 }
+
 #[derive(Copy, Drop, Print, Serde)]
 struct Challenge {
     world: World,
@@ -39,10 +41,12 @@ struct Challenge {
     receiver: ContractAddress,
     sender_blobert: u128,
     receiver_blobert: u128,
+    phase_time: u64,
     invite_open: bool,
     response_open: bool,
     combat_id: u128,
 }
+
 
 fn make_challenge(world: World, invite: ChallengeInvite, response: ChallengeResponse) -> Challenge {
     Challenge {
@@ -52,6 +56,7 @@ fn make_challenge(world: World, invite: ChallengeInvite, response: ChallengeResp
         receiver: invite.receiver,
         sender_blobert: invite.blobert_id,
         receiver_blobert: response.blobert_id,
+        phase_time: invite.phase_time,
         invite_open: invite.open,
         response_open: response.open,
         combat_id: response.combat_id,
@@ -66,6 +71,7 @@ impl ChallengeImpl of ChallengeTrait {
             sender: self.sender,
             receiver: self.receiver,
             blobert_id: self.sender_blobert,
+            phase_time: self.phase_time,
             open: self.invite_open,
         }
     }
@@ -99,3 +105,4 @@ impl ChallengeScoreImpl of ChallengeScoreTrait {
         self.losses += 1;
     }
 }
+
