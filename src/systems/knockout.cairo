@@ -89,8 +89,7 @@ impl KnockoutGameImpl of KnockoutGameTrait {
         if caller == self.player_b {
             return AB::B;
         };
-        panic!("Player not part of combat");
-        AB::A
+        panic!("Player not part of combat")
     }
     fn commit_move(self: KnockoutGame, hash: felt252) {
         self.assert_running();
@@ -168,5 +167,17 @@ impl KnockoutGameImpl of KnockoutGameTrait {
     fn assert_running(self: KnockoutGame) {
         let status = self.get_status();
         assert(status == Status::Running, 'Game not running');
+    }
+    fn force_loss(self: KnockoutGame, player: AB) {
+        let mut healths = self.get_healths();
+        match player {
+            AB::A => healths.a = 0,
+            AB::B => healths.b = 0,
+        };
+        let mut moves = self.get_moves();
+        let mut commitments = self.get_commitments();
+        moves.reset();
+        commitments.reset();
+        set!(self.world, (healths, moves, commitments));
     }
 }

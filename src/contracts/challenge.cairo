@@ -11,6 +11,7 @@ trait IChallengeActions<TContractState> {
     fn accept_response(self: @TContractState, challenge_id: u128) -> u128;
     fn commit_move(self: @TContractState, challenge_id: u128, hash: felt252);
     fn reveal_move(self: @TContractState, challenge_id: u128, move: Move, salt: felt252);
+    fn forfeit(self: @TContractState, challenge_id: u128);
 }
 #[dojo::contract]
 mod challenge_actions {
@@ -47,6 +48,9 @@ mod challenge_actions {
         }
         fn reveal_move(self: @ContractState, challenge_id: u128, move: Move, salt: felt252) {
             self.get_world().reveal_challenge_move(challenge_id, move, salt);
+        }
+        fn forfeit(self: @ContractState, challenge_id: u128) {
+            self.get_world().forfeit_challenge(challenge_id);
         }
     }
     #[generate_trait]

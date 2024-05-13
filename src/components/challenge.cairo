@@ -1,5 +1,5 @@
 use starknet::{ContractAddress};
-use blob_arena::{components::{utils::{Winner, AB}}};
+use blob_arena::{components::{utils::{Winner, AB}, world::World}};
 
 #[derive(Model, Copy, Drop, Print, Serde)]
 struct ChallengeScore {
@@ -33,6 +33,7 @@ struct ChallengeResponse {
 }
 #[derive(Copy, Drop, Print, Serde)]
 struct Challenge {
+    world: World,
     challenge_id: u128,
     sender: ContractAddress,
     receiver: ContractAddress,
@@ -43,8 +44,9 @@ struct Challenge {
     combat_id: u128,
 }
 
-fn make_challenge(invite: ChallengeInvite, response: ChallengeResponse) -> Challenge {
+fn make_challenge(world: World, invite: ChallengeInvite, response: ChallengeResponse) -> Challenge {
     Challenge {
+        world,
         challenge_id: invite.challenge_id,
         sender: invite.sender,
         receiver: invite.receiver,

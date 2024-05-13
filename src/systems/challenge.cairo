@@ -10,9 +10,9 @@ use blob_arena::{
             ChallengeInvite, ChallengeResponse, Challenge, make_challenge, ChallengeTrait,
             ChallengeScore
         },
-        combat::{Move, TwoMovesTrait}, world::{World}, utils::Status,
+        combat::{Move, TwoMovesTrait}, world::{World}, utils::{Status, AB, Winner},
     },
-    systems::{blobert::BlobertWorldTrait, knockout::{KnockoutGameTrait}}
+    systems::{blobert::BlobertWorldTrait, knockout::{KnockoutGameTrait, KnockoutGame}}
 };
 
 #[generate_trait]
@@ -21,17 +21,23 @@ impl ChallengeImpl of ChallengeSystemTrait {
         get!(self, challenge_id, ChallengeInvite)
     }
 
+
     fn get_challenge_response(self: World, challenge_id: u128) -> ChallengeResponse {
         get!(self, challenge_id, ChallengeResponse)
     }
 
     fn get_challenge(self: World, challenge_id: u128) -> Challenge {
         make_challenge(
-            self.get_challenge_invite(challenge_id), self.get_challenge_response(challenge_id)
+            self, self.get_challenge_invite(challenge_id), self.get_challenge_response(challenge_id)
         )
     }
+
     fn get_score(self: World, player: ContractAddress, blobert_id: u128) -> ChallengeScore {
         get!(self, (player, blobert_id), ChallengeScore)
+    }
+
+    fn get_game(self: Challenge) -> KnockoutGame {
+        self.world.get_knockout_game(self.combat_id)
     }
 
     fn get_open_challenge(self: World, challenge_id: u128) -> Challenge {
@@ -119,28 +125,36 @@ impl ChallengeImpl of ChallengeSystemTrait {
         set!(self, (challenge.response(),));
     }
     fn commit_challenge_move(self: World, challenge_id: u128, hash: felt252) {
-        let mut challenge = self.get_running_challenge(challenge_id);
-        let combat_id = challenge.combat_id;
-        let game = self.get_knockout_game(combat_id);
+        let challenge = self.get_running_challenge(challenge_id);
+        let game = challenge.get_game();
         game.commit_move(hash)
     }
     fn reveal_challenge_move(self: World, challenge_id: u128, move: Move, salt: felt252) {
-        let mut challenge = self.get_running_challenge(challenge_id);
-        let combat_id = challenge.combat_id;
-        let game = self.get_knockout_game(combat_id);
+        let challenge = self.get_running_challenge(challenge_id);
+        let game = challenge.get_game();
         game.reveal_move(move, salt);
         let status = game.get_status();
         match status {
-            Status::Finished(winner) => {
-                let (w_player, w_blobert) = challenge.get_player_and_blobert(winner.into());
-                let (l_player, l_blobert) = challenge.get_player_and_blobert(!(winner.into()));
-                let mut w_score = self.get_score(w_player, w_blobert);
-                let mut l_score = self.get_score(l_player, l_blobert);
-                w_score.win();
-                l_score.lose();
-                set!(self, (w_score, l_score));
-            },
+            Status::Finished(winner) => { challenge.set_winner(winner.into()); },
             _ => {},
         }
+    }
+
+    fn set_winner(self: Challenge, winner: AB) {
+        let (w_player, w_blobert) = self.get_player_and_blobert(winner);
+        let (l_player, l_blobert) = self.get_player_and_blobert(!winner);
+        let mut w_score = self.world.get_score(w_player, w_blobert);
+        let mut l_score = self.world.get_score(l_player, l_blobert);
+        w_score.win();
+        l_score.lose();
+        set!(self.world, (w_score, l_score));
+    }
+
+    fn forfeit_challenge(self: World, challenge_id: u128) {
+        let mut challenge = self.get_running_challenge(challenge_id);
+        let game = challenge.get_game();
+        let player = game.get_caller_player();
+        game.force_loss(player);
+        challenge.set_winner(!player);
     }
 }
