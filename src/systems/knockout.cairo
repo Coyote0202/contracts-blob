@@ -132,7 +132,7 @@ impl KnockoutGameImpl of KnockoutGameTrait {
 
         let outcome = get_outcome(move_a, move_b);
         let (damage_a, damage_b) = calculate_damage(blobert_a.stats, blobert_b.stats, outcome);
-        let round = RoundTrait::create(self.combat_id, healths, moves, damage_a, damage_b);
+
         moves.reset();
         commitments.reset();
         healths.apply_damage(damage_a, damage_b);
@@ -140,6 +140,7 @@ impl KnockoutGameImpl of KnockoutGameTrait {
             healths.a = 1;
             healths.b = 1;
         };
+        let round = RoundTrait::create(self.combat_id, healths, moves, damage_a, damage_b);
         set!(self.world, (healths, commitments, moves, round));
     }
 
