@@ -18,12 +18,18 @@ mod systems {
     mod knockout;
     mod blobert;
     mod challenge;
+    mod stake;
 }
 
 mod contracts {
     mod blobert;
     mod challenge;
 }
+
+mod external {
+    mod blobert;
+}
+
 mod constants;
 mod utils;
 mod tests {

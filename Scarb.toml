@@ -10,7 +10,7 @@ sierra-replace-ids = true
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v0.6.0" }
 origami = { git = "https://github.com/dojoengine/origami", tag = "v0.6.0" }
 cubit = { git = "https://github.com/influenceth/cubit" }
-# token = { git = "https://github.com/dojoengine/origami", path = "token", tag = "v0.6.0" }
+token = { git = "https://github.com/dojoengine/origami", tag = "v0.6.0" }
 openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v0.10.0" }
 # openzeppelin = { git = "https://github.com/ben-jay-amin/cairo-contracts.git", branch = "release-v0.9.1" }
 

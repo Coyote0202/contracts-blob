@@ -1,12 +1,15 @@
 use core::traits::TryInto;
-use starknet::ContractAddress;
+use starknet::{ContractAddress, class_hash::class_hash_const};
 use core::fmt::{Display, Formatter, Error};
-
-use blob_arena::components::{
-    stats::{Stats, StatsTrait}, background::{Background, BACKGROUND_COUNT},
-    armour::{Armour, ARMOUR_COUNT}, mask::{Mask, MASK_COUNT}, jewelry::{Jewelry, JEWELRY_COUNT},
-    weapon::{Weapon, WEAPON_COUNT}, utils::DisplayImplT,
+use blob_arena::{
+    components::{
+        stats::{Stats, StatsTrait}, background::{Background, BACKGROUND_COUNT},
+        armour::{Armour, ARMOUR_COUNT}, mask::{Mask, MASK_COUNT}, jewelry::{Jewelry, JEWELRY_COUNT},
+        weapon::{Weapon, WEAPON_COUNT}, utils::DisplayImplT,
+    },
+    external::blobert::{IBlobertDispatcherTrait, IBlobertDispatcher, TokenTrait, Seed}
 };
+const BLOBERT_CONTRACT_ADDRESS: felt252 = 0x0;
 
 #[derive(Model, Copy, Drop, Print, Serde)]
 struct Blobert {
@@ -16,6 +19,38 @@ struct Blobert {
     traits: Traits,
     stats: Stats,
 }
+
+
+impl SeedIntoTraits of Into<Seed, Traits> {
+    fn into(self: Seed) -> Traits {
+        Traits {
+            background: self.background.into(),
+            armour: self.armour.into(),
+            mask: self.mask.into(),
+            jewelry: self.jewelry.into(),
+            weapon: self.weapon.into(),
+        }
+    }
+}
+
+
+fn token_to_blobert(token: TokenTrait, id: u128, owner: ContractAddress) -> Blobert {
+    match token {
+        TokenTrait::Regular(seed) => {
+            let traits: Traits = Traits {
+                background: seed.background.into(),
+                armour: seed.armour.into(),
+                mask: seed.mask.into(),
+                jewelry: seed.jewelry.into(),
+                weapon: seed.weapon.into(),
+            };
+            let stats = calculate_stats(traits);
+            Blobert { id, owner, traits, stats }
+        },
+        TokenTrait::Custom(index) => panic!("Custom tokens not implemented yet"),
+    }
+}
+
 
 #[derive(Copy, Drop, Print, Serde, Introspect)]
 struct Traits {
@@ -85,6 +120,12 @@ impl BlobertImpl of BlobertTrait {
         let traits = generate_traits(seed);
         let stats = calculate_stats(traits);
         return Blobert { id, owner, traits, stats };
+    }
+    fn load_blobert(id: u128) -> Blobert {
+        let dispatcher = IBlobertDispatcher {
+            contract_address: BLOBERT_CONTRACT_ADDRESS.try_into().unwrap()
+        };
+        let token_traits = dispatcher.traits(id.into());
     }
     fn check_owner(self: Blobert, player: ContractAddress) -> bool {
         return self.owner == player;

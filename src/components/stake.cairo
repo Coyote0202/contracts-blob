@@ -3,5 +3,6 @@ struct Stake {
     #[key]
     combat_id: u128,
     amount: u256,
-    blobert: bool,
+    blobert: u256,
 }
+

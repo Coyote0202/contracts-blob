@@ -9,6 +9,7 @@ dependencies = [
  "dojo",
  "openzeppelin",
  "origami",
+ "token",
 ]
 
 [[package]]
@@ -40,5 +41,13 @@ version = "0.6.0"
 source = "git+https://github.com/dojoengine/origami?tag=v0.6.0#61de20ff7bc80bfc33212ef3bfac93661ea61d45"
 dependencies = [
  "cubit",
+ "dojo",
+]
+
+[[package]]
+name = "token"
+version = "0.0.0"
+source = "git+https://github.com/dojoengine/origami?tag=v0.6.0#61de20ff7bc80bfc33212ef3bfac93661ea61d45"
+dependencies = [
  "dojo",
 ]
