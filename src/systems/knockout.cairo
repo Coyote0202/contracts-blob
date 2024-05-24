@@ -211,6 +211,6 @@ impl KnockoutGameImpl of KnockoutGameTrait {
                 moves.check_set(player)
             },
         };
-        assert(set, 'Player has already acted');
+        assert(!set, 'Player has already acted');
     }
 }
