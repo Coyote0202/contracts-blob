@@ -2,14 +2,15 @@ use blob_arena::components::combat::TwoHashesTrait;
 use blob_arena::components::combat::TwoMovesTrait;
 use blob_arena::{
     components::{
-        blobert::{Blobert, BlobertTrait}, combat::{Move, TwoHashes, RevealTrait, TwoMoves},
-        world::World, knockout::{Knockout, Healths, HealthsTrait, RoundTrait},
-        utils::{AB, Status, Winner}, stake::Stake,
+        blobert::{Blobert, BlobertTrait},
+        combat::{Move, TwoHashes, RevealTrait, TwoMoves, CurrentPhase, Phase}, world::World,
+        knockout::{Knockout, Healths, HealthsTrait, RoundTrait}, utils::{AB, Status, Winner},
+        stake::Stake,
     },
     systems::{blobert::{BlobertWorldTrait}, combat::{Outcome, calculate_damage, get_outcome}},
     utils::{uuid},
 };
-use starknet::{ContractAddress, get_caller_address};
+use starknet::{ContractAddress, get_caller_address, get_block_number};
 use dojo::world::{IWorldDispatcherTrait};
 
 #[derive(Copy, Drop, Serde)]
@@ -35,7 +36,10 @@ impl KnockoutGameImpl of KnockoutGameTrait {
         (self.get_blobert(blobert_a), self.get_blobert(blobert_b));
         let knockout = Knockout { combat_id, player_a, player_b, blobert_a, blobert_b };
         let healths = Healths { combat_id, a: 100, b: 100 };
-        set!(self, (knockout, healths));
+        let phase = CurrentPhase {
+            id: combat_id, phase: Phase::Commit, block_number: get_block_number()
+        };
+        set!(self, (knockout, healths, phase));
         combat_id
     }
     fn get_knockout_game(self: World, combat_id: u128) -> KnockoutGame {
@@ -81,6 +85,15 @@ impl KnockoutGameImpl of KnockoutGameTrait {
         get!(self.world, self.combat_id, Stake)
     }
 
+    fn get_phase(self: KnockoutGame) -> CurrentPhase {
+        get!(self.world, self.combat_id, CurrentPhase)
+    }
+
+    fn set_phase(self: KnockoutGame, phase: Phase) {
+        let phase = CurrentPhase { id: self.combat_id, phase, block_number: get_block_number() };
+        set!(self.world, (phase,))
+    }
+
     fn get_caller_player(self: KnockoutGame) -> AB {
         let caller = get_caller_address();
         if caller == self.player_a {
@@ -89,8 +102,7 @@ impl KnockoutGameImpl of KnockoutGameTrait {
         if caller == self.player_b {
             return AB::B;
         };
-        panic!("Player not part of combat");
-        AB::A
+        panic!("Player not part of combat")
     }
     fn commit_move(self: KnockoutGame, hash: felt252) {
         self.assert_running();
@@ -106,6 +118,9 @@ impl KnockoutGameImpl of KnockoutGameTrait {
                 commitments.b = hash;
             },
         };
+        if commitments.check_done() {
+            self.set_phase(Phase::Reveal);
+        }
         set!(self.world, (commitments,));
     }
 
@@ -120,6 +135,7 @@ impl KnockoutGameImpl of KnockoutGameTrait {
         moves.set_move(player, move);
         if moves.check_done() {
             self.verify_round(ref commitments, ref moves);
+            self.set_phase(Phase::Commit);
         } else {
             set!(self.world, (moves,));
         };
@@ -169,5 +185,33 @@ impl KnockoutGameImpl of KnockoutGameTrait {
     fn assert_running(self: KnockoutGame) {
         let status = self.get_status();
         assert(status == Status::Running, 'Game not running');
+    }
+    fn force_loss(self: KnockoutGame, player: AB) {
+        let mut healths = self.get_healths();
+        match player {
+            AB::A => healths.a = 0,
+            AB::B => healths.b = 0,
+        };
+        let mut moves = self.get_moves();
+        let mut commitments = self.get_commitments();
+        moves.reset();
+        commitments.reset();
+        set!(self.world, (healths, moves, commitments));
+    }
+
+    fn assert_player_inactive(self: KnockoutGame, block_limit: u64, player: AB) {
+        let phase = self.get_phase();
+        assert(get_block_number() > phase.block_number + block_limit, 'Time limit not reached');
+        let set = match phase.phase {
+            Phase::Commit => {
+                let commitments = self.get_commitments();
+                commitments.check_set(player)
+            },
+            Phase::Reveal => {
+                let moves = self.get_moves();
+                moves.check_set(player)
+            },
+        };
+        assert(!set, 'Player has already acted');
     }
 }
