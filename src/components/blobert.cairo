@@ -11,7 +11,8 @@ use blob_arena::{
 };
 const BLOBERT_CONTRACT_ADDRESS: felt252 = 0x0;
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct Blobert {
     #[key]
     id: u128,

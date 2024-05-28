@@ -1,7 +1,8 @@
 use starknet::{ContractAddress};
 use blob_arena::{components::{utils::{Winner, AB}, world::World}};
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct ChallengeScore {
     #[key]
     player: ContractAddress,
@@ -13,7 +14,8 @@ struct ChallengeScore {
     current_consecutive_wins: u64,
 }
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct ChallengeInvite {
     #[key]
     challenge_id: u128,
@@ -24,7 +26,8 @@ struct ChallengeInvite {
     open: bool
 }
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct ChallengeResponse {
     #[key]
     challenge_id: u128,

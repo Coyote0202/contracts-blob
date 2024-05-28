@@ -5,7 +5,8 @@ use blob_arena::components::{
 use starknet::{ContractAddress};
 
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct Knockout {
     #[key]
     combat_id: u128,
@@ -16,7 +17,8 @@ struct Knockout {
 }
 
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct Healths {
     #[key]
     combat_id: u128,
@@ -24,7 +26,8 @@ struct Healths {
     b: u8,
 }
 
-#[derive(Model, Copy, Drop, Print, Serde, SerdeLen)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde, SerdeLen)]
 struct LastRound {
     #[key]
     combat_id: u128,

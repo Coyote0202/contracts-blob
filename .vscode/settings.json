@@ -1,4 +1,4 @@
 {
-    "cairo1.languageServerPath": "${userHome}/.asdf/installs/scarb/2.5.4/bin/scarb-cairo-language-server",
-    "cairo1.scarbPath": "${userHome}/.asdf/installs/scarb/2.5.4/bin/scarb"
+    "cairo1.languageServerPath": "${userHome}/.asdf/installs/scarb/2.6.3/bin/scarb-cairo-language-server",
+    "cairo1.scarbPath": "${userHome}/.asdf/installs/scarb/2.6.3/bin/scarb"
 }

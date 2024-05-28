@@ -18,7 +18,8 @@ enum MoveN {
     Rush,
 }
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct CurrentPhase {
     #[key]
     id: u128,
@@ -99,7 +100,8 @@ impl RevealImpl of RevealTrait {
     }
 }
 
-#[derive(Model, Copy, Drop, Print, Serde, SerdeLen)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde, SerdeLen)]
 struct TwoHashes {
     #[key]
     id: u128,
@@ -107,7 +109,8 @@ struct TwoHashes {
     b: felt252,
 }
 
-#[derive(Model, Copy, Drop, Print, Serde, SerdeLen)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde, SerdeLen)]
 struct TwoMoves {
     #[key]
     id: u128,
