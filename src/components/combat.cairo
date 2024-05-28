@@ -18,6 +18,19 @@ enum MoveN {
     Rush,
 }
 
+#[derive(Model, Copy, Drop, Print, Serde)]
+struct CurrentPhase {
+    #[key]
+    id: u128,
+    block_number: u64,
+    phase: Phase,
+}
+
+#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
+enum Phase {
+    Commit,
+    Reveal,
+}
 
 #[generate_trait]
 impl MoveNImpl of MoveNTrait {
