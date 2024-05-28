@@ -8,7 +8,8 @@ use blob_arena::components::{
     weapon::{Weapon, WEAPON_COUNT}, utils::DisplayImplT,
 };
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct Blobert {
     #[key]
     id: u128,

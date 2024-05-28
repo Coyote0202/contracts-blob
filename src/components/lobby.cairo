@@ -1,6 +1,7 @@
 use starknet::{ContractAddress};
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct Lobby {
     #[key]
     id: u128,
@@ -8,7 +9,8 @@ struct Lobby {
     running: bool,
 }
 
-#[derive(Model, Copy, Drop, Print, Serde)]
+#[dojo::model]
+#[derive(Copy, Drop, Print, Serde)]
 struct LobbyPlayer {
     #[key]
     address: ContractAddress,
