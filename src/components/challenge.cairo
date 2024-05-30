@@ -23,7 +23,8 @@ struct ChallengeInvite {
     receiver: ContractAddress,
     blobert_id: u128,
     phase_time: u64,
-    open: bool
+    open: bool,
+    arcade: bool
 }
 
 #[dojo::model]
@@ -48,6 +49,7 @@ struct Challenge {
     invite_open: bool,
     response_open: bool,
     combat_id: u128,
+    arcade: bool,
 }
 
 
@@ -63,6 +65,7 @@ fn make_challenge(world: World, invite: ChallengeInvite, response: ChallengeResp
         invite_open: invite.open,
         response_open: response.open,
         combat_id: response.combat_id,
+        arcade: invite.arcade,
     }
 }
 
@@ -76,6 +79,7 @@ impl ChallengeImpl of ChallengeTrait {
             blobert_id: self.sender_blobert,
             phase_time: self.phase_time,
             open: self.invite_open,
+            arcade: self.arcade,
         }
     }
     fn response(self: Challenge) -> ChallengeResponse {

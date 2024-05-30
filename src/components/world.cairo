@@ -1,6 +1,5 @@
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-
 type World = IWorldDispatcher;
 // trait WorldTrait<T> {
 //     fn get_world(self: @T) -> World;

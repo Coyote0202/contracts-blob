@@ -14,8 +14,11 @@ mod blobert_actions {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
     use blob_arena::{
-        components::{blobert::BlobertTrait, combat::Move, utils::{AB}},
-        systems::blobert::{Blobert, BlobertWorldTrait}
+        components::{
+            arcade::{ArcadeBlobert, ArcadeBlobertTrait}, blobert::BlobertTrait, combat::Move,
+            utils::{AB}
+        },
+        systems::arcade::blobert::{ArcadeBlobertWorldTrait}
     };
 
 

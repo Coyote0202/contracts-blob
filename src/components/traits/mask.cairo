@@ -1,4 +1,4 @@
-use blob_arena::components::stats::{Stats, StatsTrait};
+use blob_arena::components::stats::{Stats, StatsTrait, StatIntoU8};
 
 const MASK_COUNT: u8 = 26;
 
@@ -169,3 +169,6 @@ impl MaskIntoByteArray of Into<Mask, ByteArray> {
         }
     }
 }
+
+
+impl MaskIntoU8 = StatIntoU8<Mask>;

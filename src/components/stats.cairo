@@ -13,6 +13,12 @@ trait StatsTrait<T> {
     fn index(self: T) -> u8;
 }
 
+impl StatIntoU8<T, +StatsTrait<T>> of Into<T, u8> {
+    fn into(self: T) -> u8 {
+        self.index()
+    }
+}
+
 impl U8IntoStats of Into<u8, Stats> {
     fn into(self: u8) -> Stats {
         Stats { attack: self, defense: self, speed: self, strength: self, }

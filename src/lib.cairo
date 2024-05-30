@@ -1,11 +1,14 @@
 mod components {
+    mod traits {
+        mod armour;
+        mod background;
+        mod jewelry;
+        mod mask;
+        mod weapon;
+    }
+    mod arcade;
     mod stats;
     mod blobert;
-    mod armour;
-    mod background;
-    mod jewelry;
-    mod mask;
-    mod weapon;
     mod combat;
     mod utils;
     mod world;
@@ -14,6 +17,9 @@ mod components {
     mod challenge;
 }
 mod systems {
+    mod arcade {
+        mod blobert;
+    }
     mod combat;
     mod knockout;
     mod blobert;
@@ -22,7 +28,9 @@ mod systems {
 }
 
 mod contracts {
-    mod blobert;
+    mod arcade {
+        mod blobert;
+    }
     mod challenge;
 }
 

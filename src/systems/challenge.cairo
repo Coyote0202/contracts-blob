@@ -12,7 +12,7 @@ use blob_arena::{
         },
         combat::{Move, TwoMovesTrait}, world::{World}, utils::{Status, AB, Winner},
     },
-    systems::{blobert::BlobertWorldTrait, knockout::{KnockoutGameTrait, KnockoutGame}}
+    systems::{knockout::{KnockoutGameTrait, KnockoutGame}, blobert::BlobertSystemTrait},
 };
 
 #[generate_trait]
@@ -73,13 +73,14 @@ impl ChallengeImpl of ChallengeSystemTrait {
     }
 
     fn send_challenge_invite(
-        self: World, receiver: ContractAddress, blobert_id: u128, phase_time: u64
+        self: World, receiver: ContractAddress, blobert_id: u128, phase_time: u64, arcade: bool
     ) -> u128 {
-        let challenge_id: u128 = self.uuid().into();
+        let blobert = self.load_blobert(blobert_id);
         let sender = get_caller_address();
-        self.assert_blobert_owner(blobert_id, sender);
+        blobert.assert_is_playable(sender, arcade);
+        let challenge_id: u128 = self.uuid().into();
         let challenge = ChallengeInvite {
-            challenge_id, sender, receiver, blobert_id, phase_time, open: true,
+            challenge_id, sender, receiver, blobert_id, phase_time, open: true, arcade
         };
         set!(self, (challenge,));
         challenge_id
@@ -92,9 +93,12 @@ impl ChallengeImpl of ChallengeSystemTrait {
     }
 
     fn respond_challenge_invite(ref self: Challenge, blobert_id: u128) {
-        let caller = self.assert_caller_receiver();
         assert(!self.response_open, 'Already responded');
-        self.world.assert_blobert_owner(blobert_id, caller);
+
+        let caller = self.assert_caller_receiver();
+        let blobert = self.world.load_blobert(blobert_id);
+        blobert.assert_is_playable(caller, self.arcade);
+
         self.receiver_blobert = blobert_id;
         self.response_open = true;
         self.set_challenge_response();
@@ -123,7 +127,7 @@ impl ChallengeImpl of ChallengeSystemTrait {
         self
             .combat_id = self
             .world
-            .new_knockout(self.sender, self.receiver, self.sender_blobert, self.receiver_blobert,);
+            .new_knockout(self.sender, self.receiver, self.sender_blobert, self.receiver_blobert);
         self.set_challenge_response();
         self.combat_id
     }

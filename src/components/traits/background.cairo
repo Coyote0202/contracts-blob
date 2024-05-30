@@ -1,4 +1,4 @@
-use blob_arena::components::stats::{Stats, StatsTrait};
+use blob_arena::components::stats::{Stats, StatsTrait, StatIntoU8};
 
 
 const BACKGROUND_COUNT: u8 = 12;
@@ -112,3 +112,5 @@ impl BackgroundIntoByteArray of Into<Background, ByteArray> {
         }
     }
 }
+
+impl BackgroundIntoU8 = StatIntoU8<Background>;

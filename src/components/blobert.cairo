@@ -1,15 +1,23 @@
+use token::erc721::interface::IERC721DispatcherTrait;
 use core::traits::TryInto;
 use starknet::{ContractAddress, class_hash::class_hash_const};
 use core::fmt::{Display, Formatter, Error};
+use alexandria_math::BitShift;
+
 use blob_arena::{
     components::{
-        stats::{Stats, StatsTrait}, background::{Background, BACKGROUND_COUNT},
-        armour::{Armour, ARMOUR_COUNT}, mask::{Mask, MASK_COUNT}, jewelry::{Jewelry, JEWELRY_COUNT},
-        weapon::{Weapon, WEAPON_COUNT}, utils::DisplayImplT,
+        arcade::ArcadeBlobert, stats::{Stats, StatsTrait},
+        traits::{
+            background::{Background, BACKGROUND_COUNT}, armour::{Armour, ARMOUR_COUNT},
+            mask::{Mask, MASK_COUNT}, jewelry::{Jewelry, JEWELRY_COUNT},
+            weapon::{Weapon, WEAPON_COUNT},
+        },
+        utils::DisplayImplT,
     },
     external::blobert::{IBlobertDispatcherTrait, IBlobertDispatcher, TokenTrait, Seed}
 };
-const BLOBERT_CONTRACT_ADDRESS: felt252 = 0x0;
+use token::{erc721::interface::{IERC721Dispatcher, IERC721}};
+
 
 #[dojo::model]
 #[derive(Copy, Drop, Print, Serde)]
@@ -17,10 +25,14 @@ struct Blobert {
     #[key]
     id: u128,
     owner: ContractAddress,
-    traits: Traits,
+    traits: TokenTrait,
     stats: Stats,
+    arcade: bool,
 }
 
+fn is_arcade_from_id<T, +Into<T, u256>>(id: T) -> bool {
+    id.into() > 4844_u256
+}
 
 impl SeedIntoTraits of Into<Seed, Traits> {
     fn into(self: Seed) -> Traits {
@@ -35,20 +47,31 @@ impl SeedIntoTraits of Into<Seed, Traits> {
 }
 
 
-fn token_to_blobert(token: TokenTrait, id: u128, owner: ContractAddress) -> Blobert {
-    match token {
-        TokenTrait::Regular(seed) => {
-            let traits: Traits = Traits {
-                background: seed.background.into(),
-                armour: seed.armour.into(),
-                mask: seed.mask.into(),
-                jewelry: seed.jewelry.into(),
-                weapon: seed.weapon.into(),
-            };
-            let stats = calculate_stats(traits);
-            Blobert { id, owner, traits, stats }
-        },
-        TokenTrait::Custom(index) => panic!("Custom tokens not implemented yet"),
+impl TraitsIntoSeed of Into<Traits, Seed> {
+    fn into(self: Traits) -> Seed {
+        Seed {
+            background: self.background.into(),
+            armour: self.armour.into(),
+            mask: self.mask.into(),
+            jewelry: self.jewelry.into(),
+            weapon: self.weapon.into(),
+        }
+    }
+}
+
+
+impl TraitsIntoTokenTrait of Into<Traits, TokenTrait> {
+    fn into(self: Traits) -> TokenTrait {
+        TokenTrait::Regular(self.into())
+    }
+}
+
+impl TokenTraitIntoTraits of Into<TokenTrait, Traits> {
+    fn into(self: TokenTrait) -> Traits {
+        match self {
+            TokenTrait::Regular(seed) => seed.into(),
+            TokenTrait::Custom(_index) => panic!("Custom tokens not implemented yet"),
+        }
     }
 }
 
@@ -61,6 +84,8 @@ struct Traits {
     jewelry: Jewelry,
     weapon: Weapon,
 }
+
+
 impl OutcomeIntoByteArray of Into<Traits, ByteArray> {
     fn into(self: Traits) -> ByteArray {
         let background: ByteArray = self.background.into();
@@ -81,6 +106,52 @@ fn calculate_stats(traits: Traits) -> Stats {
     );
 
     return (b_stats + j_stats + w_stats + a_stats + m_stats);
+}
+
+impl TraitsIntoStats of Into<Traits, Stats> {
+    fn into(self: Traits) -> Stats {
+        calculate_stats(self)
+    }
+}
+
+impl TokenTraitIntoSeed of Into<TokenTrait, Seed> {
+    fn into(self: TokenTrait) -> Seed {
+        match self {
+            TokenTrait::Regular(seed) => { seed },
+            TokenTrait::Custom(_index) => panic!("Custom tokens not implemented yet"),
+        }
+    }
+}
+
+impl TokenTraitIntoStats of Into<TokenTrait, Stats> {
+    fn into(self: TokenTrait) -> Stats {
+        Into::<Traits, Stats>::into(self.into())
+    }
+}
+
+
+impl SeedIntoTokenTrait of Into<Seed, TokenTrait> {
+    fn into(self: Seed) -> TokenTrait {
+        Into::<Traits, TokenTrait>::into(self.into())
+    }
+}
+
+fn generate_seed(randomness: u256,) -> Seed {
+    let mut mask_count: u256 = WEAPON_COUNT.into();
+
+    let background: u8 = (randomness % BACKGROUND_COUNT.into()).try_into().unwrap();
+    let armour: u8 = (BitShift::shr(randomness, 48) % ARMOUR_COUNT.into()).try_into().unwrap();
+
+    // only allow the mask to be one of the first 8 masks 
+    // where the armour is sheep wool or kigurumi
+    if armour == 0 || armour == 1 {
+        mask_count = 8;
+    };
+
+    let jewelry: u8 = (BitShift::shr(randomness, 96) % JEWELRY_COUNT.into()).try_into().unwrap();
+    let mask: u8 = (BitShift::shr(randomness, 144) % mask_count).try_into().unwrap();
+    let weapon: u8 = (BitShift::shr(randomness, 192) % WEAPON_COUNT.into()).try_into().unwrap();
+    return Seed { background, armour, jewelry, mask, weapon };
 }
 
 fn generate_traits(seed: u256) -> Traits {
@@ -115,23 +186,27 @@ fn generate_traits(seed: u256) -> Traits {
         weapon: weapon.into(),
     }
 }
+
+
 #[generate_trait]
 impl BlobertImpl of BlobertTrait {
-    fn new(id: u128, owner: ContractAddress, seed: u256) -> Blobert {
-        let traits = generate_traits(seed);
-        let stats = calculate_stats(traits);
-        return Blobert { id, owner, traits, stats };
-    }
-    fn load_blobert(id: u128) -> Blobert {
-        let dispatcher = IBlobertDispatcher {
-            contract_address: BLOBERT_CONTRACT_ADDRESS.try_into().unwrap()
-        };
-        let token_traits = dispatcher.traits(id.into());
-    }
     fn check_owner(self: Blobert, player: ContractAddress) -> bool {
         return self.owner == player;
     }
     fn assert_owner(self: Blobert, player: ContractAddress) {
         assert(self.check_owner(player), 'Not Blobert Owner');
+    }
+    fn assert_is_correct_league(self: Blobert, arcade: bool) {
+        let string = if self.arcade {
+            'Arcade Bloberts not allowed'
+        } else {
+            'Only Arcade Bloberts allowed'
+        };
+
+        assert(self.arcade == arcade, string);
+    }
+    fn assert_is_playable(self: Blobert, player: ContractAddress, arcade: bool) {
+        self.assert_is_correct_league(arcade);
+        self.assert_owner(player);
     }
 }

@@ -2,9 +2,43 @@
 version = 1
 
 [[package]]
+name = "alexandria_data_structures"
+version = "0.2.0"
+source = "git+https://github.com/keep-starknet-strange/alexandria.git?tag=cairo-v2.6.0#946e6e2f9d390ad9f345882a352c0dd6f02ef3ad"
+dependencies = [
+ "alexandria_encoding",
+]
+
+[[package]]
+name = "alexandria_encoding"
+version = "0.1.0"
+source = "git+https://github.com/keep-starknet-strange/alexandria.git?tag=cairo-v2.6.0#946e6e2f9d390ad9f345882a352c0dd6f02ef3ad"
+dependencies = [
+ "alexandria_math",
+ "alexandria_numeric",
+]
+
+[[package]]
+name = "alexandria_math"
+version = "0.2.0"
+source = "git+https://github.com/keep-starknet-strange/alexandria.git?tag=cairo-v2.6.0#946e6e2f9d390ad9f345882a352c0dd6f02ef3ad"
+dependencies = [
+ "alexandria_data_structures",
+]
+
+[[package]]
+name = "alexandria_numeric"
+version = "0.1.0"
+source = "git+https://github.com/keep-starknet-strange/alexandria.git?tag=cairo-v2.6.0#946e6e2f9d390ad9f345882a352c0dd6f02ef3ad"
+dependencies = [
+ "alexandria_math",
+]
+
+[[package]]
 name = "blob_arena"
 version = "0.1.0"
 dependencies = [
+ "alexandria_math",
  "dojo",
  "token",
 ]
@@ -26,14 +60,6 @@ source = "git+https://github.com/dojoengine/dojo?tag=v0.3.11#1e651b5d4d3b79b14a7
 name = "token"
 version = "0.0.0"
 source = "git+https://github.com/dojoengine/origami?tag=v0.7.0-alpha.4#e95e430d5fd77542d2620dbea4f06c8203d4ce6a"
-dependencies = [
- "dojo",
-]
-
-[[package]]
-name = "token"
-version = "0.0.0"
-source = "git+https://github.com/dojoengine/origami?tag=v0.6.0#61de20ff7bc80bfc33212ef3bfac93661ea61d45"
 dependencies = [
  "dojo",
 ]

@@ -1,4 +1,4 @@
-use blob_arena::components::stats::{Stats, StatsTrait};
+use blob_arena::components::stats::{Stats, StatsTrait, StatIntoU8};
 
 const ARMOUR_COUNT: u8 = 17;
 
@@ -124,3 +124,6 @@ impl SU8IntoArmour of Into<@u8, Armour> {
         (*self).into()
     }
 }
+
+
+impl ArmourIntoU8 = StatIntoU8<Armour>;

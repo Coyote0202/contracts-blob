@@ -1,4 +1,8 @@
 use starknet::{ContractAddress, class_hash::class_hash_const};
+use token::{erc721::interface::{IERC721Dispatcher, IERC721, IERC721DispatcherTrait}};
+
+const BLOBERT_CONTRACT_ADDRESS: felt252 =
+    0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d;
 
 #[derive(Copy, Drop, Serde)]
 enum WhitelistTier {
@@ -8,7 +12,7 @@ enum WhitelistTier {
     Four
 }
 
-#[derive(Copy, Drop, Serde, Hash, PartialEq)]
+#[derive(Copy, Drop, Serde, Hash, PartialEq, Introspect)]
 struct Seed {
     background: u8,
     armour: u8,
@@ -17,7 +21,7 @@ struct Seed {
     weapon: u8,
 }
 
-#[derive(Copy, Drop, Serde, PartialEq)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum TokenTrait {
     // regular tokens are identified by seed
     Regular: Seed,
@@ -65,4 +69,20 @@ trait IBlobert<TContractState> {
     fn owner_assign_custom(ref self: TContractState, recipients: Span<ContractAddress>);
     fn owner_change_descriptor_regular(ref self: TContractState, descriptor: ContractAddress);
     fn owner_change_descriptor_custom(ref self: TContractState, descriptor: ContractAddress);
+}
+
+
+fn get_blobert_dispatchers() -> (IERC721Dispatcher, IBlobertDispatcher) {
+    let contract_address: ContractAddress = BLOBERT_CONTRACT_ADDRESS.try_into().unwrap();
+    (IERC721Dispatcher { contract_address }, IBlobertDispatcher { contract_address })
+}
+
+fn get_erc271_dispatcher() -> IERC721Dispatcher {
+    let contract_address: ContractAddress = BLOBERT_CONTRACT_ADDRESS.try_into().unwrap();
+    IERC721Dispatcher { contract_address }
+}
+
+fn get_blobert_dispatcher() -> IBlobertDispatcher {
+    let contract_address: ContractAddress = BLOBERT_CONTRACT_ADDRESS.try_into().unwrap();
+    IBlobertDispatcher { contract_address }
 }

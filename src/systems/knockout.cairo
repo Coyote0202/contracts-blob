@@ -7,7 +7,7 @@ use blob_arena::{
         knockout::{Knockout, Healths, HealthsTrait, RoundTrait}, utils::{AB, Status, Winner},
         stake::Stake,
     },
-    systems::{blobert::{BlobertWorldTrait}, combat::{Outcome, calculate_damage, get_outcome}},
+    systems::{blobert::BlobertSystemTrait, combat::{Outcome, calculate_damage, get_outcome}},
     utils::{uuid},
 };
 use starknet::{ContractAddress, get_caller_address, get_block_number};
@@ -30,10 +30,10 @@ impl KnockoutGameImpl of KnockoutGameTrait {
         player_a: ContractAddress,
         player_b: ContractAddress,
         blobert_a: u128,
-        blobert_b: u128
+        blobert_b: u128,
     ) -> u128 {
         let combat_id = uuid(self);
-        (self.get_blobert(blobert_a), self.get_blobert(blobert_b));
+        (self.load_blobert(blobert_a), self.load_blobert(blobert_b));
         let knockout = Knockout { combat_id, player_a, player_b, blobert_a, blobert_b };
         let healths = Healths { combat_id, a: 100, b: 100 };
         let phase = CurrentPhase {
@@ -55,8 +55,8 @@ impl KnockoutGameImpl of KnockoutGameTrait {
     }
     fn get_blobert(self: KnockoutGame, player: AB) -> Blobert {
         match player {
-            AB::A => self.world.get_blobert(self.blobert_a),
-            AB::B => self.world.get_blobert(self.blobert_b),
+            AB::A => self.world.load_blobert(self.blobert_a),
+            AB::B => self.world.load_blobert(self.blobert_b),
         }
     }
     fn get_player_id(self: KnockoutGame, player: AB) -> ContractAddress {
@@ -66,7 +66,7 @@ impl KnockoutGameImpl of KnockoutGameTrait {
         }
     }
     fn get_bloberts(self: KnockoutGame) -> (Blobert, Blobert) {
-        (self.world.get_blobert(self.blobert_a), self.world.get_blobert(self.blobert_b))
+        (self.world.load_blobert(self.blobert_a), self.world.load_blobert(self.blobert_b))
     }
     fn get_healths(self: KnockoutGame) -> Healths {
         get!(self.world, self.combat_id, Healths)
@@ -167,16 +167,8 @@ impl KnockoutGameImpl of KnockoutGameTrait {
             Status::Finished(outcome) => outcome,
             Status::Running => panic!("Game not finished"),
         };
-        if outcome != Winner::Draw {
-            let winner: AB = outcome.into();
-            if stake.blobert {
-                let mut blobert = self.get_blobert(!winner);
-                let player_id = self.get_player_id(winner.into());
-                self.world.transfer_blobert(ref blobert, player_id);
-            }
-            if stake.amount > 0 {}
-        }
     }
+
 
     fn get_status(self: KnockoutGame) -> Status {
         let healths = self.get_healths();

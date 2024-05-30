@@ -1,4 +1,4 @@
-use blob_arena::components::stats::{Stats, StatsTrait};
+use blob_arena::components::stats::{Stats, StatsTrait, StatIntoU8};
 #[derive(Copy, Drop, Print, Serde, SerdeLen, Size, Introspect)]
 enum Jewelry {
     Amulet,
@@ -77,3 +77,5 @@ impl JewelryIntoByteArray of Into<Jewelry, ByteArray> {
         }
     }
 }
+
+impl JewelryIntoU8 = StatIntoU8<Jewelry>;
