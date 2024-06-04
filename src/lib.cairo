@@ -4,24 +4,26 @@ mod components {
     mod attack;
     mod warrior;
     mod weapon;
-// mod traits {
-//     mod armour;
-//     mod background;
-//     mod jewelry;
-//     mod mask;
-//     mod weapon;
-// }
-// mod arcade;
-// mod stats;
-// mod blobert;
-// mod combat;
-// mod utils;
+    mod stats;
+    mod combatant;
+    mod item;
+    // mod traits {
+    //     mod armour;
+    //     mod background;
+    //     mod jewelry;
+    //     mod mask;
+    //     mod weapon;
+    // }
+    // mod arcade;
+    // mod blobert;
+    // mod combat;
+    mod utils;
 // mod world;
 // mod knockout;
 // mod stake;
 // mod challenge;
 }
-mod systems {// mod attack;
+mod systems { // mod attack;
 // mod weapon;
 // mod arcade {
 //     mod blobert;

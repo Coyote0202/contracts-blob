@@ -1,5 +1,14 @@
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use blob_arena::models::Attack;
+use blob_arena::{models::Attack, components::{utils::{IdTrait, IdsTrait, TIdsImpl}}};
+
+
+impl AttackIdImpl of IdTrait<Attack> {
+    fn id(self: @Attack) -> u128 {
+        *self.id
+    }
+}
+
+impl AttackIdsImpl = TIdsImpl<Attack>;
 
 #[generate_trait]
 impl AttackImpl of AttackTrait {

@@ -8,6 +8,7 @@ struct Stats {
     speed: u8,
     strength: u8,
 }
+
 trait StatsTrait<T> {
     fn stats(self: T) -> Stats;
     fn index(self: T) -> u8;
@@ -25,11 +26,11 @@ impl U8IntoStats of Into<u8, Stats> {
     }
 }
 
-impl TIntoStats<T, +TryInto<T, u8>> of Into<T, Stats> {
-    fn into(self: T) -> Stats {
-        U8IntoStats::into(self.try_into().unwrap())
-    }
-}
+// impl TIntoStats<T, +TryInto<T, u8>> of Into<T, Stats> {
+//     fn into(self: T) -> Stats {
+//         U8IntoStats::into(self.try_into().unwrap())
+//     }
+// }
 
 impl DisplayImplT of Display<Stats> {
     fn fmt(self: @Stats, ref f: Formatter) -> Result<(), Error> {

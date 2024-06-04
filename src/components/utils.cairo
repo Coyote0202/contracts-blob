@@ -1,5 +1,25 @@
 use core::fmt::{Display, Formatter, Error};
 
+trait IdTrait<T> {
+    fn id(self: @T) -> u128;
+}
+
+trait IdsTrait<T> {
+    fn ids(self: Array<T>) -> Array<u128>;
+}
+
+impl TIdsImpl<T, +IdTrait<T>, +Drop<T>> of IdsTrait<T> {
+    fn ids(self: Array<T>) -> Array<u128> {
+        let mut ids: Array<u128> = ArrayTrait::new();
+        let (len, mut n) = (self.len(), 0_usize);
+        while (n < len) {
+            ids.append(self.at(n).id());
+            n += 1;
+        };
+        ids
+    }
+}
+
 
 #[derive(Copy, Drop, Print, Serde, PartialEq)]
 enum AB {

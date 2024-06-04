@@ -1,12 +1,12 @@
 use starknet::{ContractAddress};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use blob_arena::{systems::{weapon::{Weapon, WeaponTrait}}, models::WarriorModel,};
+use blob_arena::{systems::{weapon::{Weapon, WeaponTrait}}, models::{WarriorModel, Attacks},};
 
 
 struct Warrior {
     id: u128,
     owner: ContractAddress,
-    weapons: Array<Weapon>,
+    items: Array<Item>,
 }
 
 
