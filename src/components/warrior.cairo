@@ -8,6 +8,8 @@ use blob_arena::{
 struct Warrior {
     id: u128,
     owner: ContractAddress,
+    erc721_address: ContractAddress,
+    token_id: u256,
     items: Array<Item>,
     arcade: bool,
 }
@@ -36,6 +38,6 @@ impl WarriorImpl of WarriorTrait {
         warriors
     }
     fn get_health(self: Warrior) -> u8 {
-        100
+        
     }
 }

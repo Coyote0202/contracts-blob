@@ -1,4 +1,3 @@
-use core::box::BoxTrait;
 use core::hash::HashStateTrait;
 use core::poseidon::{PoseidonTrait, HashState};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};

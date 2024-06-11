@@ -1,5 +1,9 @@
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use blob_arena::{models::Attack, components::{utils::{IdTrait, IdsTrait, TIdsImpl}}};
+use alexandria_math::BitShift;
+
+use blob_arena::{ // models::{Attack, AttackArrayCopyImpl}, components::{utils::{IdTrait, IdsTrait, TIdsImpl}}
+    models::{Attack, AttackLastUse}, components::{utils::{IdTrait, IdsTrait, TIdsImpl}}
+};
 
 
 impl AttackIdImpl of IdTrait<Attack> {
@@ -24,5 +28,23 @@ impl AttackImpl of AttackTrait {
         };
         attacks
     }
-}
 
+
+    fn did_hit(self: Attack, seed: u256) -> bool {
+        (BitShift::shr(seed, 8) % 255).try_into().unwrap() < self.accuracy
+    }
+
+    fn did_critical(self: Attack, seed: u256) -> bool {
+        (BitShift::shr(seed, 16) % 255).try_into().unwrap() < self.critical
+    }
+    fn get_attack_last_use(
+        self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,
+    ) -> u32 {
+        get!(self, (combat_id, combatant, attack), AttackLastUse).round
+    }
+    fn set_attack_last_used(
+        self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128, round: u32
+    ) {
+        set!(self, (AttackLastUse { combat_id, combatant, attack, round }));
+    }
+}

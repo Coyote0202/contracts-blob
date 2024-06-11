@@ -1,75 +1,127 @@
-use blob_arena::components::blobert::BlobertTrait;
-use blob_arena::components::{
-    blobert::Blobert, stats::Stats, combat::{Move, MatchResult, Outcome, AB},
+use core::{
+    hash::HashStateTrait, poseidon::{PoseidonTrait, HashState},
+    dict::{Felt252Dict, Felt252DictTrait}
 };
+use alexandria_math::BitShift;
+use blob_arena::{
+    core::{LimitSub, LimitAdd},
+    components::{
+        combat::{Phase}, combatant::{Combatant, CombatantTrait}, attack::{Attack},
+        utils::{AB, ABT, ABTTrait}
+    },
+    systems::{attack::AttackSystemTrait},
+};
+use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 
-impl U8U8Intou16U16 of Into<(u8, u8), (u16, u16)> {
-    fn into(self: (u8, u8)) -> (u16, u16) {
-        let (a, b) = self;
-        (a.into(), b.into())
+#[derive(Drop, Serde, Copy)]
+enum AttackResult {
+    Failed,
+    Stunned,
+    Miss,
+    Hit: (u8, u8),
+    Critical: (u8, u8),
+}
+
+#[derive(Drop, Serde, Copy)]
+struct PlannedAttack {
+    combatant: Combatant,
+    attack: Attack,
+    target: u128,
+}
+
+#[derive(Drop, Serde, Copy)]
+struct CombatWorld {
+    world: IWorldDispatcher,
+    combat_id: u128,
+    round: u32,
+    phase: Phase,
+}
+
+#[generate_trait]
+impl PlannedAttackImpl of PlannedAttackTrait {
+    fn get_speed(self: PlannedAttack) -> u8 {
+        self.attack.speed + self.combatant.stats.speed
     }
 }
 
-fn calculate_win_damage(attacker: Stats, defender: Stats, winning_mode: Move) -> u8 {
-    let (attacker_var, defender_var): (u16, u16) = match winning_mode {
-        Move::Beat => (attacker.strength, defender.strength),
-        Move::Counter => (attacker.speed, defender.strength),
-        Move::Rush => (attacker.speed, defender.speed),
-    }.into();
-    let damage_u16 = (attacker.attack.into() + 30)
-        * (attacker_var + 60)
-        / (defender.defense.into() + defender_var + 100);
-    damage_u16.try_into().unwrap()
-}
 
-fn calculate_draw_damage(attacker: Stats, defender: Stats, mode: Move) -> u8 {
-    let (attack, defence): (u16, u16) = (attacker.attack, defender.defense).into();
-    match mode {
-        Move::Beat => (attack + 20) * (attacker.strength.into() + 30) / (defence + 80),
-        Move::Counter => 20,
-        Move::Rush => (attack + 20) * (attacker.speed.into() + 30) / (defence + 80),
-    }.try_into().unwrap()
-}
+#[generate_trait]
+impl CombatSystemImpl of CombatSystem {
+    fn get_damage(
+        self: Combatant, target: Combatant, attack: Attack, critical: bool, seed: u256
+    ) -> u8 {
+        //TODO: Implement damage calculation
+        0
+    }
 
+    fn did_hit(self: Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
+        (BitShift::shr(seed, 8) % 255).try_into().unwrap() < attack.accuracy
+    }
 
-fn calculate_damage(player_a: Stats, player_b: Stats, outcome: Outcome) -> (u8, u8) {
-    match outcome.result {
-        MatchResult::Draw => (
-            calculate_draw_damage(player_b, player_a, outcome.move),
-            calculate_draw_damage(player_a, player_b, outcome.move)
-        ),
-        MatchResult::Winner(winner) => {
-            let (attacker, defender): (Stats, Stats) = match winner {
-                AB::A => (player_a, player_b),
-                AB::B => (player_b, player_a),
-            };
-            let damage = calculate_win_damage(attacker, defender, outcome.move);
+    fn did_critical(self: Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
+        (BitShift::shr(seed, 16) % 255).try_into().unwrap() < attack.critical
+    }
 
-            match winner {
-                AB::A => (0, damage),
-                AB::B => (damage, 0),
+    fn is_stunned(self: Combatant, seed: u256) -> bool {
+        let (mut n, len) = (0_usize, self.stun_chances.len());
+        let mut stunned = false;
+        while n < len {
+            let val = (BitShift::shr(seed, 8 * n.into() + 32) % 255).try_into().unwrap();
+            if val < *self.stun_chances[n] {
+                stunned = true;
+                break;
             }
+            n += 1;
+        };
+        return false;
+    }
+
+    fn run_stun(ref self: Combatant, seed: u256) -> bool {
+        let stunned = self.is_stunned(seed);
+        self.stun_chances = ArrayTrait::new();
+        stunned
+    }
+
+    fn run_attack_check(self: CombatWorld, combatant: Combatant, attack: Attack) -> bool {
+        if combatant.health.is_non_zero() && combatant.has_attack(attack.id) {
+            self.world.run_cooldown(combatant, attack, self.round)
+        } else {
+            false
         }
     }
-}
 
+    fn run_attack(
+        self: CombatWorld,
+        ref attacker: Combatant,
+        ref target: Combatant,
+        attack: Attack,
+        hash: HashState
+    ) -> AttackResult {
+        if !self.run_attack_check(attacker, attack) {
+            return AttackResult::Failed;
+        }
 
-fn get_outcome(move_a: Move, move_b: Move) -> Outcome {
-    let result_u8: u8 = (3_u8 + move_a.into() - move_b.into()) % 3;
-    if result_u8 == 0 {
-        return Outcome { result: MatchResult::Draw, move: move_a };
-    };
+        let seed = hash.update(attacker.warrior_id.into()).finalize().into();
+        if attacker.run_stun(seed) {
+            return AttackResult::Stunned;
+        }
+        if !attacker.did_hit(target, attack, seed) {
+            return AttackResult::Miss;
+        }
+        let critical = attacker.did_critical(target, attack, seed);
+        let damage = attacker.get_damage(target, attack, critical, seed);
 
-    let winner: AB = match (result_u8 % 2).is_non_zero() {
-        false => AB::A,
-        true => AB::B,
-    };
-    let move = match winner {
-        AB::A => move_a,
-        AB::B => move_b,
-    };
+        target.health.subeq(damage);
+        if attack.stun > 0 {
+            attacker.stun_chances.append(attack.stun)
+        };
 
-    return Outcome { result: MatchResult::Winner(winner), move };
+        if critical {
+            AttackResult::Critical((damage, attack.stun))
+        } else {
+            AttackResult::Hit((damage, attack.stun))
+        }
+    }
 }
 

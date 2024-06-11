@@ -1,4 +1,4 @@
-use core::fmt::{Display, Formatter, Error};
+use core::{integer::BoundedInt, num::traits::{Zero, One}, fmt::{Display, Formatter, Error}};
 
 trait IdTrait<T> {
     fn id(self: @T) -> u128;
@@ -36,6 +36,24 @@ impl ABIntoByteArray of Into<AB, ByteArray> {
     }
 }
 
+struct ABT<T> {
+    a: T,
+    b: T,
+}
+
+#[generate_trait]
+impl ABTImpl<T, +Drop<T>> of ABTTrait<T> {
+    fn new(a: T, b: T) -> ABT<T> {
+        ABT { a, b }
+    }
+    fn get(self: ABT<T>, player: AB) -> T {
+        match player {
+            AB::A => self.a,
+            AB::B => self.b,
+        }
+    }
+}
+
 #[derive(Copy, Drop, Print, Serde, PartialEq)]
 enum Winner {
     A,
@@ -54,6 +72,18 @@ impl WinnerIntoAB of Into<Winner, AB> {
             Winner::A => AB::A,
             Winner::B => AB::B,
             Winner::Draw => panic!("Game is a draw"),
+        }
+    }
+}
+
+impl BoundedIntIntoAB<T, +Drop<T>, +BoundedInt<T>, +Zero<T>, +One<T>> of Into<T, AB> {
+    fn into(self: T) -> AB {
+        if self.is_zero() {
+            AB::A
+        } else if self.is_one() {
+            AB::B
+        } else {
+            panic!("Invalid value for AB")
         }
     }
 }

@@ -22,6 +22,5 @@ struct CombatantState {
     #[key]
     warrior_id: u128,
     health: u8,
-    stunned: bool,
-    stun_chance: u8,
+    stun_chances: Array<u8>,
 }

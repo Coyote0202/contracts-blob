@@ -1,5 +1,6 @@
 mod models;
-
+mod core;
+mod collections;
 mod components {
     mod attack;
     mod warrior;
@@ -7,6 +8,7 @@ mod components {
     mod stats;
     mod combatant;
     mod item;
+    mod commitment;
     // mod traits {
     //     mod armour;
     //     mod background;
@@ -16,14 +18,17 @@ mod components {
     // }
     // mod arcade;
     // mod blobert;
-    // mod combat;
+    mod combat;
     mod utils;
 // mod world;
 // mod knockout;
 // mod stake;
 // mod challenge;
 }
-mod systems { // mod attack;
+mod systems {
+    mod combat;
+    mod attack;
+    mod pvp_combat;
 // mod weapon;
 // mod arcade {
 //     mod blobert;
@@ -35,13 +40,13 @@ mod systems { // mod attack;
 // mod stake;
 // mod warrior;
 }
-// mod contracts {
+mod contracts {
+    mod pvp;
 //     mod arcade {
 //         mod blobert;
 //     }
 //     mod challenge;
-// }
-
+}
 // mod external {
 //     mod blobert;
 // }

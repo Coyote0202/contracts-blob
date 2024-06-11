@@ -1,17 +1,21 @@
 use core::array::ArrayTrait;
-use blob_arena::components::attack::AttackTrait;
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     components::{
-        stats::Stats, weapon::{Weapon, WeaponTrait}, attack::{Attack, AttackIdsImpl, IdsTrait},
-        warrior::{Warrior, WarriorTrait}, item::{Item, ItemsTrait}
+        stats::Stats, weapon::{Weapon, WeaponTrait},
+        // attack::{Attack, AttackIdsImpl, IdsTrait, AttackArrayCopyImpl, AttackTrait},
+        attack::{Attack, AttackIdsImpl, IdsTrait, AttackTrait}, warrior::{Warrior, WarriorTrait},
+        item::{Item, ItemsTrait}
     },
     models::{WarriorModel, CombatantModel, CombatantState},
 };
 
 
-#[derive(Drop, Serde)]
+impl U8ArrayCopyImpl of Copy<Array<u8>>;
+impl AttackArrayCopyImpl of Copy<Array<Attack>>;
+
+#[derive(Drop, Serde, Copy)]
 struct Combatant {
     combat_id: u128,
     warrior_id: u128,
@@ -19,8 +23,7 @@ struct Combatant {
     attacks: Array<Attack>,
     stats: Stats,
     health: u8,
-    stunned: bool,
-    stun_chance: u8,
+    stun_chances: Array<u8>,
 }
 
 impl CombatantIntoCombatantState of Into<Combatant, CombatantState> {
@@ -29,8 +32,7 @@ impl CombatantIntoCombatantState of Into<Combatant, CombatantState> {
             combat_id: self.combat_id,
             warrior_id: self.warrior_id,
             health: self.health,
-            stunned: self.stunned,
-            stun_chance: self.stun_chance
+            stun_chances: self.stun_chances,
         }
     }
 }
@@ -59,8 +61,7 @@ impl CombatantImpl of CombatantTrait {
             attacks: items.get_attacks(),
             stats: items.get_stats(),
             health: self.get_health(),
-            stunned: false,
-            stun_chance: 0,
+            stun_chances: ArrayTrait::<u8>::new(),
         }
     }
 
@@ -70,8 +71,21 @@ impl CombatantImpl of CombatantTrait {
         );
         let CombatantModel { combat_id: _, warrior_id: _, player, attacks: attack_ids, stats } =
             model;
-        let CombatantState { combat_id: _, warrior_id: _, health, stunned, stun_chance } = state;
+        let CombatantState { combat_id: _, warrior_id: _, health, stun_chances } = state;
         let attacks = self.get_attacks(attack_ids);
-        Combatant { combat_id, warrior_id, player, attacks, stats, health, stunned, stun_chance }
+        Combatant { combat_id, warrior_id, player, attacks, stats, health, stun_chances }
+    }
+
+    fn has_attack(self: @Combatant, attack_id: u128) -> bool {
+        let (len, mut n) = (self.attacks.len(), 0_usize);
+        let mut has_attack = false;
+        while n < len {
+            if *self.attacks.at(n).id == attack_id {
+                has_attack = true;
+                break;
+            }
+            n += 1;
+        };
+        has_attack
     }
 }

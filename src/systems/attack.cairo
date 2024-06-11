@@ -1,20 +1,20 @@
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use blob_arena::components::{attack::Attack};
-
+use blob_arena::components::{attack::{Attack, AttackTrait}, combatant::Combatant};
 
 #[generate_trait]
-impl AttackImpl of AttackTrait {
-    fn get_attack(self: IWorldDispatcher, id: u128) -> Attack {
-        get!(self, id, Attack)
-    }
-    fn get_attacks(self: IWorldDispatcher, ids: Array<u128>) -> Array<Attack> {
-        let mut attacks: Array<Attack> = ArrayTrait::new();
-        let mut n: usize = 0;
-        let len = ids.len();
-        while n < len {
-            attacks.append(self.get_attack(*ids[n]));
-            n += 1;
+impl AttackSystemImpl of AttackSystemTrait {
+    fn run_cooldown(
+        self: IWorldDispatcher, combatant: Combatant, attack: Attack, round: u32
+    ) -> bool {
+        if attack.cooldown == 0 {
+            return true;
+        }
+        let last_use = self
+            .get_attack_last_use(combatant.combat_id, combatant.warrior_id, attack.id);
+        if last_use.is_non_zero() && (attack.cooldown.into() + last_use) > round {
+            return false;
         };
-        attacks
+        self.set_attack_last_used(combatant.combat_id, combatant.warrior_id, attack.id, round);
+        true
     }
 }
