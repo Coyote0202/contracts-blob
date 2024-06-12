@@ -36,9 +36,39 @@ impl ABIntoByteArray of Into<AB, ByteArray> {
     }
 }
 
+
 struct ABT<T> {
     a: T,
     b: T,
+}
+
+impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
+impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
+
+impl SABTIntoTuple<T, +Drop<T>, +Copy<T>> of Into<@ABT<T>, (T, T)> {
+    fn into(self: @ABT<T>) -> (T, T) {
+        ((*self).a, (*self).b)
+    }
+}
+
+impl ABTIntoTuple<T, +Drop<T>,> of Into<ABT<T>, (T, T)> {
+    fn into(self: ABT<T>) -> (T, T) {
+        (self.a, self.b)
+    }
+}
+
+impl ABTSerdeImpl<T, +Serde<T>, +Drop<T>> of Serde<ABT<T>> {
+    fn serialize(self: @ABT<T>, ref output: Array<felt252>) {
+        self.a.serialize(ref output);
+        self.b.serialize(ref output);
+    }
+    fn deserialize(ref serialized: Span<felt252>) -> Option<ABT<T>> {
+        Option::Some(
+            ABTTrait::<
+                T
+            >::new(Serde::deserialize(ref serialized)?, Serde::deserialize(ref serialized)?)
+        )
+    }
 }
 
 #[generate_trait]
@@ -46,11 +76,21 @@ impl ABTImpl<T, +Drop<T>> of ABTTrait<T> {
     fn new(a: T, b: T) -> ABT<T> {
         ABT { a, b }
     }
+    fn new_from_tuple(t: (T, T)) -> ABT<T> {
+        let (a, b) = t;
+        ABT { a, b }
+    }
     fn get(self: ABT<T>, player: AB) -> T {
         match player {
             AB::A => self.a,
             AB::B => self.b,
         }
+    }
+    fn set(ref self: ABT<T>, ab: AB, value: T) {
+        match ab {
+            AB::A => { self.a = value },
+            AB::B => { self.b = value },
+        };
     }
 }
 

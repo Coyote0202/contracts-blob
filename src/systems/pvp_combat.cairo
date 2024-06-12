@@ -10,17 +10,18 @@ use blob_arena::{
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-impl ABTAttackDropImpl of Drop<ABT<Attack>>;
-impl ABTAttackCopyImpl of Copy<ABT<Attack>>;
-impl ABTCombatantDropImpl of Drop<ABT<Combatant>>;
-impl ABTCombatantCopyImpl of Copy<ABT<Combatant>>;
-impl ABTResultDropImpl of Drop<ABT<AttackResult>>;
+
+struct PvPCombatWorld {
+    world: IWorldDispatcher,
+    combat: CombatWorld,
+    combatants: ABT<Combatant>,
+}
 
 
 #[generate_trait]
-impl RunCombatRoundImpl of RunCombatRoundTrait {
+impl PvPCombatSystemImpl of PvPCombatSystemTrait {
     fn run_round(
-        self: CombatWorld, combatants: ABT<Combatant>, attacks: ABT<Attack>, hash: HashState
+        self: @CombatWorld, combatants: ABT<Combatant>, attacks: ABT<Attack>, hash: HashState
     ) -> (ABT<Combatant>, ABT<AttackResult>) {
         let speed_a = attacks.a.speed + combatants.a.stats.speed;
         let speed_b = attacks.b.speed + combatants.b.stats.speed;
@@ -41,5 +42,9 @@ impl RunCombatRoundImpl of RunCombatRoundTrait {
             AB::A => (ABTTrait::new(combatant_1, combatant_2), ABTTrait::new(result_1, result_2)),
             AB::B => (ABTTrait::new(combatant_2, combatant_1), ABTTrait::new(result_2, result_1)),
         }
+    }
+
+    fn end_game(ref self: CombatWorld, winner: AB) {
+        self.phase = Phase::Ended;
     }
 }

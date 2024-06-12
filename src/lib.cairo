@@ -9,21 +9,11 @@ mod components {
     mod combatant;
     mod item;
     mod commitment;
-    // mod traits {
-    //     mod armour;
-    //     mod background;
-    //     mod jewelry;
-    //     mod mask;
-    //     mod weapon;
-    // }
+    mod pvp_combat;
     // mod arcade;
-    // mod blobert;
     mod combat;
     mod utils;
-// mod world;
-// mod knockout;
-// mod stake;
-// mod challenge;
+    mod pvp_challenge;
 }
 mod systems {
     mod combat;
@@ -42,6 +32,7 @@ mod systems {
 }
 mod contracts {
     mod pvp;
+// mod combat;
 //     mod arcade {
 //         mod blobert;
 //     }

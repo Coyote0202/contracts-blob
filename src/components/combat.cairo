@@ -1,7 +1,10 @@
-use core::fmt::{Display, Formatter, Error};
+use core::{fmt::{Display, Formatter, Error}, poseidon::{poseidon_hash_span}};
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use blob_arena::{components::{combatant::{Combatant}, utils::{ABT, Status, Winner, DisplayImplT}}};
+use blob_arena::{
+    components::{combatant::{Combatant}, utils::{ABT, Status, Winner, DisplayImplT}},
+    models::SaltsModel
+};
 
 struct Team {
     id: u128,
@@ -23,12 +26,6 @@ struct TeamCombat {
     phase: Phase,
 }
 
-// #[derive(Copy, Drop, Print, Serde)]
-// struct PvPCombat {
-//     combatants: ABT<Combatant>,
-//     phase: Phase,
-// }
-
 #[dojo::model]
 #[derive(Copy, Drop, Print, Serde)]
 struct CurrentPhase {
@@ -41,12 +38,50 @@ struct CurrentPhase {
 #[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
 enum Phase {
     Setup,
-    CommitBlobert,
-    RevealBlobert,
-    CommitMove,
-    RevealMove,
+    Commit,
+    Reveal,
     Ended,
 }
+
+type Salts = Array<felt252>;
+
+#[generate_trait]
+impl SaltsImpl of SaltsTrait {
+    fn get_salts_model(self: @IWorldDispatcher, id: u128) -> SaltsModel {
+        get!((*self), id, SaltsModel)
+    }
+
+    fn append_salt(self: @IWorldDispatcher, id: u128, salt: felt252) {
+        let mut model = self.get_salts_model(id);
+        model.salts.append(salt);
+        set!((*self), (model,));
+    }
+
+    fn reset_salts(self: @IWorldDispatcher, id: u128) {
+        set!((*self), (SaltsModel { id, salts: ArrayTrait::new(), },));
+    }
+
+    fn get_salts_hash(self: @IWorldDispatcher, id: u128) -> felt252 {
+        let model = self.get_salts_model(id);
+        poseidon_hash_span(model.salts.span())
+    }
+
+    fn get_salts_with_salt_hash(self: @IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
+        let model = self.get_salts_model(id);
+        let mut salts = model.salts;
+        salts.append(salt);
+        poseidon_hash_span(salts.span())
+    }
+
+    fn consume_with_salt(self: @IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
+        let hash = self.get_salts_with_salt_hash(id, salt);
+        self.reset_salts(id);
+        hash
+    }
+}
+
+
+impl 
 // #[derive(Copy, Drop, Serde)]
 // struct Reveal {
 //     move: Move,

@@ -1,5 +1,6 @@
 use blob_arena::components::stats::Stats;
 
+
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct Item {

@@ -49,21 +49,21 @@ impl PlannedAttackImpl of PlannedAttackTrait {
 #[generate_trait]
 impl CombatSystemImpl of CombatSystem {
     fn get_damage(
-        self: Combatant, target: Combatant, attack: Attack, critical: bool, seed: u256
+        self: @Combatant, target: Combatant, attack: Attack, critical: bool, seed: u256
     ) -> u8 {
         //TODO: Implement damage calculation
         0
     }
 
-    fn did_hit(self: Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
+    fn did_hit(self: @Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 8) % 255).try_into().unwrap() < attack.accuracy
     }
 
-    fn did_critical(self: Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
+    fn did_critical(self: @Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 16) % 255).try_into().unwrap() < attack.critical
     }
 
-    fn is_stunned(self: Combatant, seed: u256) -> bool {
+    fn is_stunned(self: @Combatant, seed: u256) -> bool {
         let (mut n, len) = (0_usize, self.stun_chances.len());
         let mut stunned = false;
         while n < len {
@@ -83,16 +83,16 @@ impl CombatSystemImpl of CombatSystem {
         stunned
     }
 
-    fn run_attack_check(self: CombatWorld, combatant: Combatant, attack: Attack) -> bool {
+    fn run_attack_check(self: @CombatWorld, combatant: Combatant, attack: Attack) -> bool {
         if combatant.health.is_non_zero() && combatant.has_attack(attack.id) {
-            self.world.run_cooldown(combatant, attack, self.round)
+            self.world.run_cooldown(combatant, attack, *self.round)
         } else {
             false
         }
     }
 
     fn run_attack(
-        self: CombatWorld,
+        self: @CombatWorld,
         ref attacker: Combatant,
         ref target: Combatant,
         attack: Attack,

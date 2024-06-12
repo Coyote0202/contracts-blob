@@ -1,5 +1,5 @@
 use core::array::ArrayTrait;
-use starknet::ContractAddress;
+use starknet::{ContractAddress, get_caller_address};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     components::{
@@ -65,15 +65,26 @@ impl CombatantImpl of CombatantTrait {
         }
     }
 
-    fn get_combatant(self: IWorldDispatcher, combat_id: u128, warrior_id: u128) -> Combatant {
+    fn get_combatant(self: @IWorldDispatcher, combat_id: u128, warrior_id: u128) -> Combatant {
         let (model, state): (CombatantModel, CombatantState) = get!(
-            self, (combat_id, warrior_id), (CombatantModel, CombatantState)
+            (*self), (combat_id, warrior_id), (CombatantModel, CombatantState)
         );
+        assert(model.player.is_non_zero(), 'Combatant not found');
+
         let CombatantModel { combat_id: _, warrior_id: _, player, attacks: attack_ids, stats } =
             model;
         let CombatantState { combat_id: _, warrior_id: _, health, stun_chances } = state;
         let attacks = self.get_attacks(attack_ids);
         Combatant { combat_id, warrior_id, player, attacks, stats, health, stun_chances }
+    }
+
+    fn get_player_combatant(
+        self: @IWorldDispatcher, combat_id: u128, warrior_id: u128
+    ) -> Combatant {
+        let combatant = self.get_combatant(combat_id, warrior_id);
+        let caller = get_caller_address();
+        assert(caller == combatant.player, 'Not combatant player');
+        combatant
     }
 
     fn has_attack(self: @Combatant, attack_id: u128) -> bool {
@@ -87,5 +98,9 @@ impl CombatantImpl of CombatantTrait {
             n += 1;
         };
         has_attack
+    }
+
+    fn assert_player(self: @Combatant) {
+        assert(get_caller_address() == *self.player, 'Not combatant player');
     }
 }
