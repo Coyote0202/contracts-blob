@@ -1,5 +1,36 @@
-use blob_arena::components::combat::Phase;
+use blob_arena::components::{combat::Phase, utils::AB};
 use starknet::{ContractAddress};
+use dojo::database::introspect::Introspect;
+
+#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
+enum PvPWinner {
+    None,
+    A,
+    B
+}
+
+impl PvPWinnerIntoAB of Into<PvPWinner, AB> {
+    fn into(self: PvPWinner) -> AB {
+        match self {
+            PvPWinner::A => AB::A,
+            PvPWinner::B => AB::B,
+            PvPWinner::None => panic!("Cannot convert None to AB"),
+        }
+    }
+}
+
+impl ABIntoPvPWinner of Into<AB, PvPWinner> {
+    fn into(self: AB) -> PvPWinner {
+        match self {
+            AB::A => PvPWinner::A,
+            AB::B => PvPWinner::B,
+        }
+    }
+}
+
+type PvPPhase = Phase<PvPWinner>;
+
+// impl PvPPhaseDropImpl of Drop<PvPPhase>;
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
@@ -10,14 +41,16 @@ struct PvPCombat {
 }
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde, Copy, Introspect)]
 struct PvPCombatState {
     #[key]
     id: u128,
     players_state: (bool, bool),
-    phase: Phase,
+    phase: PvPPhase,
     round: u32,
+    block_number: u64,
 }
+
 
 #[dojo::model]
 #[derive(Drop, Serde)]
@@ -53,7 +86,7 @@ struct PvPChallengeInvite {
     warrior_id: u128,
     phase_time: u64,
     open: bool,
-    arcade: bool
+    collection_address: ContractAddress
 }
 
 #[dojo::model]

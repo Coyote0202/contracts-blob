@@ -1,19 +1,20 @@
 use core::{integer::BoundedInt, num::traits::{Zero, One}, fmt::{Display, Formatter, Error}};
 
 trait IdTrait<T> {
-    fn id(self: @T) -> u128;
+    fn id(self: T) -> u128;
 }
 
 trait IdsTrait<T> {
     fn ids(self: Array<T>) -> Array<u128>;
 }
 
-impl TIdsImpl<T, +IdTrait<T>, +Drop<T>> of IdsTrait<T> {
+impl TIdsImpl<T, +IdTrait<T>, +Drop<T>, +Copy<T>> of IdsTrait<T> {
     fn ids(self: Array<T>) -> Array<u128> {
         let mut ids: Array<u128> = ArrayTrait::new();
-        let (len, mut n) = (self.len(), 0_usize);
+        let array = self.span();
+        let (len, mut n) = (array.len(), 0_usize);
         while (n < len) {
-            ids.append(self.at(n).id());
+            ids.append((*array.at(n)).id());
             n += 1;
         };
         ids
@@ -45,31 +46,25 @@ struct ABT<T> {
 impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
 impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
 
-impl SABTIntoTuple<T, +Drop<T>, +Copy<T>> of Into<@ABT<T>, (T, T)> {
-    fn into(self: @ABT<T>) -> (T, T) {
-        ((*self).a, (*self).b)
-    }
-}
-
 impl ABTIntoTuple<T, +Drop<T>,> of Into<ABT<T>, (T, T)> {
     fn into(self: ABT<T>) -> (T, T) {
         (self.a, self.b)
     }
 }
 
-impl ABTSerdeImpl<T, +Serde<T>, +Drop<T>> of Serde<ABT<T>> {
-    fn serialize(self: @ABT<T>, ref output: Array<felt252>) {
-        self.a.serialize(ref output);
-        self.b.serialize(ref output);
-    }
-    fn deserialize(ref serialized: Span<felt252>) -> Option<ABT<T>> {
-        Option::Some(
-            ABTTrait::<
-                T
-            >::new(Serde::deserialize(ref serialized)?, Serde::deserialize(ref serialized)?)
-        )
-    }
-}
+// impl ABTSerdeImpl<T, +Serde<T>, +Drop<T>> of Serde<ABT<T>> {
+//     fn serialize(self: @ABT<T>, ref output: Array<felt252>) {
+//         self.a.serialize(ref output);
+//         self.b.serialize(ref output);
+//     }
+//     fn deserialize(ref serialized: Span<felt252>) -> Option<ABT<T>> {
+//         Option::Some(
+//             ABTTrait::<
+//                 T
+//             >::new(Serde::deserialize(ref serialized)?, Serde::deserialize(ref serialized)?)
+//         )
+//     }
+// }
 
 #[generate_trait]
 impl ABTImpl<T, +Drop<T>> of ABTTrait<T> {
@@ -144,11 +139,11 @@ impl NotAB of Not<AB> {
         }
     }
 }
+// impl DisplayImplT<T, +Into<T, ByteArray>, +Copy<T>> of Display<T> {
+//     fn fmt(self: @T, ref f: Formatter) -> Result<(), Error> {
+//         let str: ByteArray = self.into();
+//         f.buffer.append(@str);
+//         Result::Ok(())
+//     }
+// }
 
-impl DisplayImplT<T, +Into<T, ByteArray>, +Copy<T>> of Display<T> {
-    fn fmt(self: @T, ref f: Formatter) -> Result<(), Error> {
-        let str: ByteArray = (*self).into();
-        f.buffer.append(@str);
-        Result::Ok(())
-    }
-}

@@ -37,3 +37,14 @@ impl TLimitAddImpl<T, +BoundedInt<T>, +Add<T>, +PartialOrd<T>, +Copy<T>, +Drop<T
         self = self.add(other)
     }
 }
+
+
+impl Felt252BitAnd of BitAnd<felt252> {
+    #[inline(always)]
+    fn bitand(lhs: felt252, rhs: felt252) -> felt252 {
+        (Into::<felt252, u256>::into(lhs) & rhs.into()).try_into().unwrap()
+    }
+}
+
+
+impl U8ArrayCopyImpl of Copy<Array<u8>>;

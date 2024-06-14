@@ -10,12 +10,12 @@ struct Combatant {
     #[key]
     warrior_id: u128,
     player: ContractAddress,
-    attacks: Array<u128>,
     stats: Stats,
+    attacks: Array<u128>,
 }
 
-#[dojo::model]
 #[derive(Drop, Serde)]
+#[dojo::model]
 struct CombatantState {
     #[key]
     combat_id: u128,

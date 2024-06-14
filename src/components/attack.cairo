@@ -7,19 +7,20 @@ use blob_arena::{
 
 
 impl AttackIdImpl of IdTrait<Attack> {
-    fn id(self: @Attack) -> u128 {
-        *self.id
+    fn id(self: Attack) -> u128 {
+        self.id
     }
 }
 
 impl AttackIdsImpl = TIdsImpl<Attack>;
+impl AttackArrayCopyImpl of Copy<Array<Attack>>;
 
 #[generate_trait]
 impl AttackImpl of AttackTrait {
-    fn get_attack(self: @IWorldDispatcher, id: u128) -> Attack {
-        get!((*self), id, Attack)
+    fn get_attack(self: IWorldDispatcher, id: u128) -> Attack {
+        get!(self, id, Attack)
     }
-    fn get_attacks(self: @IWorldDispatcher, ids: Array<u128>) -> Array<Attack> {
+    fn get_attacks(self: IWorldDispatcher, ids: Array<u128>) -> Array<Attack> {
         let mut attacks: Array<Attack> = ArrayTrait::new();
         let (len, mut n) = (ids.len(), 0_usize);
         while n < len {
@@ -38,13 +39,13 @@ impl AttackImpl of AttackTrait {
         (BitShift::shr(seed, 16) % 255).try_into().unwrap() < self.critical
     }
     fn get_attack_last_use(
-        self: @IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,
+        self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,
     ) -> u32 {
-        get!((*self), (combat_id, combatant, attack), AttackLastUse).round
+        get!(self, (combat_id, combatant, attack), AttackLastUse).round
     }
     fn set_attack_last_used(
-        self: @IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128, round: u32
+        self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128, round: u32
     ) {
-        set!((*self), (AttackLastUse { combat_id, combatant, attack, round }));
+        set!(self, (AttackLastUse { combat_id, combatant, attack, round }));
     }
 }

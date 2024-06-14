@@ -2,11 +2,18 @@ use starknet::ContractAddress;
 
 #[dojo::model]
 #[derive(Drop, Print, Serde)]
-struct Warrior {
+struct WarriorToken {
     #[key]
     id: u128,
-    owner: ContractAddress,
+    collection_address: ContractAddress,
+    token_id: u256,
+}
+
+#[dojo::model]
+#[derive(Drop, Print, Serde)]
+struct WarriorItems {
+    #[key]
+    id: u128,
     items: Array<u128>,
-    arcade: bool,
 }
 

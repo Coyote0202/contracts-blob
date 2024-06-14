@@ -2,86 +2,57 @@ use core::{fmt::{Display, Formatter, Error}, poseidon::{poseidon_hash_span}};
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    components::{combatant::{Combatant}, utils::{ABT, Status, Winner, DisplayImplT}},
-    models::SaltsModel
+    // components::{combatant::{Combatant}, utils::{ABT, Status, Winner, DisplayImplT}},
+    components::{combatant::{Combatant}, utils::{ABT, Status, Winner}}, models::SaltsModel
 };
 
-struct Team {
-    id: u128,
-    players: Array<u128>,
-}
-
-struct PlayerCombat {
-    id: u128,
-    phase: Phase,
-}
-
-struct Round {
-    combat_id: u128,
-}
-
-struct TeamCombat {
-    id: u128,
-    teams: Array<Team>,
-    phase: Phase,
-}
-
-#[dojo::model]
-#[derive(Copy, Drop, Print, Serde)]
-struct CurrentPhase {
-    #[key]
-    id: u128,
-    block_number: u64,
-    phase: Phase,
-}
-
 #[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
-enum Phase {
+enum Phase<T> {
     Setup,
     Commit,
     Reveal,
-    Ended,
+    Ended: T,
 }
 
 type Salts = Array<felt252>;
 
 #[generate_trait]
 impl SaltsImpl of SaltsTrait {
-    fn get_salts_model(self: @IWorldDispatcher, id: u128) -> SaltsModel {
-        get!((*self), id, SaltsModel)
+    fn get_salts_model(self: IWorldDispatcher, id: u128) -> SaltsModel {
+        get!(self, id, SaltsModel)
+    }
+    fn get_salts(self: IWorldDispatcher, id: u128) -> Salts {
+        self.get_salts_model(id).salts
     }
 
-    fn append_salt(self: @IWorldDispatcher, id: u128, salt: felt252) {
+    fn append_salt(self: IWorldDispatcher, id: u128, salt: felt252) {
         let mut model = self.get_salts_model(id);
         model.salts.append(salt);
-        set!((*self), (model,));
+        set!(self, (model,));
     }
 
-    fn reset_salts(self: @IWorldDispatcher, id: u128) {
-        set!((*self), (SaltsModel { id, salts: ArrayTrait::new(), },));
+    fn reset_salts(self: IWorldDispatcher, id: u128) {
+        set!(self, (SaltsModel { id, salts: ArrayTrait::new(), },));
     }
 
-    fn get_salts_hash(self: @IWorldDispatcher, id: u128) -> felt252 {
+    fn get_salts_hash(self: IWorldDispatcher, id: u128) -> felt252 {
         let model = self.get_salts_model(id);
         poseidon_hash_span(model.salts.span())
     }
 
-    fn get_salts_with_salt_hash(self: @IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
+    fn get_salts_with_salt_hash(self: IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
         let model = self.get_salts_model(id);
         let mut salts = model.salts;
         salts.append(salt);
         poseidon_hash_span(salts.span())
     }
 
-    fn consume_with_salt(self: @IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
+    fn consume_with_salt(self: IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
         let hash = self.get_salts_with_salt_hash(id, salt);
         self.reset_salts(id);
         hash
     }
 }
-
-
-impl 
 // #[derive(Copy, Drop, Serde)]
 // struct Reveal {
 //     move: Move,

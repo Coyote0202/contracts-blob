@@ -3,25 +3,20 @@ use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{
-        combat::{Phase}, combatant::{Combatant, CombatantTrait}, attack::{Attack},
-        utils::{AB, ABT, ABTTrait}
+        combatant::{Combatant, CombatantTrait}, attack::{Attack}, utils::{AB, ABT, ABTTrait},
+        pvp_combat::{PvPPhase as Phase, PvPWinner as Winner}
     },
     systems::{attack::AttackSystemTrait, combat::{AttackResult, CombatWorld, CombatSystem}},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-
-struct PvPCombatWorld {
-    world: IWorldDispatcher,
-    combat: CombatWorld,
-    combatants: ABT<Combatant>,
-}
+type PvPCombatWorld = CombatWorld<Winner>;
 
 
 #[generate_trait]
 impl PvPCombatSystemImpl of PvPCombatSystemTrait {
     fn run_round(
-        self: @CombatWorld, combatants: ABT<Combatant>, attacks: ABT<Attack>, hash: HashState
+        self: PvPCombatWorld, combatants: ABT<Combatant>, attacks: ABT<Attack>, hash: HashState
     ) -> (ABT<Combatant>, ABT<AttackResult>) {
         let speed_a = attacks.a.speed + combatants.a.stats.speed;
         let speed_b = attacks.b.speed + combatants.b.stats.speed;
@@ -44,7 +39,7 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         }
     }
 
-    fn end_game(ref self: CombatWorld, winner: AB) {
-        self.phase = Phase::Ended;
+    fn end_game(ref self: PvPCombatWorld, winner: Winner) {
+        self.phase = Phase::Ended(winner);
     }
 }

@@ -3,24 +3,30 @@ use starknet::{ContractAddress};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     models::ItemModel,
-    components::{stats::Stats, attack::{Attack, AttackTrait}, utils::{IdTrait, IdsTrait, TIdsImpl}}
+    components::{
+        stats::Stats, attack::{Attack, AttackTrait, AttackArrayCopyImpl},
+        utils::{IdTrait, IdsTrait, TIdsImpl}
+    }
 };
 
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Copy)]
 struct Item {
     id: u128,
-    name: ByteArray,
     stats: Stats,
     attacks: Array<Attack>,
 }
 
+// impl ByteArrayCopyImpl of Copy<ByteArray>;
+// impl ItemCopyImpl of Copy<Item>;
+
 impl ItemIdImpl of IdTrait<Item> {
-    fn id(self: @Item) -> u128 {
-        *self.id
+    fn id(self: Item) -> u128 {
+        self.id
     }
 }
 
 impl ItemIdsImpl = TIdsImpl<Item>;
+impl ItemArrayCopyImpl of Copy<Array<Item>>;
 
 #[generate_trait]
 impl ItemsImpl of ItemsTrait {
@@ -48,24 +54,24 @@ impl ItemsImpl of ItemsTrait {
     }
 }
 
-impl ItemIntoItemModel of Into<Item, ItemModel> {
-    fn into(self: Item) -> ItemModel {
-        let mut attack_ids: Array<u128> = ArrayTrait::new();
-        let (len, mut n) = (attack_ids.len(), 0_usize);
-        while (n < len) {
-            attack_ids.append(*self.attacks.at(n).id);
-            n += 1;
-        };
-        ItemModel { id: self.id, name: self.name, stats: self.stats, attacks: attack_ids }
-    }
-}
+// impl ItemIntoItemModel of Into<Item, ItemModel> {
+//     fn into(self: Item) -> ItemModel {
+//         let mut attack_ids: Array<u128> = ArrayTrait::new();
+//         let (len, mut n) = (attack_ids.len(), 0_usize);
+//         while (n < len) {
+//             attack_ids.append(*self.attacks.at(n).id);
+//             n += 1;
+//         };
+//         ItemModel { id: self.id, name: self.name, stats: self.stats, attacks: attack_ids }
+//     }
+// }
 
 #[generate_trait]
 impl ItemImpl of ItemTrait {
     fn get_item(self: IWorldDispatcher, id: u128) -> Item {
         let ItemModel { id, name, stats, attacks: attack_ids } = get!(self, id, ItemModel);
         let attacks = self.get_attacks(attack_ids);
-        Item { id, name, stats, attacks }
+        Item { id, stats, attacks }
     }
     fn get_items(self: IWorldDispatcher, ids: Array<u128>) -> Array<Item> {
         let mut items: Array<Item> = ArrayTrait::new();

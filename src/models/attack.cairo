@@ -1,4 +1,3 @@
-use core::array::ArrayTCloneImpl;
 use blob_arena::components::{stats::Stats};
 
 #[dojo::model]
@@ -13,7 +12,6 @@ struct Attack {
     stun: u8,
     cooldown: u8,
 }
-
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
