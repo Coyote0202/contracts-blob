@@ -3,13 +3,22 @@ use blob_arena::components::{stats::Stats};
 
 
 #[dojo::model]
-#[derive(Drop, Serde)]
-struct Combatant {
+#[derive(Drop, Serde, Copy)]
+struct CombatantInfo {
     #[key]
     combat_id: u128,
     #[key]
     warrior_id: u128,
     player: ContractAddress,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct CombatantAttributes {
+    #[key]
+    combat_id: u128,
+    #[key]
+    warrior_id: u128,
     stats: Stats,
     attacks: Array<u128>,
 }

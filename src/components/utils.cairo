@@ -5,16 +5,15 @@ trait IdTrait<T> {
 }
 
 trait IdsTrait<T> {
-    fn ids(self: Array<T>) -> Array<u128>;
+    fn ids(self: Span<T>) -> Array<u128>;
 }
 
 impl TIdsImpl<T, +IdTrait<T>, +Drop<T>, +Copy<T>> of IdsTrait<T> {
-    fn ids(self: Array<T>) -> Array<u128> {
+    fn ids(self: Span<T>) -> Array<u128> {
         let mut ids: Array<u128> = ArrayTrait::new();
-        let array = self.span();
-        let (len, mut n) = (array.len(), 0_usize);
+        let (len, mut n) = (self.len(), 0_usize);
         while (n < len) {
-            ids.append((*array.at(n)).id());
+            ids.append((*self.at(n)).id());
             n += 1;
         };
         ids
@@ -146,4 +145,5 @@ impl NotAB of Not<AB> {
 //         Result::Ok(())
 //     }
 // }
+
 

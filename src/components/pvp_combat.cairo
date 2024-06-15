@@ -3,8 +3,8 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     core::U8ArrayCopyImpl,
     components::{
-        attack::AttackArrayCopyImpl, combatant::{Combatant, CombatantTrait},
-        utils::{AB, ABT, ABTTrait, ABTImpl}
+        combatant::{CombatantInfo, CombatantAttributes, CombatantState, CombatantTrait},
+        combat::Phase, utils::{AB, ABT, ABTTrait, ABTImpl}
     },
     models::{PvPCombatModel, PvPCombatStateModel, PvPPlannedAttackModel, PvPPhase, PvPWinner},
 };
@@ -13,7 +13,7 @@ use blob_arena::{
 #[derive(Drop, Copy)]
 struct PvPCombat {
     id: u128,
-    combatants: ABT<Combatant>,
+    combatants: ABT<CombatantInfo>,
     players_state: ABT<bool>,
     phase: PvPPhase,
     round: u32,
@@ -35,7 +35,7 @@ impl PvPCombatIntoPvPCombatStateModelImpl of Into<PvPCombat, PvPCombatStateModel
 #[generate_trait]
 impl PvPCombatImpl of PvPCombatTrait {
     fn make_pvp_combat(
-        id: u128, combatants: ABT<Combatant>, players_state: ABT<bool>
+        id: u128, combatants: ABT<CombatantInfo>, players_state: ABT<bool>
     ) -> PvPCombat {
         PvPCombat { id, combatants, players_state, phase: PvPPhase::Setup, round: 0, }
     }
@@ -57,10 +57,17 @@ impl PvPCombatImpl of PvPCombatTrait {
         let (model, state) = self._get_pvp_combat_models(id);
         let (combatant_a, combatant_b) = model.combatants;
         let combatants = ABTTrait::new(
-            self.get_combatant(id, combatant_a), self.get_combatant(id, combatant_b),
+            self.get_combatant_info(id, combatant_a), self.get_combatant_info(id, combatant_b),
         );
         let players_state = ABTTrait::new_from_tuple(state.players_state);
         PvPCombat { id, combatants, players_state, phase: state.phase, round: state.round, }
+    }
+
+    fn assert_running(self: @PvPCombat) {
+        match self.phase {
+            Phase::Setup | Phase::Ended => { panic!("Combat not running") },
+            _ => {}
+        };
     }
     fn set_pvp_combat_state(self: IWorldDispatcher, combat: PvPCombat) {
         let combat_state: PvPCombatStateModel = combat.into();
@@ -82,7 +89,7 @@ impl PvPCombatImpl of PvPCombatTrait {
 
 #[generate_trait]
 impl ABCombatantImpl of ABCombatantTrait {
-    fn get_combatant_ab(self: ABT<Combatant>, warrior_id: u128) -> AB {
+    fn get_combatant_ab(self: ABT<CombatantInfo>, warrior_id: u128) -> AB {
         if warrior_id == self.a.warrior_id {
             AB::A
         } else if warrior_id == self.b.warrior_id {
@@ -91,11 +98,11 @@ impl ABCombatantImpl of ABCombatantTrait {
             panic!("Invalid warrior_id")
         }
     }
-    fn get_combatant(self: ABT<Combatant>, warrior_id: u128) -> Combatant {
-        if warrior_id == self.a.warrior_id {
-            self.a
-        } else if warrior_id == self.b.warrior_id {
-            self.b
+    fn get_combatant(self: @ABT<CombatantInfo>, warrior_id: u128) -> CombatantInfo {
+        if warrior_id == *self.a.warrior_id {
+            *self.a
+        } else if warrior_id == *self.b.warrior_id {
+            *self.b
         } else {
             panic!("Invalid warrior_id")
         }

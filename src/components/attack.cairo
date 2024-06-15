@@ -13,7 +13,7 @@ impl AttackIdImpl of IdTrait<Attack> {
 }
 
 impl AttackIdsImpl = TIdsImpl<Attack>;
-impl AttackArrayCopyImpl of Copy<Array<Attack>>;
+// impl AttackArrayCopyImpl of Copy<Array<Attack>>;
 
 #[generate_trait]
 impl AttackImpl of AttackTrait {

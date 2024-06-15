@@ -3,10 +3,11 @@ use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{
-        combatant::{Combatant, CombatantTrait}, attack::{Attack}, utils::{AB, ABT, ABTTrait},
+        combatant::{Combatant, CombatantInfo, CombatantAttributes, CombatantState, CombatantTrait},
+        attack::{Attack}, utils::{AB, ABT, ABTTrait},
         pvp_combat::{PvPPhase as Phase, PvPWinner as Winner}
     },
-    systems::{attack::AttackSystemTrait, combat::{AttackResult, CombatWorld, CombatSystem}},
+    systems::{combat::{AttackResult, CombatWorld, CombatWorldTraits}},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 

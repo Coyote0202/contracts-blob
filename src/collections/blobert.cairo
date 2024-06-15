@@ -1,6 +1,6 @@
 mod external;
 
-#[dojo::contract]
+#[starknet::contract]
 mod blobert_actions {
     use starknet::ContractAddress;
     use token::{erc721::interface::{IERC721Dispatcher, IERC721DispatcherTrait}};
@@ -9,6 +9,8 @@ mod blobert_actions {
         blobert::external::{get_erc271_dispatcher, get_blobert_dispatcher, IBlobertDispatcher},
     };
 
+    #[storage]
+    struct Storage {}
 
     #[abi(embed_v0)]
     impl ICollectionActionsDispatcherImpl of ICollectionActions<ContractState> {

@@ -51,10 +51,12 @@ mod pvp_actions {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use blob_arena::{
         components::{
-            combat::{SaltsTrait, Phase}, combatant::{Combatant, CombatantTrait},
-            commitment::{Commitment,}, pvp_combat::{PvPCombatTrait, ABStateTrait, ABCombatantTrait},
-            pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite}, utils::ABTTrait,
-            warrior::{Warrior, WarriorTrait, get_warrior_id},
+            combat::{SaltsTrait, Phase},
+            combatant::{CombatantInfo, CombatantAttributes, CombatantTrait},
+            commitment::{Commitment,},
+            pvp_combat::{PvPCombatTrait, ABStateTrait, ABCombatantTrait, PvPPhase, PvPWinner},
+            pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},
+            utils::ABTTrait, warrior::{Warrior, WarriorTrait, get_warrior_id},
         },
         utils::{uuid, hash_value},
     };
@@ -72,7 +74,7 @@ mod pvp_actions {
             token_id: u256,
             challenge_id: u128,
             player: ContractAddress
-        ) -> Combatant {
+        ) -> CombatantInfo {
             let warrior_id = get_warrior_id(collection_address, token_id);
             let warrior = self.get_warrior(warrior_id);
             assert(player == warrior.owner, 'Not Owner');
@@ -208,9 +210,19 @@ mod pvp_actions {
         }
         fn forfeit(
             self: @ContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128
-        ) {}
+        ) {
+            let mut combat = world.get_pvp_combat(combat_id);
+            combat.assert_running();
+            let ab = combat.combatants.get_combatant_ab(warrior_id);
+            let combatant = combat.combatants.get(ab);
+            combatant.assert_player();
+            let winner: PvPWinner = (!ab).into();
+            world.end_game(combat_id, winner);
+            world.update_scores(combat.combatants, winner);
+        }
         fn kick_inactive_player(
             self: @ContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128
-        ) {}
+        ) { // let mut combat = world.get_pvp_combat(combat_id);
+        }
     }
 }

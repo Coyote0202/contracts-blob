@@ -1,10 +1,13 @@
 use starknet::{ContractAddress, get_caller_address, get_block_number};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    components::{combat::Phase, utils::{Winner, AB}},
+    components::{
+        combat::Phase, combatant::{CombatantInfo, CombatantTrait},
+        utils::{Winner, AB, ABT, ABTTrait}
+    },
     models::{
         PvPChallengeInvite, PvPChallengeResponse, PvPChallengeScore, PvPCombatModel,
-        PvPCombatStateModel
+        PvPCombatStateModel, PvPWinner
     }
 };
 
@@ -176,6 +179,17 @@ impl PvPChallengeScoreImpl of PvPChallengeScoreTrait {
     fn lose(ref self: PvPChallengeScore) {
         self.current_consecutive_wins = 0;
         self.losses += 1;
+    }
+    fn update_scores(self: IWorldDispatcher, combatants: ABT<CombatantInfo>, winner: PvPWinner) {
+        let winner_ab: AB = winner.into();
+        let winning_combatant = combatants.get(winner_ab);
+        let losing_combatant = combatants.get(!winner_ab);
+        let mut winner_score = self
+            .get_score(winning_combatant.player, winning_combatant.warrior_id);
+        let mut loser_score = self.get_score(losing_combatant.player, losing_combatant.warrior_id);
+        winner_score.win();
+        loser_score.lose();
+        set!(self, (winner_score, loser_score));
     }
 }
 

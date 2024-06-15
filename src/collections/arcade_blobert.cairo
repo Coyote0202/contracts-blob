@@ -1,35 +1,42 @@
-use core::array::ArrayTrait;
-use starknet::ContractAddress;
-use super::interface::{CollectionInterfaceTrait, owner_of_erc721};
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use blob_arena::external::blobert::Seed;
-
-
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct ArcadeBlobert {
-    #[key]
-    token_id_high: u128,
-    token_id_low: u128,
-    owner: ContractAddress,
-    traits: Seed
-}
-
-#[derive(Drop, Serde, Copy)]
-struct ArcadeBlobertCollection {
-    world: IWorldDispatcher,
-}
-
-fn new_collection(world: IWorldDispatcher) -> ArcadeBlobertCollection {
-    ArcadeBlobertCollection { world }
+#[starknet::interface]
+trait IArcadeBlobertActions<TContractState> {
+    fn mint(self: @TContractState>, );
 }
 
 
-impl ArcadeBlobertCollectionImpl of CollectionInterfaceTrait<ArcadeBlobertCollection> {
-    fn owner_of(self: ArcadeBlobertCollection, token_id: u256) -> ContractAddress {
-        get!(self.world, (token_id.high, token_id.low), ArcadeBlobert).owner
+#[dojo::contract]
+mod arcade_blobert_actions {
+    use starknet::ContractAddress;
+    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+
+    use token::{erc721::interface::{IERC721Dispatcher, IERC721DispatcherTrait}};
+    use blob_arena::collections::{
+        interface::ICollectionActions,
+        blobert::external::{get_erc271_dispatcher, get_blobert_dispatcher, IBlobertDispatcher},
+    };
+    use super::IArcadeBlobertActions;
+
+
+
+    #[abi(embed_v0)]
+    impl IArcadeBlobertActionsImpl of IArcadeBlobertActions<ContractState> {
+        fn mint(self: @ContractState) {
+            let world = self.world_dispatcher.read();
+            
+
+        }
     }
-    fn get_items(self: ArcadeBlobertCollection, token_id: u256) -> Array<u128> {
-        ArrayTrait::new()
+
+    #[abi(embed_v0)]
+    impl ICollectionActionsDispatcherImpl of ICollectionActions<ContractState> {
+        fn owner_of(self: @ContractState, token_id: u256) -> ContractAddress {
+            let dispatcher = get_erc271_dispatcher();
+            IERC721DispatcherTrait::owner_of(dispatcher, token_id)
+        }
+
+        fn get_items(self: @ContractState, token_id: u256) -> Array<u128> {
+            let dispatcher = get_blobert_dispatcher();
+            ArrayTrait::new()
+        }
     }
 }

@@ -1,10 +1,7 @@
 use core::{fmt::{Display, Formatter, Error}, poseidon::{poseidon_hash_span}};
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use blob_arena::{
-    // components::{combatant::{Combatant}, utils::{ABT, Status, Winner, DisplayImplT}},
-    components::{combatant::{Combatant}, utils::{ABT, Status, Winner}}, models::SaltsModel
-};
+use blob_arena::{components::{utils::{ABT, Status, Winner}}, models::SaltsModel};
 
 #[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
 enum Phase<T> {
@@ -21,9 +18,6 @@ impl SaltsImpl of SaltsTrait {
     fn get_salts_model(self: IWorldDispatcher, id: u128) -> SaltsModel {
         get!(self, id, SaltsModel)
     }
-    fn get_salts(self: IWorldDispatcher, id: u128) -> Salts {
-        self.get_salts_model(id).salts
-    }
 
     fn append_salt(self: IWorldDispatcher, id: u128, salt: felt252) {
         let mut model = self.get_salts_model(id);
@@ -34,6 +28,10 @@ impl SaltsImpl of SaltsTrait {
     fn reset_salts(self: IWorldDispatcher, id: u128) {
         set!(self, (SaltsModel { id, salts: ArrayTrait::new(), },));
     }
+    fn get_salts(self: IWorldDispatcher, id: u128) -> Salts {
+        self.get_salts_model(id).salts
+    }
+
 
     fn get_salts_hash(self: IWorldDispatcher, id: u128) -> felt252 {
         let model = self.get_salts_model(id);

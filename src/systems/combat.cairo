@@ -1,15 +1,20 @@
+use alexandria_data_structures::array_ext::SpanTraitExt;
+use alexandria_data_structures::array_ext::ArrayTraitExt;
 use core::{
     hash::HashStateTrait, poseidon::{PoseidonTrait, HashState},
     dict::{Felt252Dict, Felt252DictTrait}
 };
 use alexandria_math::BitShift;
 use blob_arena::{
-    core::{LimitSub, LimitAdd, U8ArrayCopyImpl},
+    core::{LimitSub, LimitAdd, U8ArrayCopyImpl, U128ArrayCopyImpl},
     components::{
-        combat::{Phase}, combatant::{Combatant, CombatantTrait,},
-        attack::{Attack, AttackArrayCopyImpl}, utils::{AB, ABT, ABTTrait}
+        combat::{Phase},
+        combatant::{
+            Combatant, CombatantAttributes, CombatantState, CombatantTrait, Attacker, Defender
+        },
+        attack::{Attack, AttackTrait}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
-    systems::{attack::AttackSystemTrait},
+// systems::{attack::AttackSystemTrait},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
@@ -25,7 +30,7 @@ enum AttackResult {
 
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
-    combatant: Combatant,
+    combatant: u128,
     attack: Attack,
     target: u128,
 }
@@ -38,27 +43,24 @@ struct CombatWorld<T> {
     phase: Phase<T>,
 }
 
+// #[generate_trait]
+// impl PlannedAttackImpl of PlannedAttackTrait {
+//     fn get_speed(self: PlannedAttack) -> u8 {
+//         self.attack.speed + self.combatant.stats.speed
+//     }
+// }
 #[generate_trait]
-impl PlannedAttackImpl of PlannedAttackTrait {
-    fn get_speed(self: PlannedAttack) -> u8 {
-        self.attack.speed + self.combatant.stats.speed
-    }
-}
-
-#[generate_trait]
-impl CombatSystemImpl of CombatSystem {
-    fn get_damage(
-        self: Combatant, target: Combatant, attack: Attack, critical: bool, seed: u256
-    ) -> u8 {
+impl AttackerImpl of AttackerTrait {
+    fn get_damage(self: Combatant, attack: Attack, critical: bool, seed: u256) -> u8 {
         //TODO: Implement damage calculation
         0
     }
 
-    fn did_hit(self: Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
+    fn did_hit(self: Combatant, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 8) % 255).try_into().unwrap() < attack.accuracy
     }
 
-    fn did_critical(self: Combatant, target: Combatant, attack: Attack, seed: u256) -> bool {
+    fn did_critical(self: Combatant, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 16) % 255).try_into().unwrap() < attack.critical
     }
 
@@ -81,21 +83,36 @@ impl CombatSystemImpl of CombatSystem {
         self.stun_chances = ArrayTrait::new();
         stunned
     }
+}
 
-    fn run_attack_check<T, +Drop<T>>(
-        self: CombatWorld<T>, combatant: Combatant, attack: Attack
-    ) -> bool {
-        if combatant.health.is_non_zero() && combatant.has_attack(attack.id) {
-            self.world.run_cooldown(combatant, attack, self.round)
+#[generate_trait]
+impl CombatWorldImp<T, +Drop<T>> of CombatWorldTraits<T> {
+    fn run_cooldown(self: CombatWorld<T>, attacker: Combatant, attack: Attack,) -> bool {
+        if attack.cooldown == 0 {
+            return true;
+        }
+        let last_use = self
+            .world
+            .get_attack_last_use(self.combat_id, attacker.warrior_id, attack.id);
+        if last_use.is_non_zero() && (attack.cooldown.into() + last_use) > self.round {
+            return false;
+        };
+        self.world.set_attack_last_used(self.combat_id, attacker.warrior_id, attack.id, self.round);
+        true
+    }
+
+    fn run_attack_check(self: CombatWorld<T>, attacker: Combatant, attack: Attack) -> bool {
+        if attacker.attacks.contains(attack.id) {
+            self.run_cooldown(attacker, attack)
         } else {
             false
         }
     }
 
-    fn run_attack<T, +Drop<T>>(
+    fn run_attack(
         self: CombatWorld<T>,
         ref attacker: Combatant,
-        ref target: Combatant,
+        ref defender: Combatant,
         attack: Attack,
         hash: HashState
     ) -> AttackResult {
@@ -107,13 +124,13 @@ impl CombatSystemImpl of CombatSystem {
         if attacker.run_stun(seed) {
             return AttackResult::Stunned;
         }
-        if !attacker.did_hit(target, attack, seed) {
+        if !attacker.did_hit(attack, seed) {
             return AttackResult::Miss;
         }
-        let critical = attacker.did_critical(target, attack, seed);
-        let damage = attacker.get_damage(target, attack, critical, seed);
+        let critical = attacker.did_critical(attack, seed);
+        let damage = attacker.get_damage(attack, critical, seed);
 
-        target.health.subeq(damage);
+        defender.health.subeq(damage);
         if attack.stun > 0 {
             attacker.stun_chances.append(attack.stun)
         };

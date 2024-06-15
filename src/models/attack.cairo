@@ -1,5 +1,3 @@
-use blob_arena::components::{stats::Stats};
-
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct Attack {
