@@ -58,7 +58,7 @@ mod pvp_actions {
             pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},
             utils::ABTTrait, warrior::{Warrior, WarriorTrait, get_warrior_id},
         },
-        utils::{uuid, hash_value},
+        systems::pvp_combat::PvPCombatSystemTrait, utils::{uuid, hash_value},
     };
     use super::{IPvPCombatActions, IPvPChallengeActions};
     use core::hash::TupleSize2Hash;
@@ -204,12 +204,17 @@ mod pvp_actions {
                 world.append_salt(combat_id, salt);
                 world.set_planned_attack(combat_id, warrior_id, attack);
                 if combat.players_state.get(!ab) {
-
-                    combat.run_round();
+                    let attacks = world.get_pvp_attacks(combat.combatants);
+                    let seed = world.get_salts_hash(combat_id);
+                    let combat_world = world.to_pvp_combat_world(combat);
+                    combat_world
+                        .run_round(
+                            combat.combatants, attacks, world.get_salts_hash_state(combat_id)
+                        );
                     combat.phase = Phase::Commit;
                     combat.players_state.set(!ab, false);
                 } else {
-                    combat.phase = Phase::Resolve;
+                    combat.players_state.set(ab, true);
                 }
             } else {
                 world.end_game(combat_id, (!ab).into());
@@ -229,8 +234,7 @@ mod pvp_actions {
         }
         fn kick_inactive_player(
             self: @ContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128
-        ) {
-            let mut combat = world.get_pvp_combat(combat_id);
+        ) { // let mut combat = world.get_pvp_combat(combat_id);
         }
     }
 }

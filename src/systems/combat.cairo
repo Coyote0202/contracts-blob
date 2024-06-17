@@ -8,10 +8,7 @@ use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd, U8ArrayCopyImpl, U128ArrayCopyImpl},
     components::{
-        combat::{Phase},
-        combatant::{
-            Combatant, CombatantAttributes, CombatantState, CombatantTrait, Attacker, Defender
-        },
+        combat::{Phase}, combatant::{CombatantAttributes, CombatantState, CombatantTrait},
         attack::{Attack, AttackTrait}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
 // systems::{attack::AttackSystemTrait},
@@ -51,20 +48,20 @@ struct CombatWorld<T> {
 // }
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
-    fn get_damage(self: Combatant, attack: Attack, critical: bool, seed: u256) -> u8 {
+    fn get_damage(self: CombatantAttributes, attack: Attack, critical: bool, seed: u256) -> u8 {
         //TODO: Implement damage calculation
         0
     }
 
-    fn did_hit(self: Combatant, attack: Attack, seed: u256) -> bool {
+    fn did_hit(self: CombatantAttributes, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 8) % 255).try_into().unwrap() < attack.accuracy
     }
 
-    fn did_critical(self: Combatant, attack: Attack, seed: u256) -> bool {
+    fn did_critical(self: CombatantAttributes, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 16) % 255).try_into().unwrap() < attack.critical
     }
 
-    fn is_stunned(self: Combatant, seed: u256) -> bool {
+    fn is_stunned(self: CombatantState, seed: u256) -> bool {
         let (mut n, len) = (0_usize, self.stun_chances.len());
         let mut stunned = false;
         while n < len {
@@ -78,7 +75,7 @@ impl AttackerImpl of AttackerTrait {
         return false;
     }
 
-    fn run_stun(ref self: Combatant, seed: u256) -> bool {
+    fn run_stun(ref self: CombatantState, seed: u256) -> bool {
         let stunned = self.is_stunned(seed);
         self.stun_chances = ArrayTrait::new();
         stunned
@@ -87,7 +84,10 @@ impl AttackerImpl of AttackerTrait {
 
 #[generate_trait]
 impl CombatWorldImp<T, +Drop<T>> of CombatWorldTraits<T> {
-    fn run_cooldown(self: CombatWorld<T>, attacker: Combatant, attack: Attack,) -> bool {
+    fn get_combatant_state(self: CombatWorld<T>, warrior_id: u128) -> CombatantState {
+        self.world.get_combatant_state(self.combat_id, warrior_id)
+    }
+    fn run_cooldown(self: CombatWorld<T>, attacker: CombatantAttributes, attack: Attack,) -> bool {
         if attack.cooldown == 0 {
             return true;
         }
@@ -101,7 +101,9 @@ impl CombatWorldImp<T, +Drop<T>> of CombatWorldTraits<T> {
         true
     }
 
-    fn run_attack_check(self: CombatWorld<T>, attacker: Combatant, attack: Attack) -> bool {
+    fn run_attack_check(
+        self: CombatWorld<T>, attacker: CombatantAttributes, attack: Attack
+    ) -> bool {
         if attacker.attacks.contains(attack.id) {
             self.run_cooldown(attacker, attack)
         } else {
@@ -111,28 +113,28 @@ impl CombatWorldImp<T, +Drop<T>> of CombatWorldTraits<T> {
 
     fn run_attack(
         self: CombatWorld<T>,
-        ref attacker: Combatant,
-        ref defender: Combatant,
+        attacker_attr: CombatantAttributes,
+        ref attacker_state: CombatantState,
+        ref defender_state: CombatantState,
         attack: Attack,
         hash: HashState
     ) -> AttackResult {
-        if !self.run_attack_check(attacker, attack) {
+        if !self.run_attack_check(attacker_attr, attack) { //#
             return AttackResult::Failed;
         }
-
-        let seed = hash.update(attacker.warrior_id.into()).finalize().into();
-        if attacker.run_stun(seed) {
+        let seed: u256 = hash.update(attacker_attr.warrior_id.into()).finalize().into(); //#
+        if attacker_state.run_stun(seed) {
             return AttackResult::Stunned;
         }
-        if !attacker.did_hit(attack, seed) {
+        if !attacker_attr.did_hit(attack, seed) {
             return AttackResult::Miss;
         }
-        let critical = attacker.did_critical(attack, seed);
-        let damage = attacker.get_damage(attack, critical, seed);
+        let critical = attacker_attr.did_critical(attack, seed);
+        let damage = attacker_attr.get_damage(attack, critical, seed);
 
-        defender.health.subeq(damage);
+        defender_state.health.subeq(damage);
         if attack.stun > 0 {
-            attacker.stun_chances.append(attack.stun)
+            defender_state.stun_chances.append(attack.stun)
         };
 
         if critical {

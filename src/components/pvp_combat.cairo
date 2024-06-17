@@ -3,8 +3,9 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     core::U8ArrayCopyImpl,
     components::{
+        attack::{Attack, AttackTrait},
         combatant::{CombatantInfo, CombatantAttributes, CombatantState, CombatantTrait},
-        combat::Phase, utils::{AB, ABT, ABTTrait, ABTImpl}
+        combat::{Phase,}, utils::{AB, ABT, ABTTrait, ABTImpl}
     },
     models::{PvPCombatModel, PvPCombatStateModel, PvPPlannedAttackModel, PvPPhase, PvPWinner},
 };
@@ -12,17 +13,18 @@ use blob_arena::{
 
 #[derive(Drop, Copy)]
 struct PvPCombat {
-    id: u128,
+    combat_id: u128,
     combatants: ABT<CombatantInfo>,
     players_state: ABT<bool>,
     phase: PvPPhase,
     round: u32,
 }
 
+
 impl PvPCombatIntoPvPCombatStateModelImpl of Into<PvPCombat, PvPCombatStateModel> {
     fn into(self: PvPCombat) -> PvPCombatStateModel {
         PvPCombatStateModel {
-            id: self.id,
+            id: self.combat_id,
             players_state: self.players_state.into(),
             phase: self.phase,
             round: self.round,
@@ -35,9 +37,9 @@ impl PvPCombatIntoPvPCombatStateModelImpl of Into<PvPCombat, PvPCombatStateModel
 #[generate_trait]
 impl PvPCombatImpl of PvPCombatTrait {
     fn make_pvp_combat(
-        id: u128, combatants: ABT<CombatantInfo>, players_state: ABT<bool>
+        combat_id: u128, combatants: ABT<CombatantInfo>, players_state: ABT<bool>
     ) -> PvPCombat {
-        PvPCombat { id, combatants, players_state, phase: PvPPhase::Setup, round: 0, }
+        PvPCombat { combat_id, combatants, players_state, phase: PvPPhase::Setup, round: 0, }
     }
 
     fn get_pvp_combat_model(self: IWorldDispatcher, id: u128) -> PvPCombatModel {
@@ -47,23 +49,41 @@ impl PvPCombatImpl of PvPCombatTrait {
         get!(self, id, PvPCombatStateModel)
     }
 
+    fn get_pvp_planned_attack(self: IWorldDispatcher, combat_id: u128, warrior_id: u128) -> u128 {
+        get!(self, (combat_id, warrior_id), PvPPlannedAttackModel).attack
+    }
+
+    fn get_pvp_attacks(self: IWorldDispatcher, combatants: ABT<CombatantInfo>) -> ABT<Attack> {
+        ABTTrait::new(
+            self
+                .get_attack(
+                    self.get_pvp_planned_attack(combatants.a.combat_id, combatants.a.warrior_id)
+                ),
+            self
+                .get_attack(
+                    self.get_pvp_planned_attack(combatants.b.combat_id, combatants.b.warrior_id)
+                )
+        )
+    }
+
     fn _get_pvp_combat_models(
         self: IWorldDispatcher, id: u128
     ) -> (PvPCombatModel, PvPCombatStateModel) {
         get!(self, id, (PvPCombatModel, PvPCombatStateModel))
     }
 
-    fn get_pvp_combat(self: IWorldDispatcher, id: u128) -> PvPCombat {
-        let (model, state) = self._get_pvp_combat_models(id);
+    fn get_pvp_combat(self: IWorldDispatcher, combat_id: u128) -> PvPCombat {
+        let (model, state) = self._get_pvp_combat_models(combat_id);
         let (combatant_a, combatant_b) = model.combatants;
         let combatants = ABTTrait::new(
-            self.get_combatant_info(id, combatant_a), self.get_combatant_info(id, combatant_b),
+            self.get_combatant_info(combat_id, combatant_a),
+            self.get_combatant_info(combat_id, combatant_b),
         );
         let players_state = ABTTrait::new_from_tuple(state.players_state);
-        PvPCombat { id, combatants, players_state, phase: state.phase, round: state.round, }
+        PvPCombat { combat_id, combatants, players_state, phase: state.phase, round: state.round, }
     }
 
-    fn assert_running(self: @PvPCombat) {
+    fn assert_running(self: PvPCombat) {
         match self.phase {
             Phase::Setup | Phase::Ended => { panic!("Combat not running") },
             _ => {}

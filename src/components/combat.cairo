@@ -1,4 +1,7 @@
-use core::{fmt::{Display, Formatter, Error}, poseidon::{poseidon_hash_span}};
+use core::{
+    fmt::{Display, Formatter, Error}, hash::{HashStateTrait, HashStateExTrait, Hash},
+    poseidon::{poseidon_hash_span, PoseidonTrait, HashState}
+};
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{components::{utils::{ABT, Status, Winner}}, models::SaltsModel};
@@ -38,18 +41,28 @@ impl SaltsImpl of SaltsTrait {
         poseidon_hash_span(model.salts.span())
     }
 
-    fn get_salts_with_salt_hash(self: IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
-        let model = self.get_salts_model(id);
-        let mut salts = model.salts;
-        salts.append(salt);
-        poseidon_hash_span(salts.span())
+    fn get_salts_hash_state(self: IWorldDispatcher, id: u128) -> HashState {
+        let salts = self.get_salts_model(id).salts;
+        let (mut n, len) = (0, salts.len());
+        let mut hash_state = PoseidonTrait::new();
+        while n < len {
+            hash_state.update(*salts.at(n));
+            n += 1;
+        };
+        hash_state
     }
+// fn get_salts_with_salt_hash(self: IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
+//     let model = self.get_salts_model(id);
+//     let mut salts = model.salts;
+//     salts.append(salt);
+//     poseidon_hash_span(salts.span())
+// }
 
-    fn consume_with_salt(self: IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
-        let hash = self.get_salts_with_salt_hash(id, salt);
-        self.reset_salts(id);
-        hash
-    }
+// fn consume_with_salt(self: IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
+//     let hash = self.get_salts_with_salt_hash(id, salt);
+//     self.reset_salts(id);
+//     hash
+// }
 }
 // #[derive(Copy, Drop, Serde)]
 // struct Reveal {

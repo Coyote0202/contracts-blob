@@ -77,7 +77,7 @@ impl ItemsImpl of ItemsTrait {
 #[generate_trait]
 impl ItemImpl of ItemTrait {
     fn get_item(self: IWorldDispatcher, id: u128) -> Item {
-        let ItemModel { id, name, stats, attacks } = get!(self, id, ItemModel);
+        let ItemModel { id, name: _, stats, attacks } = get!(self, id, ItemModel);
         // let attacks = self.get_attacks(attack_ids);
         Item { id, stats, attacks }
     }
