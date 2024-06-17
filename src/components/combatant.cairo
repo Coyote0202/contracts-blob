@@ -109,22 +109,22 @@ impl CombatantImpl of CombatantTrait {
     fn create_combatant(
         self: IWorldDispatcher, warrior: Warrior, combat_id: u128
     ) -> CombatantInfo {
+        let items = warrior.items.span();
         let combatant_info = CombatantInfo {
             combat_id, warrior_id: warrior.id, player: warrior.owner,
         };
         let combatant_state = CombatantState {
             combat_id,
             warrior_id: warrior.id,
-            health: warrior.get_health(),
+            health: items.get_health(),
             stun_chances: ArrayTrait::new(),
         };
         let combatant_attributes = CombatantAttributes {
             combat_id,
             warrior_id: warrior.id,
-            stats: warrior.items.get_stats(),
-            attacks: warrior.items.get_attack_ids(),
+            stats: items.get_stats(),
+            attacks: items.get_attack_ids(),
         };
-        // set!(self, (combatant_model, combatant_state)); //#
         set!(self, (combatant_info, combatant_state, combatant_attributes,));
         combatant_info
     }
@@ -144,13 +144,8 @@ impl CombatantImpl of CombatantTrait {
         self.attacks.contains(attack_id)
     }
 
-    fn assert_player(
-        self: CombatantInfo
-    ) -> ContractAddress { // let player_felt252: felt252 = player.into();
-        // let caller_felt252: felt252 = get_caller_address().into();
-        // let is_player = player_felt252 == caller_felt252;
-        // assert(get_caller_address() == player, 'Not combatant player'); //#
-        // assert(get_caller_address() == self.player, 'Not combatant player'); //#
+    fn assert_player(self: CombatantInfo) -> ContractAddress {
+        assert(get_caller_address() == self.player, 'Not combatant player'); //#
         self.player
     }
 }

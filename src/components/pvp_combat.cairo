@@ -71,7 +71,7 @@ impl PvPCombatImpl of PvPCombatTrait {
     }
     fn set_pvp_combat_state(self: IWorldDispatcher, combat: PvPCombat) {
         let combat_state: PvPCombatStateModel = combat.into();
-    // set!(self, (combat_state,)); //#
+        set!(self, (combat_state,)); //#
     }
     fn set_planned_attack(self: IWorldDispatcher, combat_id: u128, warrior_id: u128, attack: u128) {
         set!(self, (PvPPlannedAttackModel { combat_id, warrior_id, attack },));
@@ -89,10 +89,10 @@ impl PvPCombatImpl of PvPCombatTrait {
 
 #[generate_trait]
 impl ABCombatantImpl of ABCombatantTrait {
-    fn get_combatant_ab(self: ABT<CombatantInfo>, warrior_id: u128) -> AB {
-        if warrior_id == self.a.warrior_id {
+    fn get_combatant_ab(self: @ABT<CombatantInfo>, warrior_id: u128) -> AB {
+        if warrior_id == *self.a.warrior_id {
             AB::A
-        } else if warrior_id == self.b.warrior_id {
+        } else if warrior_id == *self.b.warrior_id {
             AB::B
         } else {
             panic!("Invalid warrior_id")

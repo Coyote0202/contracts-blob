@@ -203,7 +203,14 @@ mod pvp_actions {
             if hash == commitment {
                 world.append_salt(combat_id, salt);
                 world.set_planned_attack(combat_id, warrior_id, attack);
-                combat.players_state.set(ab, true);
+                if combat.players_state.get(!ab) {
+
+                    combat.run_round();
+                    combat.phase = Phase::Commit;
+                    combat.players_state.set(!ab, false);
+                } else {
+                    combat.phase = Phase::Resolve;
+                }
             } else {
                 world.end_game(combat_id, (!ab).into());
             }
@@ -222,7 +229,8 @@ mod pvp_actions {
         }
         fn kick_inactive_player(
             self: @ContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128
-        ) { // let mut combat = world.get_pvp_combat(combat_id);
+        ) {
+            let mut combat = world.get_pvp_combat(combat_id);
         }
     }
 }

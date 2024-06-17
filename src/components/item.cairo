@@ -28,7 +28,7 @@ impl ItemArrayCopyImpl of Copy<Array<Item>>;
 
 #[generate_trait]
 impl ItemsImpl of ItemsTrait {
-    fn get_attack_ids(self: Array<Item>) -> Array<u128> {
+    fn get_attack_ids(self: Span<Item>) -> Array<u128> {
         let mut ids: Array<u128> = ArrayTrait::new();
         let (len, mut n) = (self.len(), 0_usize);
         while n < len {
@@ -48,7 +48,7 @@ impl ItemsImpl of ItemsTrait {
     //     };
     //     attacks
     // }
-    fn get_stats(self: Array<Item>) -> Stats {
+    fn get_stats(self: Span<Item>) -> Stats {
         let mut stats: Stats = 0_u8.into();
         let (len, mut n) = (self.len(), 0_usize);
         while n < len {
@@ -57,7 +57,7 @@ impl ItemsImpl of ItemsTrait {
         };
         stats
     }
-    fn get_health(self: Array<Item>) -> u8 {
+    fn get_health(self: Span<Item>) -> u8 {
         100
     }
 }
