@@ -10,17 +10,7 @@ struct CombatantInfo {
     #[key]
     warrior_id: u128,
     player: ContractAddress,
-}
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct CombatantAttributes {
-    #[key]
-    combat_id: u128,
-    #[key]
-    warrior_id: u128,
     stats: Stats,
-    attacks: Array<u128>,
 }
 
 #[dojo::model]
@@ -31,6 +21,18 @@ struct CombatantState {
     #[key]
     warrior_id: u128,
     health: u8,
-    stun_chances: Array<u8>,
+    stun_chance: u8
+}
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct CombatantAttack {
+    #[key]
+    combat_id: u128,
+    #[key]
+    warrior_id: u128,
+    #[key]
+    attack_id: u128,
+    has_attack: bool
 }
 

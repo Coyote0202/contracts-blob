@@ -13,13 +13,14 @@ struct Attack {
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
-struct AttackLastUse {
+struct AvailableAttack {
     #[key]
     combat_id: u128,
     #[key]
     combatant: u128,
     #[key]
     attack: u128,
-    round: u32,
+    available: bool,
+    last_used: u32,
 }
 

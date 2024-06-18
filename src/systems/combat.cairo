@@ -46,6 +46,12 @@ struct CombatWorld<T> {
 //         self.attack.speed + self.combatant.stats.speed
 //     }
 // }
+
+fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
+    current_stun
+        + attack_stun
+        - (current_stun.into() * attack_stun.into() / 255_u16).try_into().unwrap()
+}
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
     fn get_damage(self: CombatantAttributes, attack: Attack, critical: bool, seed: u256) -> u8 {
@@ -62,22 +68,12 @@ impl AttackerImpl of AttackerTrait {
     }
 
     fn is_stunned(self: CombatantState, seed: u256) -> bool {
-        let (mut n, len) = (0_usize, self.stun_chances.len());
-        let mut stunned = false;
-        while n < len {
-            let val = (BitShift::shr(seed, 8 * n.into() + 32) % 255).try_into().unwrap();
-            if val < *self.stun_chances[n] {
-                stunned = true;
-                break;
-            }
-            n += 1;
-        };
-        return false;
+        (BitShift::shr(seed, 24) % 255).try_into().unwrap() < self.stun_chance
     }
 
     fn run_stun(ref self: CombatantState, seed: u256) -> bool {
         let stunned = self.is_stunned(seed);
-        self.stun_chances = ArrayTrait::new();
+        self.stun_chance = 0;
         stunned
     }
 }
@@ -134,7 +130,8 @@ impl CombatWorldImp<T, +Drop<T>> of CombatWorldTraits<T> {
 
         defender_state.health.subeq(damage);
         if attack.stun > 0 {
-            defender_state.stun_chances.append(attack.stun)
+            defender_state
+                .stun_chance = get_new_stun_chance(defender_state.stun_chance, attack.stun);
         };
 
         if critical {

@@ -7,7 +7,7 @@ mod pvp;
 mod combat;
 
 use blob_arena::models::{
-    attack::{Attack, AttackLastUse}, warrior::{WarriorToken, WarriorItems as WarriorItemsModel},
+    attack::{Attack, AvailableAttack}, warrior::{WarriorToken, WarriorItems as WarriorItemsModel},
     combatant::{CombatantInfo, CombatantAttributes, CombatantState}, item::Item as ItemModel,
     commitment::Commitment as CommitmentModel,
     pvp::{

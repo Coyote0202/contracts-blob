@@ -127,10 +127,7 @@ impl CombatantImpl of CombatantTrait {
             combat_id, warrior_id: warrior.id, player: warrior.owner,
         };
         let combatant_state = CombatantState {
-            combat_id,
-            warrior_id: warrior.id,
-            health: items.get_health(),
-            stun_chances: ArrayTrait::new(),
+            combat_id, warrior_id: warrior.id, health: items.get_health(), stun_chance: 0,
         };
         let combatant_attributes = CombatantAttributes {
             combat_id,
@@ -139,7 +136,7 @@ impl CombatantImpl of CombatantTrait {
             attacks: items.get_attack_ids(),
         };
         // set!(self, (combatant_info, combatant_state, combatant_attributes,));
-        set!(self, (combatant_info, combatant_attributes));
+        set!(self, (combatant_info,));
         combatant_info
     }
 
