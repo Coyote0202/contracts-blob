@@ -8,22 +8,14 @@ use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd, U8ArrayCopyImpl, U128ArrayCopyImpl},
     components::{
-        combat::{Phase}, combatant::{CombatantState, CombatantTrait, CombatantInfo},
+        combat::{Phase, AttackResult, AttackHit},
+        combatant::{CombatantState, CombatantTrait, CombatantInfo},
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
 // systems::{attack::AttackSystemTrait},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-
-#[derive(Drop, Serde, Copy)]
-enum AttackResult {
-    Failed,
-    Stunned,
-    Miss,
-    Hit: (u8, u8),
-    Critical: (u8, u8),
-}
 
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
@@ -144,12 +136,7 @@ impl CombatWorldImp<T, +Drop<T>, +Copy<T>> of CombatWorldTraits<T> {
             defender_state
                 .stun_chance = get_new_stun_chance(defender_state.stun_chance, attack.stun);
         };
-
-        if critical {
-            AttackResult::Critical((damage, attack.stun))
-        } else {
-            AttackResult::Hit((damage, attack.stun))
-        }
+        AttackResult::Hit(AttackHit { damage, stun: attack.stun, critical })
     }
 }
 

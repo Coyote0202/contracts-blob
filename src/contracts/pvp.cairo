@@ -204,7 +204,7 @@ mod pvp_actions {
                 world.set_planned_attack(combat_id, warrior_id, attack);
                 if combat.players_state.get(!ab) {
                     let attacks = world.get_pvp_attacks(combat.combatants);
-                    let seed = world.get_salts_hash(combat_id);
+
                     let combat_world = world.to_pvp_combat_world(combat);
                     combat_world
                         .run_round(

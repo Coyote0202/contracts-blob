@@ -21,7 +21,7 @@ impl TIdsImpl<T, +IdTrait<T>, +Drop<T>, +Copy<T>> of IdsTrait<T> {
 }
 
 
-#[derive(Copy, Drop, Print, Serde, PartialEq)]
+#[derive(Copy, Drop, Print, Serde, PartialEq, Introspect)]
 enum AB {
     A,
     B,
@@ -36,14 +36,14 @@ impl ABIntoByteArray of Into<AB, ByteArray> {
     }
 }
 
-
+#[derive(Copy, Drop, Print, Serde, PartialEq, Introspect)]
 struct ABT<T> {
     a: T,
     b: T,
 }
 
-impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
-impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
+// impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
+// impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
 
 impl ABTIntoTuple<T, +Drop<T>,> of Into<ABT<T>, (T, T)> {
     fn into(self: ABT<T>) -> (T, T) {

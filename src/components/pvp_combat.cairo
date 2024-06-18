@@ -140,5 +140,21 @@ impl ABStateImpl of ABStateTrait {
 }
 
 #[generate_trait]
+impl ABCombatantStateImpl of ABCombatantStateTrait {
+    fn get_winner(self: ABT<CombatantState>) -> PvPWinner {
+        if self.b.health.is_zero() && self.a.health.is_non_zero() {
+            PvPWinner::A
+        } else if self.a.health.is_zero() && self.b.health.is_non_zero() {
+            PvPWinner::B
+        } else {
+            PvPWinner::None
+        }
+    }
+    fn is_running(self: ABT<CombatantState>) -> bool {
+        self.a.health.is_non_zero() && self.b.health.is_non_zero()
+    }
+}
+
+#[generate_trait]
 impl PvPPlannedAttackImpl of PvPPlannedAttackTrait {}
 

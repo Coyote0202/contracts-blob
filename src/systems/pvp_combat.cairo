@@ -4,7 +4,8 @@ use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{
         combatant::{CombatantInfo, CombatantState, CombatantTrait}, attack::{Attack, AttackTrait},
-        utils::{AB, ABT, ABTTrait}, pvp_combat::{PvPCombat, PvPPhase as Phase, PvPWinner as Winner}
+        utils::{AB, ABT, ABTTrait},
+        pvp_combat::{PvPCombat, PvPPhase as Phase, PvPWinner as Winner, ABCombatantStateTrait}
     },
     systems::{combat::{AttackResult, CombatWorld, CombatWorldTraits}},
 };
@@ -22,11 +23,10 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         }
     }
 
+
     fn run_round(
         self: PvPCombatWorld, combatants: ABT<CombatantInfo>, attacks: ABT<Attack>, hash: HashState
-    // -> (ABT<CombatantState>, ABT<AttackResult>) 
-
-    ) {
+    ) -> (ABT<CombatantState>, ABT<AttackResult>) {
         let speed_a = attacks.a.speed + combatants.a.stats.speed;
         let speed_b = attacks.b.speed + combatants.b.stats.speed;
 
@@ -45,11 +45,15 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
             .run_attack(
                 combatants.get(!first), ref state_2, ref state_1, attacks.get(!first), hash
             );
-    // match first {
-    //     AB::A => (ABTTrait::new(state_1, state_2), ABTTrait::new(result_1, result_2)),
-    //     AB::B => (ABTTrait::new(state_2, state_1), ABTTrait::new(result_2, result_1)),
-    // };
-    // (ABTTrait::new(state_1, state_2), ABTTrait::new(AttackResult::Failed, AttackResult::Failed))
+
+        let (states, results) = match first {
+            AB::A => (ABTTrait::new(state_1, state_2), ABTTrait::new(result_1, result_2)),
+            AB::B => (ABTTrait::new(state_2, state_1), ABTTrait::new(result_2, result_1)),
+        };
+
+        if states.is_running() {}
+
+        set!(self.world, (state_1, state_2));
     }
     fn end_game(ref self: PvPCombatWorld, winner: Winner) {
         self.phase = Phase::Ended(winner);

@@ -14,6 +14,21 @@ enum Phase<T> {
     Ended: T,
 }
 
+#[derive(Drop, Serde, Copy, Introspect)]
+struct AttackHit {
+    damage: u8,
+    stun: u8,
+    critical: bool,
+}
+
+#[derive(Drop, Serde, Copy, Introspect)]
+enum AttackResult {
+    Failed,
+    Stunned,
+    Miss,
+    Hit: AttackHit,
+}
+
 type Salts = Array<felt252>;
 
 #[generate_trait]
