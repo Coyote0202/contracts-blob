@@ -3,9 +3,8 @@ use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{
-        combatant::{CombatantInfo, CombatantAttributes, CombatantState, CombatantTrait},
-        attack::{Attack, AttackTrait}, utils::{AB, ABT, ABTTrait},
-        pvp_combat::{PvPCombat, PvPPhase as Phase, PvPWinner as Winner}
+        combatant::{CombatantInfo, CombatantState, CombatantTrait}, attack::{Attack, AttackTrait},
+        utils::{AB, ABT, ABTTrait}, pvp_combat::{PvPCombat, PvPPhase as Phase, PvPWinner as Winner}
     },
     systems::{combat::{AttackResult, CombatWorld, CombatWorldTraits}},
 };
@@ -24,18 +23,10 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
     }
 
     fn run_round(
-        self: PvPCombatWorld,
-        combatant_infos: ABT<CombatantInfo>,
-        attacks: ABT<Attack>,
-        hash: HashState
+        self: PvPCombatWorld, combatants: ABT<CombatantInfo>, attacks: ABT<Attack>, hash: HashState
     // -> (ABT<CombatantState>, ABT<AttackResult>) 
 
     ) {
-        let combatants = ABTTrait::new(
-            self.world.get_combatant_attributes(self.combat_id, combatant_infos.a.warrior_id),
-            self.world.get_combatant_attributes(self.combat_id, combatant_infos.b.warrior_id),
-        );
-
         let speed_a = attacks.a.speed + combatants.a.stats.speed;
         let speed_b = attacks.b.speed + combatants.b.stats.speed;
 
@@ -46,8 +37,8 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         } else {
             (hash.finalize().try_into().unwrap() % 2_u128).into()
         };
-        let mut state_1 = self.get_combatant_state(combatant_infos.get(first).warrior_id);
-        let mut state_2 = self.get_combatant_state(combatant_infos.get(!first).warrior_id);
+        let mut state_1 = self.get_combatant_state(combatants.get(first).warrior_id);
+        let mut state_2 = self.get_combatant_state(combatants.get(!first).warrior_id);
         let result_1 = self
             .run_attack(combatants.get(first), ref state_1, ref state_2, attacks.get(first), hash);
         let result_2 = self

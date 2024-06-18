@@ -3,8 +3,7 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     core::U8ArrayCopyImpl,
     components::{
-        attack::{Attack, AttackTrait},
-        combatant::{CombatantInfo, CombatantAttributes, CombatantState, CombatantTrait},
+        attack::{Attack, AttackTrait}, combatant::{CombatantInfo, CombatantState, CombatantTrait},
         combat::{Phase,}, utils::{AB, ABT, ABTTrait, ABTImpl}
     },
     models::{PvPCombatModel, PvPCombatStateModel, PvPPlannedAttackModel, PvPPhase, PvPWinner},

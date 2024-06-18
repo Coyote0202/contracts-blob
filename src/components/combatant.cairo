@@ -10,7 +10,7 @@ use blob_arena::{
         stats::Stats, attack::{Attack, AttackIdsImpl, IdsTrait, AttackTrait},
         warrior::{Warrior, WarriorTrait}, item::{Item, ItemsTrait, ItemArrayCopyImpl}
     },
-    models::{CombatantInfo, CombatantAttributes, CombatantState},
+    models::{CombatantInfo, CombatantState},
 };
 
 
@@ -113,30 +113,18 @@ impl CombatantImpl of CombatantTrait {
         get!(self, (combat_id, warrior_id), CombatantState)
     }
 
-    fn get_combatant_attributes(
-        self: IWorldDispatcher, combat_id: u128, warrior_id: u128
-    ) -> CombatantAttributes {
-        get!(self, (combat_id, warrior_id), CombatantAttributes)
-    }
-
     fn create_combatant(
         self: IWorldDispatcher, warrior: Warrior, combat_id: u128
     ) -> CombatantInfo {
         let items = warrior.items.span();
         let combatant_info = CombatantInfo {
-            combat_id, warrior_id: warrior.id, player: warrior.owner,
+            combat_id, warrior_id: warrior.id, player: warrior.owner, stats: items.get_stats(),
         };
         let combatant_state = CombatantState {
             combat_id, warrior_id: warrior.id, health: items.get_health(), stun_chance: 0,
         };
-        let combatant_attributes = CombatantAttributes {
-            combat_id,
-            warrior_id: warrior.id,
-            stats: items.get_stats(),
-            attacks: items.get_attack_ids(),
-        };
         // set!(self, (combatant_info, combatant_state, combatant_attributes,));
-        set!(self, (combatant_info,));
+        set!(self, (combatant_info, combatant_state));
         combatant_info
     }
 

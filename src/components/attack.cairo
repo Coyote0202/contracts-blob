@@ -29,14 +29,14 @@ impl AttackImpl of AttackTrait {
         };
         attacks
     }
-    fn get_available_attack(
-        self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,
-    ) -> u32 {
-        get!(self, (combat_id, combatant, attack), AttackLastUse)
-    }
-    fn set_available_attack(
-        self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128, available: true, last_used: u32
-    ) {
-        set!(self, (AttackLastUse { combat_id, combatant, attack, round }));
-    }
+// fn get_available_attack(
+//     self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,
+// ) -> AvailableAttack {
+//     get!(self, (combat_id, combatant, attack), AvailableAttack)
+// }
+// fn set_available_attack(
+//     self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128, last_used: u32
+// ) {
+//     set!(self, (AvailableAttack { combat_id, combatant, attack, available: true, last_used }));
+// }
 }

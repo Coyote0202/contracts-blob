@@ -51,8 +51,7 @@ mod pvp_actions {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use blob_arena::{
         components::{
-            combat::{SaltsTrait, Phase},
-            combatant::{CombatantInfo, CombatantAttributes, CombatantTrait},
+            combat::{SaltsTrait, Phase}, combatant::{CombatantInfo, CombatantTrait},
             commitment::{Commitment,},
             pvp_combat::{PvPCombatTrait, ABStateTrait, ABCombatantTrait, PvPPhase, PvPWinner},
             pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},

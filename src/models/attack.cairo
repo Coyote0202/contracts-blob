@@ -17,9 +17,9 @@ struct AvailableAttack {
     #[key]
     combat_id: u128,
     #[key]
-    combatant: u128,
+    warrior_id: u128,
     #[key]
-    attack: u128,
+    attack_id: u128,
     available: bool,
     last_used: u32,
 }

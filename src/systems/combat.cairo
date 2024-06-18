@@ -8,8 +8,8 @@ use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd, U8ArrayCopyImpl, U128ArrayCopyImpl},
     components::{
-        combat::{Phase}, combatant::{CombatantAttributes, CombatantState, CombatantTrait},
-        attack::{Attack, AttackTrait}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
+        combat::{Phase}, combatant::{CombatantState, CombatantTrait, CombatantInfo},
+        attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
 // systems::{attack::AttackSystemTrait},
 };
@@ -54,16 +54,16 @@ fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
 }
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
-    fn get_damage(self: CombatantAttributes, attack: Attack, critical: bool, seed: u256) -> u8 {
+    fn get_damage(self: CombatantInfo, attack: Attack, critical: bool, seed: u256) -> u8 {
         //TODO: Implement damage calculation
         0
     }
 
-    fn did_hit(self: CombatantAttributes, attack: Attack, seed: u256) -> bool {
+    fn did_hit(self: CombatantInfo, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 8) % 255).try_into().unwrap() < attack.accuracy
     }
 
-    fn did_critical(self: CombatantAttributes, attack: Attack, seed: u256) -> bool {
+    fn did_critical(self: CombatantInfo, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 16) % 255).try_into().unwrap() < attack.critical
     }
 
@@ -79,37 +79,48 @@ impl AttackerImpl of AttackerTrait {
 }
 
 #[generate_trait]
-impl CombatWorldImp<T, +Drop<T>> of CombatWorldTraits<T> {
+impl CombatWorldImp<T, +Drop<T>, +Copy<T>> of CombatWorldTraits<T> {
+    fn get_available_attack(
+        self: CombatWorld<T>, warrior_id: u128, attack_id: u128
+    ) -> AvailableAttack {
+        get!(self.world, (self.combat_id, warrior_id, attack_id), AvailableAttack)
+    }
+    fn set_available_attack(self: CombatWorld<T>, warrior_id: u128, attack_id: u128) {
+        set!(
+            self.world,
+            AvailableAttack {
+                combat_id: self.combat_id,
+                warrior_id,
+                attack_id,
+                available: true,
+                last_used: self.round
+            }
+        );
+    }
     fn get_combatant_state(self: CombatWorld<T>, warrior_id: u128) -> CombatantState {
         self.world.get_combatant_state(self.combat_id, warrior_id)
     }
-    fn run_cooldown(self: CombatWorld<T>, attacker: CombatantAttributes, attack: Attack,) -> bool {
-        if attack.cooldown == 0 {
-            return true;
-        }
-        let last_use = self
-            .world
-            .get_attack_last_use(self.combat_id, attacker.warrior_id, attack.id);
-        if last_use.is_non_zero() && (attack.cooldown.into() + last_use) > self.round {
-            return false;
-        };
-        self.world.set_attack_last_used(self.combat_id, attacker.warrior_id, attack.id, self.round);
-        true
-    }
 
-    fn run_attack_check(
-        self: CombatWorld<T>, attacker: CombatantAttributes, attack: Attack
-    ) -> bool {
-        if attacker.attacks.contains(attack.id) {
-            self.run_cooldown(attacker, attack)
-        } else {
+    fn run_attack_check(self: CombatWorld<T>, attacker: CombatantInfo, attack: Attack) -> bool {
+        let attack_available = self.get_available_attack(attacker.warrior_id, attack.id);
+        if !attack_available.available {
             false
+        } else {
+            if attack.cooldown == 0 {
+                return true;
+            }
+            let last_used = attack_available.last_used;
+            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) > self.round {
+                return false;
+            };
+            self.set_available_attack(attack_available.warrior_id, attack.id);
+            true
         }
     }
 
     fn run_attack(
         self: CombatWorld<T>,
-        attacker_attr: CombatantAttributes,
+        attacker_attr: CombatantInfo,
         ref attacker_state: CombatantState,
         ref defender_state: CombatantState,
         attack: Attack,

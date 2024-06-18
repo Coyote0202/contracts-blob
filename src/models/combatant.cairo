@@ -24,15 +24,3 @@ struct CombatantState {
     stun_chance: u8
 }
 
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct CombatantAttack {
-    #[key]
-    combat_id: u128,
-    #[key]
-    warrior_id: u128,
-    #[key]
-    attack_id: u128,
-    has_attack: bool
-}
-
