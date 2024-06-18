@@ -39,17 +39,16 @@ struct PvPCombat {
     combatants: (u128, u128),
 }
 
+
 #[dojo::model]
 #[derive(Drop, Serde, Copy, Introspect)]
-struct PvPCombatState {
+struct CombatState {
     #[key]
     id: u128,
-    players_state: (bool, bool),
     round: u32,
     phase: PvPPhase,
     block_number: u64,
 }
-
 
 #[dojo::model]
 #[derive(Drop, Serde)]

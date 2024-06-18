@@ -12,7 +12,6 @@ use blob_arena::{
         combatant::{CombatantState, CombatantTrait, CombatantInfo},
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
-// systems::{attack::AttackSystemTrait},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
@@ -32,18 +31,13 @@ struct CombatWorld<T> {
     phase: Phase<T>,
 }
 
-// #[generate_trait]
-// impl PlannedAttackImpl of PlannedAttackTrait {
-//     fn get_speed(self: PlannedAttack) -> u8 {
-//         self.attack.speed + self.combatant.stats.speed
-//     }
-// }
-
 fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
     current_stun
         + attack_stun
         - (current_stun.into() * attack_stun.into() / 255_u16).try_into().unwrap()
 }
+
+
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
     fn get_damage(self: CombatantInfo, attack: Attack, critical: bool, seed: u256) -> u8 {

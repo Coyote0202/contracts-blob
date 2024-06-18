@@ -30,7 +30,6 @@ enum AttackResult {
 }
 
 type Salts = Array<felt252>;
-
 #[generate_trait]
 impl SaltsImpl of SaltsTrait {
     fn get_salts_model(self: IWorldDispatcher, id: u128) -> SaltsModel {
@@ -66,6 +65,7 @@ impl SaltsImpl of SaltsTrait {
         };
         hash_state
     }
+}
 // fn get_salts_with_salt_hash(self: IWorldDispatcher, id: u128, salt: felt252) -> felt252 {
 //     let model = self.get_salts_model(id);
 //     let mut salts = model.salts;
@@ -78,7 +78,6 @@ impl SaltsImpl of SaltsTrait {
 //     self.reset_salts(id);
 //     hash
 // }
-}
 // #[derive(Copy, Drop, Serde)]
 // struct Reveal {
 //     move: Move,

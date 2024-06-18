@@ -14,7 +14,6 @@ use blob_arena::{
 struct PvPCombat {
     combat_id: u128,
     combatants: ABT<CombatantInfo>,
-    players_state: ABT<bool>,
     phase: PvPPhase,
     round: u32,
 }
@@ -24,7 +23,6 @@ impl PvPCombatIntoPvPCombatStateModelImpl of Into<PvPCombat, PvPCombatStateModel
     fn into(self: PvPCombat) -> PvPCombatStateModel {
         PvPCombatStateModel {
             id: self.combat_id,
-            players_state: self.players_state.into(),
             phase: self.phase,
             round: self.round,
             block_number: get_block_number()
@@ -38,8 +36,9 @@ impl PvPCombatImpl of PvPCombatTrait {
     fn make_pvp_combat(
         combat_id: u128, combatants: ABT<CombatantInfo>, players_state: ABT<bool>
     ) -> PvPCombat {
-        PvPCombat { combat_id, combatants, players_state, phase: PvPPhase::Setup, round: 0, }
+        PvPCombat { combat_id, combatants, phase: PvPPhase::Setup, round: 0, }
     }
+
 
     fn get_pvp_combat_model(self: IWorldDispatcher, id: u128) -> PvPCombatModel {
         get!(self, id, PvPCombatModel)
