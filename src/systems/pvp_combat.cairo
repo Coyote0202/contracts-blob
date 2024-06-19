@@ -3,23 +3,30 @@ use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{
-        combatant::{Combatant, CombatantTrait}, attack::{Attack}, utils::{AB, ABT, ABTTrait},
-        pvp_combat::{PvPPhase as Phase, PvPWinner as Winner}
+        combatant::{CombatantInfo, CombatantState, CombatantTrait}, attack::{Attack, AttackTrait},
+        utils::{AB, ABT, ABTTrait},
+        pvp_combat::{PvPCombat, PvPPhase as Phase, PvPWinner as Winner, ABCombatantStateTrait}
     },
-    systems::{attack::AttackSystemTrait, combat::{AttackResult, CombatWorld, CombatSystem}},
+    systems::{combat::{AttackResult, CombatWorld, CombatWorldTraits}},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-type PvPCombatWorld = CombatWorld<Winner>;
 
-
-#[generate_trait]
+c#[generate_trait]
 impl PvPCombatSystemImpl of PvPCombatSystemTrait {
+    fn to_pvp_combat_world(self: IWorldDispatcher, combat: PvPCombat) -> PvPCombatWorld {
+        PvPCombatWorld {
+            world: self, combat_id: combat.combat_id, round: combat.round, phase: combat.phase,
+        }
+    }
+
+
     fn run_round(
-        self: PvPCombatWorld, combatants: ABT<Combatant>, attacks: ABT<Attack>, hash: HashState
-    ) -> (ABT<Combatant>, ABT<AttackResult>) {
+        self: PvPCombatWorld, combatants: ABT<CombatantInfo>, attacks: ABT<Attack>, hash: HashState
+    ) -> (ABT<CombatantState>, ABT<AttackResult>) {
         let speed_a = attacks.a.speed + combatants.a.stats.speed;
         let speed_b = attacks.b.speed + combatants.b.stats.speed;
+
         let first = if speed_a > speed_b {
             AB::A
         } else if speed_a < speed_b {
@@ -27,18 +34,24 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         } else {
             (hash.finalize().try_into().unwrap() % 2_u128).into()
         };
-        let mut combatant_1 = combatants.get(first);
-        let mut combatant_2 = combatants.get(!first);
-        let attack_1 = attacks.get(first);
-        let attack_2 = attacks.get(!first);
-        let result_1 = self.run_attack(ref combatant_1, ref combatant_2, attack_1, hash);
-        let result_2 = self.run_attack(ref combatant_2, ref combatant_1, attack_2, hash);
-        match first {
-            AB::A => (ABTTrait::new(combatant_1, combatant_2), ABTTrait::new(result_1, result_2)),
-            AB::B => (ABTTrait::new(combatant_2, combatant_1), ABTTrait::new(result_2, result_1)),
-        }
-    }
+        let mut state_1 = self.get_combatant_state(combatants.get(first).warrior_id);
+        let mut state_2 = self.get_combatant_state(combatants.get(!first).warrior_id);
+        let result_1 = self
+            .run_attack(combatants.get(first), ref state_1, ref state_2, attacks.get(first), hash);
+        let result_2 = self
+            .run_attack(
+                combatants.get(!first), ref state_2, ref state_1, attacks.get(!first), hash
+            );
 
+        let (states, results) = match first {
+            AB::A => (ABTTrait::new(state_1, state_2), ABTTrait::new(result_1, result_2)),
+            AB::B => (ABTTrait::new(state_2, state_1), ABTTrait::new(result_2, result_1)),
+        };
+
+        if states.is_running() {}
+
+        set!(self.world, (state_1, state_2));
+    }
     fn end_game(ref self: PvPCombatWorld, winner: Winner) {
         self.phase = Phase::Ended(winner);
     }

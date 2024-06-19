@@ -1,116 +1,144 @@
+use core::traits::Into;
+use core::array::ArrayTrait;
+use core::clone::Clone;
+use alexandria_data_structures::array_ext::ArrayTraitExt;
 use starknet::{ContractAddress, get_caller_address};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
+    core::{U8ArrayCopyImpl, U128ArrayCopyImpl},
     components::{
         stats::Stats, attack::{Attack, AttackIdsImpl, IdsTrait, AttackTrait},
-        //  stats::Stats, attack::{Attack, IdsTrait, IdTrait, AttackTrait}, 
-        warrior::{Warrior, WarriorTrait}, item::{Item, ItemsTrait}
+        warrior::{Warrior, WarriorTrait}, item::{Item, ItemsTrait, ItemArrayCopyImpl}
     },
-    models::{CombatantModel, CombatantState},
+    models::{CombatantInfo, CombatantState},
 };
 
 
-impl U8ArrayCopyImpl of Copy<Array<u8>>;
-impl AttackArrayCopyImpl of Copy<Array<Attack>>;
+// #[derive(Drop, Serde, Copy)]
+// struct Combatant {
+//     combat_id: u128,
+//     warrior_id: u128,
+//     stats: Stats,
+//     attacks: Span<u128>,
+// }
 
-#[derive(Drop, Serde, Copy)]
-struct Combatant {
-    combat_id: u128,
-    warrior_id: u128,
-    player: ContractAddress,
-    stats: Stats,
-    health: u8,
-    stun_chances: Array<u8>,
-    attacks: Array<Attack>,
-}
+// #[derive(Drop, Serde, Copy)]
+// struct Attacker {
+//     combat_id: u128,
+//     warrior_id: u128,
+//     stats: Stats,
+//     attacks: Span<u128>,
+//     stun_chances: Array<u8>,
+// }
+// #[derive(Drop, Serde, Copy)]
+// struct Defender {
+//     combat_id: u128,
+//     warrior_id: u128,
+//     health: u8,
+//     stun_chances: Array<u8>,
+// }
 
-impl CombatantIntoCombatantState of Into<Combatant, CombatantState> {
-    fn into(self: Combatant) -> CombatantState {
-        CombatantState {
-            combat_id: self.combat_id,
-            warrior_id: self.warrior_id,
-            health: self.health,
-            stun_chances: self.stun_chances,
-        }
-    }
-}
+// impl CombatantIntoAttacker of Into<Combatant, Attacker> {
+//     fn into(self: Combatant) -> Attacker {
+//         Attacker {
+//             combat_id: self.combat_id,
+//             warrior_id: self.warrior_id,
+//             stats: self.stats,
+//             attacks: self.attacks,
+//             stun_chances: self.stun_chances,
+//         }
+//     }
+// }
+// impl CombatantIntoDefender of Into<Combatant, Defender> {
+//     fn into(self: Combatant) -> Defender {
+//         Defender {
+//             combat_id: self.combat_id,
+//             warrior_id: self.warrior_id,
+//             health: self.health,
+//             stun_chances: self.stun_chances,
+//         }
+//     }
+// }
 
+// impl CombatantIntoCombatantState of Into<Combatant, CombatantState> {
+//     fn into(self: Combatant) -> CombatantState {
+//         CombatantState {
+//             combat_id: self.combat_id,
+//             warrior_id: self.warrior_id,
+//             health: self.health,
+//             stun_chances: self.stun_chances,
+//         }
+//     }
+// }
 
-impl CombatantIntoCombatantModel of Into<Combatant, CombatantModel> {
-    fn into(self: Combatant) -> CombatantModel {
-        CombatantModel {
-            combat_id: self.combat_id,
-            warrior_id: self.warrior_id,
-            player: self.player,
-            // attacks: self.attacks.ids(), //#
-            attacks: ArrayTrait::new(),
-            stats: self.stats,
-        }
-    }
-}
+// #[generate_trait]
+// impl CombatantInfoImpl of CombatantInfoTrait {
+//     fn get_combatant(self: IWorldDispatcher, combatant_info: CombatantInfo) -> Combatant {
+//         // let combatant_state = self
+//         //     .get_combatant_state(combatant_info.combat_id, combatant_info.warrior_id);
+//         let combatant_attributes = self
+//             .get_combatant_attributes(combatant_info.combat_id, combatant_info.warrior_id);
+//         Combatant {
+//             combat_id: combatant_info.combat_id,
+//             warrior_id: combatant_info.warrior_id,
+//             stats: combatant_attributes.stats,
+//             attacks: combatant_attributes.attacks.span(),
+//         }
+//     }
+// }
 
 #[generate_trait]
 impl CombatantImpl of CombatantTrait {
-    fn create_combatant(self: IWorldDispatcher, warrior: Warrior, combat_id: u128) -> Combatant {
-        let combatant = warrior.make_combatant(combat_id);
-        let combatant_state: CombatantState = combatant.into();
-        let combatant_model: CombatantModel = combatant.into();
-
-        // set!(self, (combatant_model, combatant_state)); //#
-        set!(self, (combatant_model,));
-        combatant
-    }
-    fn make_combatant(self: Warrior, combat_id: u128) -> Combatant {
-        let items = self.items.span();
-        Combatant {
-            combat_id,
-            warrior_id: self.id,
-            player: self.owner,
-            attacks: items.get_attacks(),
-            stats: items.get_stats(),
-            health: self.get_health(),
-            stun_chances: ArrayTrait::<u8>::new(),
-        }
-    }
-
-    fn get_combatant(self: IWorldDispatcher, combat_id: u128, warrior_id: u128) -> Combatant {
-        let (model, state): (CombatantModel, CombatantState) = get!(
-            self, (combat_id, warrior_id), (CombatantModel, CombatantState)
-        );
-        assert(model.player.is_non_zero(), 'Combatant not found');
-
-        let CombatantModel { combat_id: _, warrior_id: _, player, attacks: attack_ids, stats } =
-            model;
-        let CombatantState { combat_id: _, warrior_id: _, health, stun_chances } = state;
-        let attacks = self.get_attacks(attack_ids);
-        Combatant { combat_id, warrior_id, player, attacks, stats, health, stun_chances }
-    }
-
-    fn get_player_combatant(
+    // fn get_combatant(self: IWorldDispatcher, combat_id: u128, warrior_id: u128) -> Combatant {
+    //     let combatant_state = self.get_combatant_state(combat_id, warrior_id);
+    //     let combatant_attributes = self.get_combatant_attributes(combat_id, warrior_id);
+    //     Combatant {
+    //         combat_id,
+    //         warrior_id,
+    //         stats: combatant_attributes.stats,
+    //         health: combatant_state.health,
+    //         stun_chances: combatant_state.stun_chances,
+    //         attacks: combatant_attributes.attacks.span(),
+    //     }
+    // }
+    fn get_combatant_info(
         self: IWorldDispatcher, combat_id: u128, warrior_id: u128
-    ) -> Combatant {
-        let combatant = self.get_combatant(combat_id, warrior_id);
+    ) -> CombatantInfo {
+        get!(self, (combat_id, warrior_id), CombatantInfo)
+    }
+
+    fn get_combatant_state(
+        self: IWorldDispatcher, combat_id: u128, warrior_id: u128
+    ) -> CombatantState {
+        get!(self, (combat_id, warrior_id), CombatantState)
+    }
+
+    fn create_combatant(
+        self: IWorldDispatcher, warrior: Warrior, combat_id: u128
+    ) -> CombatantInfo {
+        let items = warrior.items.span();
+        let combatant_info = CombatantInfo {
+            combat_id, warrior_id: warrior.id, player: warrior.owner, stats: items.get_stats(),
+        };
+        let combatant_state = CombatantState {
+            combat_id, warrior_id: warrior.id, health: items.get_health(), stun_chance: 0,
+        };
+        // set!(self, (combatant_info, combatant_state, combatant_attributes,));
+        set!(self, (combatant_info, combatant_state));
+        combatant_info
+    }
+
+    fn get_player_combatant_info(
+        self: IWorldDispatcher, combat_id: u128, warrior_id: u128
+    ) -> CombatantInfo {
+        let combatant = self.get_combatant_info(combat_id, warrior_id);
         let caller = get_caller_address();
         assert(caller == combatant.player, 'Not combatant player');
         combatant
     }
 
-    fn has_attack(self: Combatant, attack_id: u128) -> bool {
-        let (len, mut n) = (self.attacks.len(), 0_usize);
-        let mut has_attack = false;
-        while n < len {
-            if *self.attacks.at(n).id == attack_id {
-                has_attack = true;
-                break;
-            }
-            n += 1;
-        };
-        has_attack
-    }
-
-    fn assert_player(self: Combatant) { // let player_felt252: felt252 = player.into();
-    // let caller_felt252: felt252 = get_caller_address().into();
-    // let is_player = player_felt252 == caller_felt252;
-    // assert(get_caller_address() == self.player, 'Not combatant player'); //#
+    fn assert_player(self: CombatantInfo) -> ContractAddress {
+        assert(get_caller_address() == self.player, 'Not combatant player'); //#
+        self.player
     }
 }

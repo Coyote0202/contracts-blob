@@ -52,3 +52,4 @@ impl Felt252BitAnd of BitAnd<felt252> {
 
 
 impl U8ArrayCopyImpl of Copy<Array<u8>>;
+impl U128ArrayCopyImpl of Copy<Array<u128>>;

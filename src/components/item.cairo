@@ -1,19 +1,17 @@
+use alexandria_data_structures::array_ext::ArrayTraitExt;
 use core::array::ArrayTrait;
 use starknet::{ContractAddress};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    models::ItemModel,
-    components::{
-        stats::Stats, attack::{Attack, AttackTrait, AttackArrayCopyImpl},
-        utils::{IdTrait, IdsTrait, TIdsImpl}
-    }
+    core::U128ArrayCopyImpl, models::ItemModel,
+    components::{stats::Stats, attack::{Attack, AttackTrait}, utils::{IdTrait, IdsTrait, TIdsImpl}}
 };
 
 #[derive(Drop, Serde, Copy)]
 struct Item {
     id: u128,
     stats: Stats,
-    attacks: Array<Attack>,
+    attacks: Array<u128>,
 }
 
 // impl ByteArrayCopyImpl of Copy<ByteArray>;
@@ -30,16 +28,26 @@ impl ItemArrayCopyImpl of Copy<Array<Item>>;
 
 #[generate_trait]
 impl ItemsImpl of ItemsTrait {
-    fn get_attacks(self: Span<Item>) -> Array<Attack> {
-        let mut attacks: Array<Attack> = ArrayTrait::new();
+    fn get_attack_ids(self: Span<Item>) -> Array<u128> {
+        let mut ids: Array<u128> = ArrayTrait::new();
         let (len, mut n) = (self.len(), 0_usize);
         while n < len {
-            let span = self.at(n).attacks.span();
-            attacks.append_span(span);
+            ids.append_span(self.at(n).attacks.span());
+
             n += 1;
         };
-        attacks
+        ids.unique()
     }
+    // fn get_attacks(self: Span<Item>) -> Array<Attack> {
+    //     let mut attacks: Array<Attack> = ArrayTrait::new();
+    //     let (len, mut n) = (self.len(), 0_usize);
+    //     while n < len {
+    //         let span = self.at(n).attacks.span();
+    //         attacks.append_span(span);
+    //         n += 1;
+    //     };
+    //     attacks
+    // }
     fn get_stats(self: Span<Item>) -> Stats {
         let mut stats: Stats = 0_u8.into();
         let (len, mut n) = (self.len(), 0_usize);
@@ -49,7 +57,7 @@ impl ItemsImpl of ItemsTrait {
         };
         stats
     }
-    fn get_health(self: Array<Item>) -> u8 {
+    fn get_health(self: Span<Item>) -> u8 {
         100
     }
 }
@@ -69,8 +77,8 @@ impl ItemsImpl of ItemsTrait {
 #[generate_trait]
 impl ItemImpl of ItemTrait {
     fn get_item(self: IWorldDispatcher, id: u128) -> Item {
-        let ItemModel { id, name, stats, attacks: attack_ids } = get!(self, id, ItemModel);
-        let attacks = self.get_attacks(attack_ids);
+        let ItemModel { id, name: _, stats, attacks } = get!(self, id, ItemModel);
+        // let attacks = self.get_attacks(attack_ids);
         Item { id, stats, attacks }
     }
     fn get_items(self: IWorldDispatcher, ids: Array<u128>) -> Array<Item> {

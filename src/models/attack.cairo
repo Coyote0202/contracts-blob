@@ -1,5 +1,3 @@
-use blob_arena::components::{stats::Stats};
-
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct Attack {
@@ -15,13 +13,14 @@ struct Attack {
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
-struct AttackLastUse {
+struct AvailableAttack {
     #[key]
     combat_id: u128,
     #[key]
-    combatant: u128,
+    warrior_id: u128,
     #[key]
-    attack: u128,
-    round: u32,
+    attack_id: u128,
+    available: bool,
+    last_used: u32,
 }
 

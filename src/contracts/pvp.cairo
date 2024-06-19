@@ -34,12 +34,13 @@ mod pvp_actions {
     use starknet::{ContractAddress, get_caller_address};
     use blob_arena::{
         components::{
-            combat::{SaltsTrait, Phase}, combatant::{Combatant, CombatantTrait},
-            commitment::{Commitment,}, pvp_combat::{PvPCombatTrait, ABStateTrait, ABCombatantTrait},
-            pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite}, utils::ABTTrait,
-            warrior::{Warrior, WarriorTrait, get_warrior_id},
+            combat::{SaltsTrait, Phase}, combatant::{CombatantInfo, CombatantTrait},
+            commitment::{Commitment,},
+            pvp_combat::{PvPCombatTrait, ABStateTrait, ABCombatantTrait, PvPPhase, PvPWinner},
+            pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},
+            utils::ABTTrait, warrior::{Warrior, WarriorTrait, get_warrior_id},
         },
-        utils::{uuid, hash_value},
+        systems::pvp_combat::PvPCombatSystemTrait, utils::{uuid, hash_value},
     };
     use super::{IPvPCombatActions, IPvPChallengeActions};
     use core::hash::TupleSize2Hash;
@@ -52,7 +53,7 @@ mod pvp_actions {
             token_id: u256,
             challenge_id: u128,
             player: ContractAddress
-        ) -> Combatant {
+        ) -> CombatantInfo {
             let warrior_id = get_warrior_id(collection_address, token_id);
             let warrior = self.get_warrior(warrior_id);
             assert(player == warrior.owner, 'Not Owner');
@@ -173,12 +174,36 @@ mod pvp_actions {
             if hash == commitment {
                 world.append_salt(combat_id, salt);
                 world.set_planned_attack(combat_id, warrior_id, attack);
-                combat.players_state.set(ab, true);
+                if combat.players_state.get(!ab) {
+                    let attacks = world.get_pvp_attacks(combat.combatants);
+
+                    let combat_world = world.to_pvp_combat_world(combat);
+                    combat_world
+                        .run_round(
+                            combat.combatants, attacks, world.get_salts_hash_state(combat_id)
+                        );
+                    combat.phase = Phase::Commit;
+                    combat.players_state.set(!ab, false);
+                } else {
+                    combat.players_state.set(ab, true);
+                }
             } else {
                 world.end_game(combat_id, (!ab).into());
             }
         }
-        fn forfeit(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128) {}
-        fn kick_inactive_player(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128) {}
+        fn forfeit(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128) {
+            let mut combat = world.get_pvp_combat(combat_id);
+            combat.assert_running();
+            let ab = combat.combatants.get_combatant_ab(warrior_id);
+            let combatant = combat.combatants.get(ab);
+            combatant.assert_player();
+            let winner: PvPWinner = (!ab).into();
+            world.end_game(combat_id, winner);
+            world.update_scores(combat.combatants, winner);
+        }
+        fn kick_inactive_player(
+            ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128
+        ) { // let mut combat = world.get_pvp_combat(combat_id);
+        }
     }
 }

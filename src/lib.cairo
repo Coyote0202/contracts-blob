@@ -16,7 +16,7 @@ mod components {
 }
 mod systems {
     mod combat;
-    mod attack;
+    // mod attack;
     mod pvp_combat;
 // mod weapon;
 // mod arcade {

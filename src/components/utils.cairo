@@ -5,16 +5,15 @@ trait IdTrait<T> {
 }
 
 trait IdsTrait<T> {
-    fn ids(self: Array<T>) -> Array<u128>;
+    fn ids(self: Span<T>) -> Array<u128>;
 }
 
 impl TIdsImpl<T, +IdTrait<T>, +Drop<T>, +Copy<T>> of IdsTrait<T> {
-    fn ids(self: Array<T>) -> Array<u128> {
+    fn ids(self: Span<T>) -> Array<u128> {
         let mut ids: Array<u128> = ArrayTrait::new();
-        let array = self.span();
-        let (len, mut n) = (array.len(), 0_usize);
+        let (len, mut n) = (self.len(), 0_usize);
         while (n < len) {
-            ids.append((*array.at(n)).id());
+            ids.append((*self.at(n)).id());
             n += 1;
         };
         ids
@@ -22,7 +21,7 @@ impl TIdsImpl<T, +IdTrait<T>, +Drop<T>, +Copy<T>> of IdsTrait<T> {
 }
 
 
-#[derive(Copy, Drop, Print, Serde, PartialEq)]
+#[derive(Copy, Drop, Print, Serde, PartialEq, Introspect)]
 enum AB {
     A,
     B,
@@ -37,14 +36,14 @@ impl ABIntoByteArray of Into<AB, ByteArray> {
     }
 }
 
-
+#[derive(Copy, Drop, Print, Serde, PartialEq, Introspect)]
 struct ABT<T> {
     a: T,
     b: T,
 }
 
-impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
-impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
+// impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
+// impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
 
 impl ABTIntoTuple<T, +Drop<T>,> of Into<ABT<T>, (T, T)> {
     fn into(self: ABT<T>) -> (T, T) {
