@@ -6,22 +6,23 @@ use blob_arena::{
         attack::{Attack, AttackTrait}, combatant::{CombatantInfo, CombatantState, CombatantTrait},
         combat::{Phase,}, utils::{AB, ABT, ABTTrait, ABTImpl}
     },
-    models::{PvPCombatModel, PvPCombatStateModel, PvPPlannedAttackModel, PvPPhase, PvPWinner},
+    models::{PvPCombatantsModel, PvPCombatState, PvPPlannedAttackModel, PvPPhase, PvPWinner},
 };
 
 
 #[derive(Drop, Copy)]
-struct PvPCombat {
+struct PvPCombatWorld {
+    world: IWorldDispatcher,
     combat_id: u128,
-    combatants: ABT<CombatantInfo>,
+    combatants: ABT<u128>,
     phase: PvPPhase,
     round: u32,
 }
 
 
-impl PvPCombatIntoPvPCombatStateModelImpl of Into<PvPCombat, PvPCombatStateModel> {
-    fn into(self: PvPCombat) -> PvPCombatStateModel {
-        PvPCombatStateModel {
+impl PvPCombatIntoPvPCombatStateModelImpl of Into<PvPCombatWorld, PvPCombatState> {
+    fn into(self: PvPCombatWorld) -> PvPCombatState {
+        PvPCombatState {
             id: self.combat_id,
             phase: self.phase,
             round: self.round,
@@ -30,20 +31,26 @@ impl PvPCombatIntoPvPCombatStateModelImpl of Into<PvPCombat, PvPCombatStateModel
     }
 }
 
-
 #[generate_trait]
 impl PvPCombatImpl of PvPCombatTrait {
-    fn make_pvp_combat(
-        combat_id: u128, combatants: ABT<CombatantInfo>, players_state: ABT<bool>
-    ) -> PvPCombat {
-        PvPCombat { combat_id, combatants, phase: PvPPhase::Setup, round: 0, }
+    // fn make_pvp_combat(combat_id: u128, combatants: ABT<CombatantInfo>) -> PvPCombatState {
+    //     PvPCombatState { id: combat_id, phase: PvPPhase::Setup, round: 0, }
+    // }
+    fn get_pvp_combat_world(self: IWorldDispatcher, combat_id: u128) -> PvPCombatWorld {
+        let (model, state) = self._get_pvp_combat_models(combat_id);
+        let (combatant_a, combatant_b) = model.combatants;
+        let combatants = ABTTrait::new(
+            self.get_combatant_info(combat_id, combatant_a),
+            self.get_combatant_info(combat_id, combatant_b),
+        );
+        PvPCombatWorld {
+            world: self, combat_id, combatants, phase: state.phase, round: state.round,
+        }
     }
-
-
-    fn get_pvp_combat_model(self: IWorldDispatcher, id: u128) -> PvPCombatModel {
-        get!(self, id, PvPCombatModel)
+    fn get_pvp_combatants(self: IWorldDispatcher, id: u128) -> ABT<CombatantInfo> {
+        ABTTrait::new_from_tuple(get!(self, id, PvPCombatantsModel).combatants)
     }
-    fn get_pvp_combat_state_model(self: IWorldDispatcher, id: u128) -> PvPCombatStateModel {
+    fn get_pvp_combat_state(self: IWorldDispatcher, id: u128) -> PvPCombatState {
         get!(self, id, PvPCombatStateModel)
     }
 
@@ -66,8 +73,8 @@ impl PvPCombatImpl of PvPCombatTrait {
 
     fn _get_pvp_combat_models(
         self: IWorldDispatcher, id: u128
-    ) -> (PvPCombatModel, PvPCombatStateModel) {
-        get!(self, id, (PvPCombatModel, PvPCombatStateModel))
+    ) -> (PvPCombatantsModel, PvPCombatState) {
+        get!(self, id, (PvPCombatantsModel, PvPCombatState))
     }
 
     fn get_pvp_combat(self: IWorldDispatcher, combat_id: u128) -> PvPCombat {
@@ -77,18 +84,17 @@ impl PvPCombatImpl of PvPCombatTrait {
             self.get_combatant_info(combat_id, combatant_a),
             self.get_combatant_info(combat_id, combatant_b),
         );
-        let players_state = ABTTrait::new_from_tuple(state.players_state);
-        PvPCombat { combat_id, combatants, players_state, phase: state.phase, round: state.round, }
+        PvPCombatWorld { combat_id, combatants, phase: state.phase, round: state.round, }
     }
 
-    fn assert_running(self: PvPCombat) {
+    fn assert_running(self: PvPCombatWorld) {
         match self.phase {
             Phase::Setup | Phase::Ended => { panic!("Combat not running") },
             _ => {}
         };
     }
-    fn set_pvp_combat_state(self: IWorldDispatcher, combat: PvPCombat) {
-        let combat_state: PvPCombatStateModel = combat.into();
+    fn set_pvp_combat_state(self: IWorldDispatcher, combat: PvPCombatWorld) {
+        let combat_state: PvPCombatState = combat.into();
         set!(self, (combat_state,)); //#
     }
     fn set_planned_attack(self: IWorldDispatcher, combat_id: u128, warrior_id: u128, attack: u128) {

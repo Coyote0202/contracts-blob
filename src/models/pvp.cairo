@@ -33,7 +33,7 @@ type PvPPhase = Phase<PvPWinner>;
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
-struct PvPCombat {
+struct PvPCombatants {
     #[key]
     id: u128,
     combatants: (u128, u128),
@@ -42,7 +42,7 @@ struct PvPCombat {
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy, Introspect)]
-struct CombatState {
+struct PvPCombatState {
     #[key]
     id: u128,
     round: u32,

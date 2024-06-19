@@ -10,7 +10,6 @@ struct CombatantInfo {
     #[key]
     warrior_id: u128,
     player: ContractAddress,
-    stats: Stats,
 }
 
 #[dojo::model]
@@ -20,6 +19,7 @@ struct CombatantState {
     combat_id: u128,
     #[key]
     warrior_id: u128,
+    stats: Stats,
     health: u8,
     stun_chance: u8
 }

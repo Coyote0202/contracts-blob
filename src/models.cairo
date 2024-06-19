@@ -11,7 +11,7 @@ use blob_arena::models::{
     combatant::{CombatantInfo, CombatantState}, item::Item as ItemModel,
     commitment::Commitment as CommitmentModel,
     pvp::{
-        PvPCombat as PvPCombatModel, PvPCombatState as PvPCombatStateModel,
+        PvPCombatants as PvPCombatantsModel, PvPCombatState,
         PvPPlannedAttack as PvPPlannedAttackModel, PvPChallengeInvite, PvPChallengeResponse,
         PvPChallengeScore, PvPPhase, PvPWinner
     },

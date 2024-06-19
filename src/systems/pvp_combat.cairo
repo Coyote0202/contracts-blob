@@ -12,7 +12,7 @@ use blob_arena::{
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 
-c#[generate_trait]
+#[generate_trait]
 impl PvPCombatSystemImpl of PvPCombatSystemTrait {
     fn to_pvp_combat_world(self: IWorldDispatcher, combat: PvPCombat) -> PvPCombatWorld {
         PvPCombatWorld {
