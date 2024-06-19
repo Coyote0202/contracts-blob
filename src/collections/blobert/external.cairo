@@ -1,5 +1,7 @@
 use starknet::{ContractAddress, class_hash::class_hash_const};
-use token::{erc721::interface::{IERC721Dispatcher, IERC721, IERC721DispatcherTrait}};
+use token::components::token::{
+    erc721::interface::{IERC721Dispatcher, IERC721, IERC721DispatcherTrait}
+};
 
 const BLOBERT_CONTRACT_ADDRESS: felt252 =
     0x032cb9f30629268612ffb6060e40dfc669849c7d72539dd23c80fe6578d0549d;

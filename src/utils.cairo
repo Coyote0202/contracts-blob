@@ -3,7 +3,9 @@ use core::{
     poseidon::{PoseidonTrait, HashState}
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use starknet::{ContractAddress, get_contract_address, get_caller_address, get_tx_info};
+use starknet::{
+    ContractAddress, get_contract_address, get_caller_address, get_tx_info, get_block_timestamp
+};
 use blob_arena::core::Felt252BitAnd;
 
 fn hash_value<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> felt252 {
@@ -23,4 +25,24 @@ fn uuid(world: IWorldDispatcher) -> u128 {
         dojo::world::IWorldDispatcherTrait::uuid(world), get_tx_info().unbox().transaction_hash
     );
     felt252_to_uuid(PoseidonTrait::new().update_with(values).finalize())
+}
+
+
+#[dojo::model]
+#[derive(Drop, Serde)]
+struct RandomSeed {
+    #[key]
+    key: bool,
+    value: felt252,
+}
+
+#[generate_trait]
+impl RandomnessImpl of RandomnessTrait {
+    fn get_randomness(ref world: IWorldDispatcher) -> felt252 {
+        let seed = get!(world, true, RandomSeed).value;
+        let values = (get_block_timestamp(), get_tx_info().unbox().transaction_hash, seed);
+        let value = hash_value(values);
+        set!(world, RandomSeed { key: true, value });
+        value
+    }
 }

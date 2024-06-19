@@ -1,54 +1,37 @@
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher};
 
-#[starknet::interface]
-trait IPvPCombatActions<TContractState> {
-    fn commit_attack(
-        self: @TContractState,
-        world: IWorldDispatcher,
-        combat_id: u128,
-        warrior_id: u128,
-        hash: felt252
-    );
+#[dojo::interface]
+trait IPvPCombatActions {
+    fn commit_attack(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128, hash: felt252);
     fn reveal_attack(
-        self: @TContractState,
-        world: IWorldDispatcher,
-        combat_id: u128,
-        warrior_id: u128,
-        attack: u128,
-        salt: felt252
+        ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128, attack: u128, salt: felt252
     );
-    fn forfeit(self: @TContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128);
-    fn kick_inactive_player(
-        self: @TContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128
-    );
+    fn forfeit(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128);
+    fn kick_inactive_player(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128);
 }
 
-#[starknet::interface]
-trait IPvPChallengeActions<TContractState> {
+#[dojo::interface]
+trait IPvPChallengeActions {
     fn send_invite(
-        self: @TContractState,
-        world: IWorldDispatcher,
+        ref world: IWorldDispatcher,
         receiver: ContractAddress,
         token_id: u256,
         phase_time: u64,
         collection_address: ContractAddress,
     ) -> u128;
-    fn rescind_invite(self: @TContractState, world: IWorldDispatcher, challenge_id: u128);
-    fn respond_invite(
-        self: @TContractState, world: IWorldDispatcher, challenge_id: u128, token_id: u256
-    );
-    fn rescind_response(self: @TContractState, world: IWorldDispatcher, challenge_id: u128);
-    fn reject_invite(self: @TContractState, world: IWorldDispatcher, challenge_id: u128);
-    fn reject_response(self: @TContractState, world: IWorldDispatcher, challenge_id: u128);
-    fn accept_response(self: @TContractState, world: IWorldDispatcher, challenge_id: u128);
+    fn rescind_invite(ref world: IWorldDispatcher, challenge_id: u128);
+    fn respond_invite(ref world: IWorldDispatcher, challenge_id: u128, token_id: u256);
+    fn rescind_response(ref world: IWorldDispatcher, challenge_id: u128);
+    fn reject_invite(ref world: IWorldDispatcher, challenge_id: u128);
+    fn reject_response(ref world: IWorldDispatcher, challenge_id: u128);
+    fn accept_response(ref world: IWorldDispatcher, challenge_id: u128);
 }
 
 
-#[starknet::contract]
+#[dojo::contract]
 mod pvp_actions {
     use starknet::{ContractAddress, get_caller_address};
-    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use blob_arena::{
         components::{
             combat::{SaltsTrait, Phase}, combatant::{Combatant, CombatantTrait},
@@ -60,9 +43,6 @@ mod pvp_actions {
     };
     use super::{IPvPCombatActions, IPvPChallengeActions};
     use core::hash::TupleSize2Hash;
-
-    #[storage]
-    struct Storage {}
 
     #[generate_trait]
     impl Private of PrivateTrait {
@@ -84,8 +64,7 @@ mod pvp_actions {
     #[abi(embed_v0)]
     impl IPvPChallengeActionsImpl of IPvPChallengeActions<ContractState> {
         fn send_invite(
-            self: @ContractState,
-            world: IWorldDispatcher,
+            ref world: IWorldDispatcher,
             receiver: ContractAddress,
             token_id: u256,
             phase_time: u64,
@@ -107,15 +86,13 @@ mod pvp_actions {
                 );
             challenge_id
         }
-        fn rescind_invite(self: @ContractState, world: IWorldDispatcher, challenge_id: u128) {
+        fn rescind_invite(ref world: IWorldDispatcher, challenge_id: u128) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_sender();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
-        fn respond_invite(
-            self: @ContractState, world: IWorldDispatcher, challenge_id: u128, token_id: u256
-        ) {
+        fn respond_invite(ref world: IWorldDispatcher, challenge_id: u128, token_id: u256) {
             let mut challenge = world.get_open_challenge(challenge_id);
             assert(!challenge.response_open, 'Already responded');
 
@@ -127,26 +104,26 @@ mod pvp_actions {
             challenge.response_open = true;
             world.set_challenge_response(challenge);
         }
-        fn rescind_response(self: @ContractState, world: IWorldDispatcher, challenge_id: u128) {
+        fn rescind_response(ref world: IWorldDispatcher, challenge_id: u128) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_receiver();
             assert(challenge.response_open, 'Response already closed');
             challenge.response_open = false;
             world.set_challenge_response(challenge);
         }
-        fn reject_invite(self: @ContractState, world: IWorldDispatcher, challenge_id: u128) {
+        fn reject_invite(ref world: IWorldDispatcher, challenge_id: u128) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_receiver();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
-        fn reject_response(self: @ContractState, world: IWorldDispatcher, challenge_id: u128) {
+        fn reject_response(ref world: IWorldDispatcher, challenge_id: u128) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_receiver();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
-        fn accept_response(self: @ContractState, world: IWorldDispatcher, challenge_id: u128) {
+        fn accept_response(ref world: IWorldDispatcher, challenge_id: u128) {
             let mut challenge = world.get_open_challenge(challenge_id);
             challenge.assert_caller_sender();
             assert(challenge.response_open, 'Response already closed');
@@ -157,11 +134,7 @@ mod pvp_actions {
     #[abi(embed_v0)]
     impl PvPActionsImpl of IPvPCombatActions<ContractState> {
         fn commit_attack(
-            self: @ContractState,
-            world: IWorldDispatcher,
-            combat_id: u128,
-            warrior_id: u128,
-            hash: felt252
+            ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128, hash: felt252
         ) {
             let mut combat = world.get_pvp_combat(combat_id);
             assert(combat.phase == Phase::Commit, 'Not in commit phase');
@@ -183,8 +156,7 @@ mod pvp_actions {
             world.set_pvp_combat_state(combat);
         }
         fn reveal_attack(
-            self: @ContractState,
-            world: IWorldDispatcher,
+            ref world: IWorldDispatcher,
             combat_id: u128,
             warrior_id: u128,
             attack: u128,
@@ -206,11 +178,7 @@ mod pvp_actions {
                 world.end_game(combat_id, (!ab).into());
             }
         }
-        fn forfeit(
-            self: @ContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128
-        ) {}
-        fn kick_inactive_player(
-            self: @ContractState, world: IWorldDispatcher, combat_id: u128, warrior_id: u128
-        ) {}
+        fn forfeit(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128) {}
+        fn kick_inactive_player(ref world: IWorldDispatcher, combat_id: u128, warrior_id: u128) {}
     }
 }

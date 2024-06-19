@@ -1,5 +1,9 @@
 use core::integer::BoundedInt;
 
+#[derive(Copy, Drop)]
+type TTupleSize5<T> = (T, T, T, T, T);
+
+
 trait LimitSub<T> {
     fn sub(self: T, other: T) -> T;
     fn subeq(ref self: T, other: T);

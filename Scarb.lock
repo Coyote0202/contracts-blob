@@ -40,12 +40,13 @@ version = "0.1.0"
 dependencies = [
  "alexandria_math",
  "dojo",
+ "token",
 ]
 
 [[package]]
 name = "dojo"
-version = "0.7.0"
-source = "git+https://github.com/dojoengine/dojo?tag=v0.7.0#34b13caa785c1149558d28f1a9d9fbd700c4aa2d"
+version = "0.7.1"
+source = "git+https://github.com/dojoengine/dojo?tag=v0.7.1#c4a1feadf1d5c5ecf9593b50c1a2ca2856ae2313"
 dependencies = [
  "dojo_plugin",
 ]
@@ -54,3 +55,11 @@ dependencies = [
 name = "dojo_plugin"
 version = "0.3.11"
 source = "git+https://github.com/dojoengine/dojo?tag=v0.3.11#1e651b5d4d3b79b14a7d8aa29a92062fcb9e6659"
+
+[[package]]
+name = "token"
+version = "0.0.0"
+source = "git+https://github.com/dojoengine/origami?tag=v0.7.1#ab4fde3d11cd20b09e1ec48ec80796646b7383aa"
+dependencies = [
+ "dojo",
+]
