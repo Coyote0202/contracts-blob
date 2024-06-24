@@ -40,7 +40,7 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn get_random_felt(self: @IWorldDispatcher) -> felt252 {
         0
     }
-    fn mint_blobert(ref self: IWorldDispatcher) -> u256 {
+    fn mint_blobert(self: IWorldDispatcher) -> u256 {
         let caller = get_caller_address();
         let random = self.get_random_felt();
         let token_id = felt252_to_uuid(random);

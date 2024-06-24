@@ -69,13 +69,13 @@ impl CombatantImpl of CombatantTrait {
         get!((*self), (id, attack_id), AvailableAttack)
     }
     fn set_available_attack(
-        ref self: IWorldDispatcher, combatant_id: u128, attack_id: u128, last_used: u32
+        self: IWorldDispatcher, combatant_id: u128, attack_id: u128, last_used: u32
     ) {
         set!(
             self, AvailableAttack { combatant_id, attack_id, available: true, last_used: last_used }
         );
     }
-    fn setup_available_attacks(ref self: IWorldDispatcher, id: u128, attack_ids: Span<u128>) {
+    fn setup_available_attacks(self: IWorldDispatcher, id: u128, attack_ids: Span<u128>) {
         let (len, mut n): (usize, usize) = (attack_ids.len(), 0);
         while n < len {
             self.set_available_attack(id, *attack_ids.at(n), 0);
@@ -83,10 +83,7 @@ impl CombatantImpl of CombatantTrait {
         }
     }
     fn create_combatant(
-        self: @IWorldDispatcher,
-        collection_address: ContractAddress,
-        token_id: u256,
-        combat_id: u128
+        self: IWorldDispatcher, collection_address: ContractAddress, token_id: u256, combat_id: u128
     ) -> Combatant {
         let items = self.get_items(collection_address.get_items(token_id));
         let stats = items.get_stats();
@@ -108,7 +105,7 @@ impl CombatantImpl of CombatantTrait {
             stun_chance: 0,
         }
     }
-    fn set_combatant(ref self: IWorldDispatcher, combatant: Combatant) {
+    fn set_combatant(self: IWorldDispatcher, combatant: Combatant) {
         self.setup_available_attacks(combatant.id, combatant.attacks);
         let info: CombatantInfo = combatant.into();
         let stats: CombatantStats = combatant.into();
@@ -116,7 +113,7 @@ impl CombatantImpl of CombatantTrait {
         set!(self, (info, stats, state));
     }
 
-    fn get_player_combatant_info(self: IWorldDispatcher, id: u128) -> CombatantInfo {
+    fn get_player_combatant_info(self: @IWorldDispatcher, id: u128) -> CombatantInfo {
         let combatant = self.get_combatant_info(id);
         combatant.assert_player();
         combatant

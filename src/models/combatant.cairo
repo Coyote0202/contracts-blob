@@ -39,7 +39,7 @@ struct CombatantState {
 #[derive(Drop, Serde)]
 struct PlannedAttack {
     #[key]
-    combatant_id: u128,
+    id: u128,
     attack: u128,
     target: u128,
 }

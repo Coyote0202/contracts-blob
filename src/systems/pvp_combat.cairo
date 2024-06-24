@@ -11,26 +11,28 @@ use blob_arena::{
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 
-#[derive(Clone, Copy, Drop)]
-struct PlannedAttack {
-    combatant: u128,
-    attack: Attack,
-    target: u128,
-}
+// #[derive(Clone, Copy, Drop)]
+// struct PlannedAttack {
+//     combatant: u128,
+//     attack: Attack,
+//     target: u128,
+// }
 
 #[generate_trait]
 impl PvPCombatSystemImpl of PvPCombatSystemTrait {
     fn run_round(
-        ref self: IWorldDispatcher,
+        self: IWorldDispatcher,
         combatant_ids: ABT<u128>,
-        attack_ids: ABT<u128>,
+        planned_attacks: ABT<PlannedAttack>,
         round: u32,
         hash: HashState
     ) -> ABT<CombatantState> {
         let stats = ABTTrait::new(
             self.get_combatant_stats(combatant_ids.a), self.get_combatant_stats(combatant_ids.b)
         );
-        let attacks = ABTTrait::new(self.get_attack(attack_ids.a), self.get_attack(attack_ids.b));
+        let attacks = ABTTrait::new(
+            self.get_attack(planned_attacks.a.attack), self.get_attack(attack_ids.b)
+        );
 
         let speed_a = attacks.a.speed + stats.a.speed;
         let speed_b = attacks.b.speed + stats.b.speed;

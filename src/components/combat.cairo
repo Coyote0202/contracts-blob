@@ -1,3 +1,4 @@
+use core::array::ArrayTrait;
 use core::{
     fmt::{Display, Formatter, Error}, hash::{HashStateTrait, HashStateExTrait, Hash},
     poseidon::{poseidon_hash_span, PoseidonTrait, HashState}
@@ -6,7 +7,7 @@ use starknet::{ContractAddress, get_block_number};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     components::{utils::{ABT, Status, Winner}},
-    models::{SaltsModel, Phase, AttackHit, AttackResult, CombatState}
+    models::{SaltsModel, Phase, AttackHit, AttackResult, CombatState, PlannedAttack}
 };
 type Salts = Array<felt252>;
 
@@ -65,7 +66,7 @@ impl CombatStateImpl of CombatStateTrait {
     fn get_combat_state(self: @IWorldDispatcher, id: u128) -> CombatState {
         get!((*self), id, CombatState)
     }
-    fn new_combat_state(ref self: IWorldDispatcher, combat_id: u128) {
+    fn new_combat_state(self: IWorldDispatcher, combat_id: u128) {
         set!(
             self,
             CombatState {
@@ -76,4 +77,51 @@ impl CombatStateImpl of CombatStateTrait {
     fn get_combat_phase(self: @IWorldDispatcher, id: u128) -> Phase {
         self.get_combat_state(id).phase
     }
+    fn next_round(self: IWorldDispatcher, mut state: CombatState) {
+        state.round += 1;
+        state.phase = Phase::Commit;
+
+        set!(self, (state,));
+    }
 }
+
+#[generate_trait]
+impl PlannedAttackImpl of PlannedAttackTrait {
+    fn get_planned_attack(self: @IWorldDispatcher, id: u128) -> PlannedAttack {
+        get!((*self), id, PlannedAttack)
+    }
+    fn get_planned_attacks(self: @IWorldDispatcher, ids: Span<u128>) -> Span<PlannedAttack> {
+        let (mut n, len) = (0, ids.len());
+        let mut attacks = ArrayTrait::<PlannedAttack>::new();
+        while n < len {
+            attacks.append(self.get_planned_attack(*ids.at(n)));
+            n += 1;
+        };
+        attacks.span()
+    }
+
+    fn check_all_set(self: Span<PlannedAttack>) -> bool {
+        let (mut n, len) = (0, self.len());
+        let mut set = true;
+        while n < len {
+            if (*self.at(n).attack).is_zero() {
+                set = false;
+                break;
+            }
+            n += 1;
+        };
+        set
+    }
+
+    fn clear_planned_attack(self: IWorldDispatcher, id: u128) {
+        set!(self, (PlannedAttack { id, attack: 0, target: 0 },));
+    }
+    fn clear_planned_attacks(self: IWorldDispatcher, ids: Span<u128>) {
+        let (mut n, len) = (0, ids.len());
+        while n < len {
+            self.clear_planned_attack(*ids.at(n));
+            n += 1;
+        };
+    }
+}
+

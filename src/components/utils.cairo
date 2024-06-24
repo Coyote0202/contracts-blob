@@ -45,6 +45,13 @@ struct ABT<T> {
 // impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
 // impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
 
+impl TupleIntoABT<T, +Drop<T>,> of Into<(T, T), ABT<T>> {
+    fn into(self: (T, T)) -> ABT<T> {
+        let (a, b) = self;
+        ABT { a, b }
+    }
+}
+
 impl ABTIntoTuple<T, +Drop<T>,> of Into<ABT<T>, (T, T)> {
     fn into(self: ABT<T>) -> (T, T) {
         (self.a, self.b)

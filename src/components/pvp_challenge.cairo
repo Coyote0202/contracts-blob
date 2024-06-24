@@ -49,16 +49,16 @@ impl PvPChallengeImpl of PvPChallengeTrait {
         get!((*self), challenge_id, PvPChallengeResponse)
     }
 
-    fn set_challenge_invite(ref self: IWorldDispatcher, challenge: PvPChallenge) {
+    fn set_challenge_invite(self: IWorldDispatcher, challenge: PvPChallenge) {
         set!(self, (challenge.invite(),))
     }
 
-    fn set_challenge_response(ref self: IWorldDispatcher, challenge: PvPChallenge) {
+    fn set_challenge_response(self: IWorldDispatcher, challenge: PvPChallenge) {
         set!(self, (challenge.response(),))
     }
 
     fn send_challenge_invite(
-        ref self: IWorldDispatcher,
+        self: IWorldDispatcher,
         challenge_id: u128,
         sender: ContractAddress,
         receiver: ContractAddress,
@@ -122,7 +122,7 @@ impl PvPChallengeImpl of PvPChallengeTrait {
             id: self.id, combatant: self.receiver_combatant, open: self.response_open,
         }
     }
-    fn create_game(ref self: IWorldDispatcher, challenge: PvPChallenge) {
+    fn create_game(self: IWorldDispatcher, challenge: PvPChallenge) {
         self
             .set_pvp_combatants(
                 challenge.id, (challenge.sender_combatant, challenge.receiver_combatant)

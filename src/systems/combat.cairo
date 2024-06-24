@@ -73,7 +73,7 @@ impl AttackerImpl of AttackerTrait {
 #[generate_trait]
 impl CombatWorldImp of CombatWorldTraits {
     fn run_attack_check(
-        ref self: IWorldDispatcher, combatant_id: u128, attack: Attack, round: u32
+        self: IWorldDispatcher, combatant_id: u128, attack: Attack, round: u32
     ) -> bool {
         let attack_available = self.get_available_attack(combatant_id, attack.id);
         if !attack_available.available {
@@ -91,7 +91,7 @@ impl CombatWorldImp of CombatWorldTraits {
         }
     }
     fn emit_attack_event(
-        ref self: IWorldDispatcher,
+        self: IWorldDispatcher,
         combatant_id: u128,
         round: u32,
         attack: u128,
@@ -102,7 +102,7 @@ impl CombatWorldImp of CombatWorldTraits {
     }
 
     fn run_attack(
-        ref self: IWorldDispatcher,
+        self: IWorldDispatcher,
         attacker_stats: CombatantStats,
         ref attacker_state: CombatantState,
         ref defender_state: CombatantState,
@@ -132,7 +132,7 @@ impl CombatWorldImp of CombatWorldTraits {
     }
 }
 // fn run_attacks(
-//     ref self: IWorldDispatcher,
+//      self: IWorldDispatcher,
 //     combatant_stats: Felt252Dict<Box<CombatantStats>>,
 //     combatant_states: Felt252Dict<CombatantState>,
 //     planned_attacks: Span<PlannedAttack>

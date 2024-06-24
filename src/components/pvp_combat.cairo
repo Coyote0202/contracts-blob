@@ -12,7 +12,7 @@ use blob_arena::{
 #[generate_trait]
 impl PvPCombatImpl of PvPCombatTrait {
     fn set_pvp_combatants<T, +Into<T, (u128, u128)>>(
-        ref self: IWorldDispatcher, id: u128, combatants: T
+        self: IWorldDispatcher, id: u128, combatants: T
     ) {
         set!(self, PvPCombatantsModel { id, combatants: combatants.into() });
     }
@@ -24,13 +24,13 @@ impl PvPCombatImpl of PvPCombatTrait {
     fn get_pvp_planned_attack(self: @IWorldDispatcher, id: u128) -> u128 {
         get!((*self), id, PvPPlannedAttackModel).attack
     }
-    fn set_pvp_planned_attack(ref self: IWorldDispatcher, id: u128, attack: u128) {
+    fn set_pvp_planned_attack(self: IWorldDispatcher, id: u128, attack: u128) {
         set!(self, PvPPlannedAttackModel { id: id, attack },);
     }
     fn check_pvp_planned_attack_set(self: @IWorldDispatcher, id: u128) -> bool {
         self.get_pvp_planned_attack(id).is_non_zero()
     }
-    fn set_clear_pvp_planned_attack(ref self: IWorldDispatcher, id: u128, attack: u128) {
+    fn set_clear_pvp_planned_attack(self: IWorldDispatcher, id: u128, attack: u128) {
         assert(self.check_pvp_planned_attack_set(id), 'Attack already set');
         self.set_pvp_planned_attack(id, attack);
     }

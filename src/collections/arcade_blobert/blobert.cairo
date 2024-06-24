@@ -14,7 +14,7 @@ struct ArcadeBlobert {
 
 #[generate_trait]
 impl ArcadeBlobertImpl of ArcadeBlobertTrait {
-    fn set_arcade_blobert(ref self: IWorldDispatcher, arcade_blobert: ArcadeBlobert) {
+    fn set_arcade_blobert(self: IWorldDispatcher, arcade_blobert: ArcadeBlobert) {
         set!(self, (arcade_blobert,));
     }
 
