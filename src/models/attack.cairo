@@ -1,8 +1,9 @@
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct Attack {
     #[key]
     id: u128,
+    name: ByteArray,
     damage: u8,
     speed: u8,
     accuracy: u8,
@@ -15,12 +16,9 @@ struct Attack {
 #[derive(Drop, Serde, Copy)]
 struct AvailableAttack {
     #[key]
-    combat_id: u128,
-    #[key]
-    warrior_id: u128,
+    combatant_id: u128,
     #[key]
     attack_id: u128,
     available: bool,
     last_used: u32,
 }
-

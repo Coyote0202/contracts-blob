@@ -51,6 +51,12 @@ impl ABTIntoTuple<T, +Drop<T>,> of Into<ABT<T>, (T, T)> {
     }
 }
 
+impl ABTIntoSpan<T, +Drop<T>> of Into<ABT<T>, Span<T>> {
+    fn into(self: ABT<T>) -> Span<T> {
+        array![self.a, self.b].span()
+    }
+}
+
 // impl ABTSerdeImpl<T, +Serde<T>, +Drop<T>> of Serde<ABT<T>> {
 //     fn serialize(self: @ABT<T>, ref output: Array<felt252>) {
 //         self.a.serialize(ref output);

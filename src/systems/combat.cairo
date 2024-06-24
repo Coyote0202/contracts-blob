@@ -6,12 +6,13 @@ use core::{
 };
 use alexandria_math::BitShift;
 use blob_arena::{
-    core::{LimitSub, LimitAdd, U8ArrayCopyImpl, U128ArrayCopyImpl},
+    core::{LimitSub, LimitAdd},
     components::{
         combat::{Phase, AttackResult, AttackHit},
-        combatant::{CombatantState, CombatantTrait, CombatantInfo},
+        combatant::{CombatantState, CombatantStats, CombatantInfo, CombatantTrait},
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
+    models::{AttackEvent},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
@@ -21,14 +22,6 @@ struct PlannedAttack {
     combatant: u128,
     attack: Attack,
     target: u128,
-}
-
-#[derive(Drop, Serde, Copy)]
-struct CombatWorld<T> {
-    world: IWorldDispatcher,
-    combat_id: u128,
-    round: u32,
-    phase: Phase<T>,
 }
 
 fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
@@ -47,7 +40,7 @@ impl AttackerImpl of AttackerTrait {
             17
         } else {
             10
-        }
+        };
         damage /= 10;
         if damage > 255 {
             damage = 255;
@@ -60,8 +53,8 @@ impl AttackerImpl of AttackerTrait {
     }
 
     fn did_critical(self: CombatantStats, attack: Attack, seed: u256) -> bool {
-        let critical: u32 = attack.critical;
-        critical *= 255 + self.stats.strength;
+        let mut critical: u32 = attack.critical.into();
+        critical *= 255 + self.strength.into();
 
         (BitShift::shr(seed, 16) % 65536).try_into().unwrap() < critical
     }
@@ -78,30 +71,11 @@ impl AttackerImpl of AttackerTrait {
 }
 
 #[generate_trait]
-impl CombatWorldImp<T, +Drop<T>, +Copy<T>> of CombatWorldTraits<T> {
-    fn get_available_attack(
-        self: CombatWorld<T>, warrior_id: u128, attack_id: u128
-    ) -> AvailableAttack {
-        get!(self.world, (self.combat_id, warrior_id, attack_id), AvailableAttack)
-    }
-    fn set_available_attack(self: CombatWorld<T>, warrior_id: u128, attack_id: u128) {
-        set!(
-            self.world,
-            AvailableAttack {
-                combat_id: self.combat_id,
-                warrior_id,
-                attack_id,
-                available: true,
-                last_used: self.round
-            }
-        );
-    }
-    fn get_combatant_state(self: CombatWorld<T>, warrior_id: u128) -> CombatantState {
-        self.world.get_combatant_state(self.combat_id, warrior_id)
-    }
-
-    fn run_attack_check(self: CombatWorld<T>, attacker: CombatantInfo, attack: Attack) -> bool {
-        let attack_available = self.get_available_attack(attacker.warrior_id, attack.id);
+impl CombatWorldImp of CombatWorldTraits {
+    fn run_attack_check(
+        ref self: IWorldDispatcher, combatant_id: u128, attack: Attack, round: u32
+    ) -> bool {
+        let attack_available = self.get_available_attack(combatant_id, attack.id);
         if !attack_available.available {
             false
         } else {
@@ -109,41 +83,87 @@ impl CombatWorldImp<T, +Drop<T>, +Copy<T>> of CombatWorldTraits<T> {
                 return true;
             }
             let last_used = attack_available.last_used;
-            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) > self.round {
+            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) > round {
                 return false;
             };
-            self.set_available_attack(attack_available.warrior_id, attack.id);
+            self.set_available_attack(combatant_id, attack.id, round);
             true
         }
     }
+    fn emit_attack_event(
+        ref self: IWorldDispatcher,
+        combatant_id: u128,
+        round: u32,
+        attack: u128,
+        target: u128,
+        result: AttackResult
+    ) {
+        emit!(self, AttackEvent { combatant_id, round, attack, target, result });
+    }
 
     fn run_attack(
-        self: CombatWorld<T>,
+        ref self: IWorldDispatcher,
         attacker_stats: CombatantStats,
         ref attacker_state: CombatantState,
         ref defender_state: CombatantState,
         attack: Attack,
+        round: u32,
         hash: HashState
-    ) -> AttackResult {
-        if !self.run_attack_check(attacker_stats, attack) { //#
-            return AttackResult::Failed;
-        }
-        let seed: u256 = hash.update(attacker_stats.warrior_id.into()).finalize().into(); //#
-        if attacker_state.run_stun(seed) {
-            return AttackResult::Stunned;
-        }
-        if !attacker_stats.did_hit(attack, seed) {
-            return AttackResult::Miss;
-        }
-        let critical = attacker_stats.did_critical(attack, seed);
-        let damage = attacker_stats.get_damage(attack, critical, seed);
+    ) {
+        let seed: u256 = hash.update(attacker_stats.id.into()).finalize().into();
+        let result = if !self.run_attack_check(attacker_stats.id, attack, round) {
+            AttackResult::Failed
+        } else if attacker_state.run_stun(seed) {
+            AttackResult::Stunned
+        } else if attacker_stats.did_hit(attack, seed) {
+            let critical = attacker_stats.did_critical(attack, seed);
+            let damage = attacker_stats.get_damage(attack, critical, seed);
 
-        defender_state.health.subeq(damage);
-        if attack.stun > 0 {
-            defender_state
-                .stun_chance = get_new_stun_chance(defender_state.stun_chance, attack.stun);
+            defender_state.health.subeq(damage);
+            if attack.stun > 0 {
+                defender_state
+                    .stun_chance = get_new_stun_chance(defender_state.stun_chance, attack.stun);
+            };
+            AttackResult::Hit(AttackHit { damage, stun: attack.stun, critical })
+        } else {
+            AttackResult::Miss
         };
-        AttackResult::Hit(AttackHit { damage, stun: attack.stun, critical })
+        self.emit_attack_event(attacker_stats.id, round, attack.id, defender_state.id, result);
     }
 }
+// fn run_attacks(
+//     ref self: IWorldDispatcher,
+//     combatant_stats: Felt252Dict<Box<CombatantStats>>,
+//     combatant_states: Felt252Dict<CombatantState>,
+//     planned_attacks: Span<PlannedAttack>
+// ) {
+//     let (mut n, len) = (0, planned_attacks.len());
+//     while n < len {
+//         let planned_attack = planned_attacks.at(n);
+//         let attacker_stats = combatant_stats.get(planned_attack.combatant.into());
+
+//         let attacker_state = combatant_states.get(planned_attack.combatant);
+//         let defender_state = combatant_states.get(planned_attack.target);
+//         let attack = planned_attack.attack;
+//         let result = self
+//             .run_attack(
+//                 attacker_stats,
+//                 attacker_state,
+//                 defender_state,
+//                 attack,
+//                 self.round,
+//                 self.world.get_hash()
+//             );
+//         self
+//             .emit_attack_event(
+//                 planned_attack.combatant,
+//                 self.round,
+//                 attack.id,
+//                 planned_attack.target,
+//                 result.into()
+//             );
+//         n += 1;
+//     }
+// }
+
 

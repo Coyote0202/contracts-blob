@@ -24,7 +24,6 @@ impl ItemIdImpl of IdTrait<Item> {
 }
 
 impl ItemIdsImpl = TIdsImpl<Item>;
-impl ItemArrayCopyImpl of Copy<Array<Item>>;
 
 #[generate_trait]
 impl ItemsImpl of ItemsTrait {

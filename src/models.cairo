@@ -7,13 +7,15 @@ mod pvp;
 mod combat;
 
 use blob_arena::models::{
-    attack::{Attack, AvailableAttack}, warrior::{WarriorToken, WarriorItems as WarriorItemsModel},
-    combatant::{CombatantInfo, CombatantStats, CombatantState}, item::Item as ItemModel,
-    commitment::Commitment as CommitmentModel,
+    attack::{Attack as AttackModel, AvailableAttack},
+    warrior::{WarriorToken, WarriorItems as WarriorItemsModel},
+    combatant::{CombatantInfo, CombatantStats, CombatantState, PlannedAttack},
+    item::Item as ItemModel, commitment::Commitment as CommitmentModel,
     pvp::{
-        PvPCombatants as PvPCombatantsModel, PvPCombatState as PvPCombatStateModel,
-        PvPPlannedAttack as PvPPlannedAttackModel, PvPChallengeInvite, PvPChallengeResponse,
-        PvPChallengeScore, PvPPhase, PvPWinner
+        PvPCombatants as PvPCombatantsModel, PvPPlannedAttack as PvPPlannedAttackModel,
+        PvPChallengeInvite, PvPChallengeResponse, PvPChallengeScore as PvPChallengeScoreModel
     },
-    combat::{Salts as SaltsModel},
+    combat::{
+        CombatState, Salts as SaltsModel, Attack as AttackEvent, AttackResult, AttackHit, Phase
+    },
 };

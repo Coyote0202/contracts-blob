@@ -13,6 +13,7 @@ mod components {
     mod combat;
     mod utils;
     mod pvp_challenge;
+    mod world;
 }
 mod systems {
     mod combat;
@@ -30,8 +31,9 @@ mod systems {
 // mod warrior;
 }
 mod contracts {
+    mod attack;
+    mod item;
     mod pvp;
-    mod items;
 }
 // mod constants;
 

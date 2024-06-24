@@ -28,7 +28,6 @@ impl ABIntoPvPWinner of Into<AB, PvPWinner> {
     }
 }
 
-type PvPPhase = Phase<PvPWinner>;
 // impl PvPPhaseDropImpl of Drop<PvPPhase>;
 
 #[dojo::model]
@@ -39,24 +38,11 @@ struct PvPCombatants {
     combatants: (u128, u128),
 }
 
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy, Introspect)]
-struct PvPCombatState {
-    #[key]
-    id: u128,
-    round: u32,
-    phase: PvPPhase,
-    block_number: u64,
-}
-
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct PvPPlannedAttack {
     #[key]
-    combat_id: u128,
-    #[key]
-    warrior_id: u128,
+    id: u128,
     attack: u128,
 }
 
@@ -67,7 +53,11 @@ struct PvPChallengeScore {
     #[key]
     player: ContractAddress,
     #[key]
-    warrior_id: u128,
+    collection_address: ContractAddress,
+    #[key]
+    token_high: u128,
+    #[key]
+    token_low: u128,
     wins: u64,
     losses: u64,
     max_consecutive_wins: u64,
@@ -78,23 +68,22 @@ struct PvPChallengeScore {
 #[derive(Copy, Drop, Print, Serde)]
 struct PvPChallengeInvite {
     #[key]
-    challenge_id: u128,
+    id: u128,
     sender: ContractAddress,
     receiver: ContractAddress,
-    token_id: u128,
+    collection_address: ContractAddress,
+    combatant: u128,
     phase_time: u64,
     open: bool,
-    collection_address: ContractAddress
 }
 
 #[dojo::model]
 #[derive(Copy, Drop, Print, Serde)]
 struct PvPChallengeResponse {
     #[key]
-    challenge_id: u128,
-    token_id: u128,
+    id: u128,
+    combatant: u128,
     open: bool,
-    combat_id: u128,
 }
 
 #[dojo::model]
