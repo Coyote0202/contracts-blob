@@ -1,12 +1,6 @@
 use blob_arena::components::stats::Stats;
 use dojo::world::{IWorldDispatcher};
 
-// struct Item {
-//     name: ByteArray,
-//     stats: Stats,
-//     attacks: Span<u128>,
-// }
-
 #[dojo::interface]
 trait IItemActions {
     fn set_item(
@@ -33,8 +27,7 @@ mod item_actions {
             let item = ItemModel { id, name, stats, attacks: attacks, };
             world.assert_caller_is_writer(Contract::Item);
             set!(world, (item,));
-            // id
-            12
+            id
         }
     }
 }
