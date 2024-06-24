@@ -1,16 +1,12 @@
-use core::traits::Into;
-use core::array::ArrayTrait;
-use core::clone::Clone;
 use alexandria_data_structures::array_ext::ArrayTraitExt;
 use starknet::{ContractAddress, get_caller_address};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    core::{U8ArrayCopyImpl, U128ArrayCopyImpl},
     components::{
         stats::Stats, attack::{Attack, AttackIdsImpl, IdsTrait, AttackTrait},
         warrior::{Warrior, WarriorTrait}, item::{Item, ItemsTrait, ItemArrayCopyImpl}
     },
-    models::{CombatantInfo, CombatantState},
+    models::{CombatantInfo, CombatantState, CombatantStats, AvailableAttack},
 };
 
 
@@ -102,29 +98,60 @@ impl CombatantImpl of CombatantTrait {
     //     }
     // }
     fn get_combatant_info(
-        self: IWorldDispatcher, combat_id: u128, warrior_id: u128
+        self: @IWorldDispatcher, combat_id: u128, warrior_id: u128
     ) -> CombatantInfo {
-        get!(self, (combat_id, warrior_id), CombatantInfo)
+        get!((*self), (combat_id, warrior_id), CombatantInfo)
     }
 
     fn get_combatant_state(
-        self: IWorldDispatcher, combat_id: u128, warrior_id: u128
+        self: @IWorldDispatcher, combat_id: u128, warrior_id: u128
     ) -> CombatantState {
-        get!(self, (combat_id, warrior_id), CombatantState)
+        get!((*self), (combat_id, warrior_id), CombatantState)
     }
 
+    fn get_combatant_stats(
+        self: @IWorldDispatcher, combat_id: u128, warrior_id: u128
+    ) -> CombatantStats {
+        get!((*self), (combat_id, warrior_id), CombatantStats)
+    }
+
+    fn set_available_attack(
+        ref self: IWorldDispatcher, combat_id: u128, warrior_id: u128, attack_id: u128
+    ) {
+        set!(
+            self,
+            AvailableAttack { combat_id, warrior_id, attack_id, available: true, last_used: 0 }
+        );
+    }
+    fn set_available_attacks(
+        ref self: IWorldDispatcher, combat_id: u128, warrior_id: u128, attack_ids: Span<u128>
+    ) {
+        let (len, mut n): (usize, usize) = (attack_ids.len(), 0);
+        while n < len {
+            self.set_available_attack(combat_id, warrior_id, *attack_ids.at(n));
+            n += 1;
+        }
+    }
     fn create_combatant(
-        self: IWorldDispatcher, warrior: Warrior, combat_id: u128
+        ref self: IWorldDispatcher, warrior_id: u128, combat_id: u128
     ) -> CombatantInfo {
-        let items = warrior.items.span();
+        let items = warrior.items;
         let combatant_info = CombatantInfo {
-            combat_id, warrior_id: warrior.id, player: warrior.owner, stats: items.get_stats(),
+            combat_id, warrior_id: warrior.id, player: warrior.owner
         };
+        let Stats { attack, mut defense, speed, strength, } = items.get_stats();
+        if defense > 155 {
+            defense = 155;
+        }
+        let combatant_stats = CombatantStats {
+            combat_id, warrior_id: warrior.id, attack, defense, speed, strength,
+        };
+
         let combatant_state = CombatantState {
-            combat_id, warrior_id: warrior.id, health: items.get_health(), stun_chance: 0,
+            combat_id, warrior_id: warrior.id, health: 100 + defense, stun_chance: 0,
         };
-        // set!(self, (combatant_info, combatant_state, combatant_attributes,));
-        set!(self, (combatant_info, combatant_state));
+        self.set_available_attacks(combat_id, warrior.id, items.get_attack_ids());
+        set!(self, (combatant_info, combatant_state, combatant_stats));
         combatant_info
     }
 

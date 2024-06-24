@@ -8,10 +8,10 @@ mod combat;
 
 use blob_arena::models::{
     attack::{Attack, AvailableAttack}, warrior::{WarriorToken, WarriorItems as WarriorItemsModel},
-    combatant::{CombatantInfo, CombatantState}, item::Item as ItemModel,
+    combatant::{CombatantInfo, CombatantStats, CombatantState}, item::Item as ItemModel,
     commitment::Commitment as CommitmentModel,
     pvp::{
-        PvPCombatants as PvPCombatantsModel, PvPCombatState,
+        PvPCombatants as PvPCombatantsModel, PvPCombatState as PvPCombatStateModel,
         PvPPlannedAttack as PvPPlannedAttackModel, PvPChallengeInvite, PvPChallengeResponse,
         PvPChallengeScore, PvPPhase, PvPWinner
     },

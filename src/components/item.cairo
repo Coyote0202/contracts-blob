@@ -3,7 +3,7 @@ use core::array::ArrayTrait;
 use starknet::{ContractAddress};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    core::U128ArrayCopyImpl, models::ItemModel,
+    models::ItemModel,
     components::{stats::Stats, attack::{Attack, AttackTrait}, utils::{IdTrait, IdsTrait, TIdsImpl}}
 };
 
@@ -11,7 +11,7 @@ use blob_arena::{
 struct Item {
     id: u128,
     stats: Stats,
-    attacks: Array<u128>,
+    attacks: Span<u128>,
 }
 
 // impl ByteArrayCopyImpl of Copy<ByteArray>;
@@ -28,15 +28,14 @@ impl ItemArrayCopyImpl of Copy<Array<Item>>;
 
 #[generate_trait]
 impl ItemsImpl of ItemsTrait {
-    fn get_attack_ids(self: Span<Item>) -> Array<u128> {
+    fn get_attack_ids(self: Span<Item>) -> Span<u128> {
         let mut ids: Array<u128> = ArrayTrait::new();
         let (len, mut n) = (self.len(), 0_usize);
         while n < len {
-            ids.append_span(self.at(n).attacks.span());
-
+            ids.append_span(*self.at(n).attacks);
             n += 1;
         };
-        ids.unique()
+        ids.unique().span()
     }
     // fn get_attacks(self: Span<Item>) -> Array<Attack> {
     //     let mut attacks: Array<Attack> = ArrayTrait::new();
@@ -57,9 +56,6 @@ impl ItemsImpl of ItemsTrait {
         };
         stats
     }
-    fn get_health(self: Span<Item>) -> u8 {
-        100
-    }
 }
 
 // impl ItemIntoItemModel of Into<Item, ItemModel> {
@@ -76,19 +72,19 @@ impl ItemsImpl of ItemsTrait {
 
 #[generate_trait]
 impl ItemImpl of ItemTrait {
-    fn get_item(self: IWorldDispatcher, id: u128) -> Item {
-        let ItemModel { id, name: _, stats, attacks } = get!(self, id, ItemModel);
+    fn get_item(self: @IWorldDispatcher, id: u128) -> Item {
+        let ItemModel { id, name: _, stats, attacks } = get!((*self), id, ItemModel);
         // let attacks = self.get_attacks(attack_ids);
-        Item { id, stats, attacks }
+        Item { id, stats, attacks: attacks.span() }
     }
-    fn get_items(self: IWorldDispatcher, ids: Array<u128>) -> Array<Item> {
+    fn get_items(self: @IWorldDispatcher, ids: Span<u128>) -> Span<Item> {
         let mut items: Array<Item> = ArrayTrait::new();
         let (len, mut n) = (ids.len(), 0_usize);
         while n < len {
             items.append(self.get_item(*ids[n]));
             n += 1;
         };
-        items
+        items.span()
     }
 }
 

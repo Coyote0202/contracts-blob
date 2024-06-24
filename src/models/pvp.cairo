@@ -81,7 +81,7 @@ struct PvPChallengeInvite {
     challenge_id: u128,
     sender: ContractAddress,
     receiver: ContractAddress,
-    warrior_id: u128,
+    token_id: u128,
     phase_time: u64,
     open: bool,
     collection_address: ContractAddress
@@ -92,7 +92,7 @@ struct PvPChallengeInvite {
 struct PvPChallengeResponse {
     #[key]
     challenge_id: u128,
-    warrior_id: u128,
+    token_id: u128,
     open: bool,
     combat_id: u128,
 }

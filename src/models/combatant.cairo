@@ -1,5 +1,5 @@
 use starknet::ContractAddress;
-use blob_arena::{components::{stats::Stats}, core::{U8ArrayCopyImpl, U128ArrayCopyImpl}};
+use blob_arena::{components::{stats::Stats}};
 
 
 #[dojo::model]
@@ -10,6 +10,22 @@ struct CombatantInfo {
     #[key]
     warrior_id: u128,
     player: ContractAddress,
+    collection_address: ContractAddress,
+    token_id: u256,
+}
+
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct CombatantStats {
+    #[key]
+    combat_id: u128,
+    #[key]
+    warrior_id: u128,
+    attack: u8,
+    defense: u8,
+    speed: u8,
+    strength: u8,
 }
 
 #[dojo::model]
@@ -19,8 +35,6 @@ struct CombatantState {
     combat_id: u128,
     #[key]
     warrior_id: u128,
-    stats: Stats,
     health: u8,
     stun_chance: u8
 }
-

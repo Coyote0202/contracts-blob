@@ -17,17 +17,17 @@ impl AttackIdsImpl = TIdsImpl<Attack>;
 
 #[generate_trait]
 impl AttackImpl of AttackTrait {
-    fn get_attack(self: IWorldDispatcher, id: u128) -> Attack {
-        get!(self, id, Attack)
+    fn get_attack(self: @IWorldDispatcher, id: u128) -> Attack {
+        get!((*self), id, Attack)
     }
-    fn get_attacks(self: IWorldDispatcher, ids: Array<u128>) -> Array<Attack> {
+    fn get_attacks(self: @IWorldDispatcher, ids: Span<u128>) -> Span<Attack> {
         let mut attacks: Array<Attack> = ArrayTrait::new();
         let (len, mut n) = (ids.len(), 0_usize);
         while n < len {
             attacks.append(self.get_attack(*ids[n]));
             n += 1;
         };
-        attacks
+        attacks.span()
     }
 // fn get_available_attack(
 //     self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,

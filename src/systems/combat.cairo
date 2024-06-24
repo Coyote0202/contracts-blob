@@ -40,17 +40,30 @@ fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
 
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
-    fn get_damage(self: CombatantInfo, attack: Attack, critical: bool, seed: u256) -> u8 {
+    fn get_damage(self: CombatantStats, attack: Attack, critical: bool, seed: u256) -> u8 {
         //TODO: Implement damage calculation
-        0
+        let mut damage: u32 = attack.damage.into();
+        damage *= if critical {
+            17
+        } else {
+            10
+        }
+        damage /= 10;
+        if damage > 255 {
+            damage = 255;
+        }
+        damage.try_into().unwrap()
     }
 
-    fn did_hit(self: CombatantInfo, attack: Attack, seed: u256) -> bool {
+    fn did_hit(self: CombatantStats, attack: Attack, seed: u256) -> bool {
         (BitShift::shr(seed, 8) % 255).try_into().unwrap() < attack.accuracy
     }
 
-    fn did_critical(self: CombatantInfo, attack: Attack, seed: u256) -> bool {
-        (BitShift::shr(seed, 16) % 255).try_into().unwrap() < attack.critical
+    fn did_critical(self: CombatantStats, attack: Attack, seed: u256) -> bool {
+        let critical: u32 = attack.critical;
+        critical *= 255 + self.stats.strength;
+
+        (BitShift::shr(seed, 16) % 65536).try_into().unwrap() < critical
     }
 
     fn is_stunned(self: CombatantState, seed: u256) -> bool {
@@ -106,24 +119,24 @@ impl CombatWorldImp<T, +Drop<T>, +Copy<T>> of CombatWorldTraits<T> {
 
     fn run_attack(
         self: CombatWorld<T>,
-        attacker_attr: CombatantInfo,
+        attacker_stats: CombatantStats,
         ref attacker_state: CombatantState,
         ref defender_state: CombatantState,
         attack: Attack,
         hash: HashState
     ) -> AttackResult {
-        if !self.run_attack_check(attacker_attr, attack) { //#
+        if !self.run_attack_check(attacker_stats, attack) { //#
             return AttackResult::Failed;
         }
-        let seed: u256 = hash.update(attacker_attr.warrior_id.into()).finalize().into(); //#
+        let seed: u256 = hash.update(attacker_stats.warrior_id.into()).finalize().into(); //#
         if attacker_state.run_stun(seed) {
             return AttackResult::Stunned;
         }
-        if !attacker_attr.did_hit(attack, seed) {
+        if !attacker_stats.did_hit(attack, seed) {
             return AttackResult::Miss;
         }
-        let critical = attacker_attr.did_critical(attack, seed);
-        let damage = attacker_attr.get_damage(attack, critical, seed);
+        let critical = attacker_stats.did_critical(attack, seed);
+        let damage = attacker_stats.get_damage(attack, critical, seed);
 
         defender_state.health.subeq(damage);
         if attack.stun > 0 {

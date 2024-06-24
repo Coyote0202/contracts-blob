@@ -3,8 +3,8 @@ cairo-version = "2.6.3"
 name = "blob_arena"
 version = "0.1.0"
 
-[cairo]
-sierra-replace-ids = true
+# [cairo]
+# sierra-replace-ids = true
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v0.7.1" }
@@ -22,5 +22,5 @@ rpc_url = "http://localhost:5050"
 account_address = "0xb3ff441a68610b30fd5e2abbf3a1548eb6ba6f3559f2862bf2dc757e5828ca"
 private_key = "0x2bbf4f9fd0bbb2e60b0316c1fe0b76cf7a4d0198bd493ced9b8df2a3a24d68a"
 
-[tool.fmt]
-sort-module-level-Stats = true
+# [tool.fmt]
+# sort-module-level-Stats = true

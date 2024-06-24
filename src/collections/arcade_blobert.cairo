@@ -22,11 +22,11 @@ mod arcade_blobert_actions {
             world.get_owner(token_id)
         }
 
-        fn get_items(self: @ContractState, token_id: u256) -> Array<u128> {
+        fn get_items(self: @ContractState, token_id: u256) -> Span<u128> {
             let world = self.world();
             let blobert_trait = world.get_traits(token_id);
             let (background, armour, jewelry, mask, weapon) = world.get_item_ids(blobert_trait);
-            array![background, armour, jewelry, mask, weapon]
+            array![background, armour, jewelry, mask, weapon].span()
         }
     }
 }

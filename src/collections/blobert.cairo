@@ -1,7 +1,7 @@
 mod external;
 mod items;
 
-#[starknet::contract]
+#[dojo::contract]
 mod blobert_actions {
     use starknet::ContractAddress;
     use token::components::token::{erc721::interface::{IERC721Dispatcher, IERC721DispatcherTrait}};
@@ -15,10 +15,6 @@ mod blobert_actions {
             items::BlobertItemsTrait
         },
     };
-
-    #[storage]
-    struct Storage {}
-
     #[abi(embed_v0)]
     impl ICollectionImpl of ICollection<ContractState> {
         fn owner_of(self: @ContractState, token_id: u256) -> ContractAddress {
@@ -26,12 +22,12 @@ mod blobert_actions {
             IERC721DispatcherTrait::owner_of(dispatcher, token_id)
         }
 
-        fn get_items(self: @ContractState, token_id: u256) -> Array<u128> {
+        fn get_items(self: @ContractState, token_id: u256) -> Span<u128> {
             let world = self.world();
             let dispatcher = get_blobert_dispatcher();
             let blobert_trait: TokenTrait = dispatcher.traits(token_id);
             let (background, armour, jewelry, mask, weapon) = world.get_item_ids(blobert_trait);
-            array![background, armour, jewelry, mask, weapon]
+            array![background, armour, jewelry, mask, weapon].span()
         }
     }
 }

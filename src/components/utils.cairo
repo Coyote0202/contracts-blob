@@ -5,18 +5,18 @@ trait IdTrait<T> {
 }
 
 trait IdsTrait<T> {
-    fn ids(self: Span<T>) -> Array<u128>;
+    fn ids(self: Span<T>) -> Span<u128>;
 }
 
 impl TIdsImpl<T, +IdTrait<T>, +Drop<T>, +Copy<T>> of IdsTrait<T> {
-    fn ids(self: Span<T>) -> Array<u128> {
+    fn ids(self: Span<T>) -> Span<u128> {
         let mut ids: Array<u128> = ArrayTrait::new();
         let (len, mut n) = (self.len(), 0_usize);
         while (n < len) {
             ids.append((*self.at(n)).id());
             n += 1;
         };
-        ids
+        ids.span()
     }
 }
 

@@ -6,8 +6,8 @@ use blob_arena::{
         utils::{Winner, AB, ABT, ABTTrait}
     },
     models::{
-        PvPChallengeInvite, PvPChallengeResponse, PvPChallengeScore, PvPCombatModel,
-        PvPCombatStateModel, PvPWinner
+        PvPChallengeInvite, PvPChallengeResponse, PvPChallengeScore, PvPCombatStateModel, PvPWinner,
+        PvPCombatantsModel
     }
 };
 
@@ -26,23 +26,6 @@ struct PvPChallenge {
 }
 
 
-impl PvPChallengeIntoPvPCombatImpl of Into<PvPChallenge, (PvPCombatModel, PvPCombatStateModel)> {
-    fn into(self: PvPChallenge) -> (PvPCombatModel, PvPCombatStateModel) {
-        (
-            PvPCombatModel {
-                id: self.challenge_id, combatants: (self.sender_warrior, self.receiver_warrior),
-            },
-            PvPCombatStateModel {
-                id: self.challenge_id,
-                players_state: (false, false),
-                phase: Phase::Commit,
-                round: 0,
-                block_number: get_block_number(),
-            }
-        )
-    }
-}
-
 fn make_challenge(
     world: IWorldDispatcher, invite: PvPChallengeInvite, response: PvPChallengeResponse
 ) -> PvPChallenge {
@@ -50,8 +33,8 @@ fn make_challenge(
         challenge_id: invite.challenge_id,
         sender: invite.sender,
         receiver: invite.receiver,
-        sender_warrior: invite.warrior_id,
-        receiver_warrior: response.warrior_id,
+        sender_token_id: invite.token_id,
+        receiver_token_id: response.token_id,
         phase_time: invite.phase_time,
         invite_open: invite.open,
         response_open: response.open,
@@ -108,8 +91,18 @@ impl PvPChallengeImpl of PvPChallengeTrait {
         caller
     }
 
-    fn to_combat(self: PvPChallenge) -> (PvPCombatModel, PvPCombatStateModel) {
-        self.into()
+    fn to_combat(self: PvPChallenge) -> (PvPCombatantsModel, PvPCombatStateModel) {
+        (
+            PvPCombatantsModel {
+                id: self.challenge_id, combatants: (self.sender_warrior, self.receiver_warrior),
+            },
+            PvPCombatStateModel {
+                id: self.challenge_id,
+                phase: Phase::Commit,
+                round: 1,
+                block_number: get_block_number(),
+            }
+        )
     }
 
     fn assert_caller_receiver(self: PvPChallenge) -> ContractAddress {
@@ -156,9 +149,11 @@ impl PvPChallengeImpl of PvPChallengeTrait {
             combat_id: self.combat_id,
         }
     }
-    fn create_game(self: IWorldDispatcher, challenge: PvPChallenge) {
-        let (challenge, state) = challenge.to_combat();
-        set!(self, (challenge, state));
+    fn create_game(ref self: IWorldDispatcher, challenge: PvPChallenge) {
+        let (combatants, state) = challenge.to_combat();
+        let (combatant_a, combatant_b) = combatants.combatants;
+        self.set
+        set!(self, (combatants, state));
     }
 }
 
