@@ -1,21 +1,27 @@
-use alexandria_data_structures::array_ext::SpanTraitExt;
-use alexandria_data_structures::array_ext::ArrayTraitExt;
+use core::traits::Into;
 use core::{
     hash::HashStateTrait, poseidon::{PoseidonTrait, HashState},
     dict::{Felt252Dict, Felt252DictTrait}
 };
+
+// use alexandria_data_structures::array_ext::SpanTraitExt;
+// use alexandria_data_structures::array_ext::ArrayTraitExt;
+use cubit::f128::types::fixed::{FixedTrait, Fixed, HALF};
+
 use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{
-        combat::{Phase, AttackResult, AttackHit},
+        combat::{Phase, AttackEffect, AttackHit},
         combatant::{CombatantState, CombatantStats, CombatantInfo, CombatantTrait},
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
-    models::{AttackEvent},
+    models::{AttackResult},
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
+const TWO_HUNDREDTH: felt252 = 368934881474191032;
+const FIXED_255: u128 = 4703919738795935662080;
 
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
@@ -24,10 +30,29 @@ struct PlannedAttack {
     target: u128,
 }
 
-fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
-    current_stun
-        + attack_stun
-        - (current_stun.into() * attack_stun.into() / 255_u16).try_into().unwrap()
+
+fn apply_strength_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>>(strength: u8, value: u8) -> T {
+    let value_float: Fixed = value.into() / 100_u8.into();
+    let strength_float: Fixed = FixedTrait::from_felt(HALF)
+        + (100 - strength).into() * FixedTrait::from_felt(TWO_HUNDREDTH);
+
+    let new_value = (value_float.pow(strength_float) * Fixed { mag: FIXED_255, sign: false });
+    if new_value.mag > FIXED_255 {
+        255_u8.into()
+    } else {
+        new_value.try_into().unwrap()
+    }
+}
+
+fn get_new_stun_chance(current_stun: u8, strength: u8, attack_stun: u8) -> u8 {
+    let stun_chance = apply_strength_modifier(strength, attack_stun);
+    let mut new_stun = current_stun.into()
+        + stun_chance
+        - (current_stun.into() * stun_chance / 255_u16);
+    if new_stun > 255 {
+        new_stun = 255;
+    };
+    new_stun.try_into().unwrap()
 }
 
 
@@ -35,28 +60,26 @@ fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
 impl AttackerImpl of AttackerTrait {
     fn get_damage(self: CombatantStats, attack: Attack, critical: bool, seed: u256) -> u8 {
         //TODO: Implement damage calculation
-        let mut damage: u32 = attack.damage.into();
-        damage *= if critical {
-            17
+        let mut damage: u32 = attack.damage.into() * 2 + self.attack.into(); // max value 300
+
+        damage /= if critical {
+            4
         } else {
-            10
+            8
         };
-        damage /= 10;
         if damage > 255 {
             damage = 255;
-        }
+        };
         damage.try_into().unwrap()
     }
 
     fn did_hit(self: CombatantStats, attack: Attack, seed: u256) -> bool {
-        (BitShift::shr(seed, 8) % 255).try_into().unwrap() < attack.accuracy
+        (BitShift::shr(seed, 8) % 100).try_into().unwrap() < attack.accuracy
     }
 
     fn did_critical(self: CombatantStats, attack: Attack, seed: u256) -> bool {
-        let mut critical: u32 = attack.critical.into();
-        critical *= 255 + self.strength.into();
-
-        (BitShift::shr(seed, 16) % 65536).try_into().unwrap() < critical
+        let critical: u8 = apply_strength_modifier(self.strength, attack.critical);
+        (BitShift::shr(seed, 16) % 255).try_into().unwrap() < critical
     }
 
     fn is_stunned(self: CombatantState, seed: u256) -> bool {
@@ -96,9 +119,9 @@ impl CombatWorldImp of CombatWorldTraits {
         round: u32,
         attack: u128,
         target: u128,
-        result: AttackResult
+        effect: AttackEffect
     ) {
-        emit!(self, AttackEvent { combatant_id, round, attack, target, result });
+        emit!(self, AttackResult { combatant_id, round, attack, target, effect });
     }
 
     fn run_attack(
@@ -111,10 +134,10 @@ impl CombatWorldImp of CombatWorldTraits {
         hash: HashState
     ) {
         let seed: u256 = hash.update(attacker_stats.id.into()).finalize().into();
-        let result = if !self.run_attack_check(attacker_stats.id, attack, round) {
-            AttackResult::Failed
+        let effect = if !self.run_attack_check(attacker_stats.id, attack, round) {
+            AttackEffect::Failed
         } else if attacker_state.run_stun(seed) {
-            AttackResult::Stunned
+            AttackEffect::Stunned
         } else if attacker_stats.did_hit(attack, seed) {
             let critical = attacker_stats.did_critical(attack, seed);
             let damage = attacker_stats.get_damage(attack, critical, seed);
@@ -122,48 +145,16 @@ impl CombatWorldImp of CombatWorldTraits {
             defender_state.health.subeq(damage);
             if attack.stun > 0 {
                 defender_state
-                    .stun_chance = get_new_stun_chance(defender_state.stun_chance, attack.stun);
+                    .stun_chance =
+                        get_new_stun_chance(
+                            defender_state.stun_chance, attacker_stats.strength, attack.stun
+                        );
             };
-            AttackResult::Hit(AttackHit { damage, stun: attack.stun, critical })
+            AttackEffect::Hit(AttackHit { damage, stun: attack.stun, critical })
         } else {
-            AttackResult::Miss
+            AttackEffect::Miss
         };
-        self.emit_attack_event(attacker_stats.id, round, attack.id, defender_state.id, result);
+        self.emit_attack_event(attacker_stats.id, round, attack.id, defender_state.id, effect);
     }
 }
-// fn run_attacks(
-//      self: IWorldDispatcher,
-//     combatant_stats: Felt252Dict<Box<CombatantStats>>,
-//     combatant_states: Felt252Dict<CombatantState>,
-//     planned_attacks: Span<PlannedAttack>
-// ) {
-//     let (mut n, len) = (0, planned_attacks.len());
-//     while n < len {
-//         let planned_attack = planned_attacks.at(n);
-//         let attacker_stats = combatant_stats.get(planned_attack.combatant.into());
-
-//         let attacker_state = combatant_states.get(planned_attack.combatant);
-//         let defender_state = combatant_states.get(planned_attack.target);
-//         let attack = planned_attack.attack;
-//         let result = self
-//             .run_attack(
-//                 attacker_stats,
-//                 attacker_state,
-//                 defender_state,
-//                 attack,
-//                 self.round,
-//                 self.world.get_hash()
-//             );
-//         self
-//             .emit_attack_event(
-//                 planned_attack.combatant,
-//                 self.round,
-//                 attack.id,
-//                 planned_attack.target,
-//                 result.into()
-//             );
-//         n += 1;
-//     }
-// }
-
 

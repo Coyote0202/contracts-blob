@@ -2,6 +2,7 @@ mod models;
 mod core;
 mod collections;
 mod utils;
+mod world;
 mod components {
     mod attack;
     mod warrior;
@@ -13,7 +14,6 @@ mod components {
     mod combat;
     mod utils;
     mod pvp_challenge;
-    mod world;
 }
 mod systems {
     mod combat;

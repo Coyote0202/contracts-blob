@@ -55,7 +55,7 @@ fn get_custom_trait_id(blobert_trait: BlobertTrait, custom_id: u8) -> u128 {
 
 #[generate_trait]
 impl BlobertItems of BlobertItemsTrait {
-    fn set_blobert_trait_contract_id(
+    fn set_item_map(
         self: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
     ) {
         set!(self, ItemMap { blobert_trait_id: get_trait_id(blobert_trait, trait_id), item_id, });

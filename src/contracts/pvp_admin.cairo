@@ -22,9 +22,8 @@ mod pvp_admin_actions {
     use blob_arena::{
         components::{
             combatant::CombatantTrait, combat::CombatStateTrait, pvp_combat::PvPCombatTrait,
-            world::{Contract, WorldTrait}
         },
-        utils::uuid
+        utils::uuid, world::{Contract, WorldTrait}
     };
     use super::IPvPAdminActions;
 

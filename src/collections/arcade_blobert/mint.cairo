@@ -52,18 +52,24 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn mint_blobert(self: IWorldDispatcher) -> u256 {
         let caller = get_caller_address();
         let timestamp = get_block_timestamp();
-        let random = hash_value(('arcade', get_block_timestamp(), uuid(self)));
+        assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
+
+        let random = hash_value(('arcade', timestamp, uuid(self)));
         let token_id = felt252_to_uuid(random);
+
         let seed = generate_seed(random);
 
         self
             .set_arcade_blobert(
                 ArcadeBlobert { token_id, owner: caller, traits: TokenTrait::Regular(seed) }
             );
+        self.set_last_mint(caller, timestamp);
         token_id.into()
     }
     fn get_last_mint(self: @IWorldDispatcher, caller: ContractAddress) -> u64 {
-        get!((*self), (caller), LastMint)
+        get!((*self), (caller), LastMint).timestamp
     }
-    fn set_last_min
+    fn set_last_mint(self: IWorldDispatcher, player: ContractAddress, timestamp: u64) {
+        set!(self, LastMint { player, timestamp });
+    }
 }

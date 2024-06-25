@@ -21,7 +21,7 @@ mod attack_actions {
     use starknet::{ContractAddress, get_caller_address};
 
     use blob_arena::{
-        components::{stats::Stats, world::{WorldTrait, Contract}}, models::AttackModel, utils::uuid
+        components::{stats::Stats,}, models::AttackModel, utils::uuid, world::{WorldTrait, Contract}
     };
 
     use super::IAttackActions;
