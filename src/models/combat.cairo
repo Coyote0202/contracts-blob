@@ -24,13 +24,24 @@ struct AttackHit {
 }
 
 #[derive(Drop, Serde, Copy, Introspect)]
-enum AttackResult {
+enum AttackEffect {
     Failed,
     Stunned,
     Miss,
     Hit: AttackHit,
 }
 
+#[dojo::event]
+#[derive(Drop, Serde, Copy)]
+struct AttackResult {
+    #[key]
+    combatant_id: u128,
+    #[key]
+    round: u32,
+    attack: u128,
+    target: u128,
+    effect: AttackEffect,
+}
 
 #[dojo::model]
 #[derive(Drop, Serde)]
@@ -38,17 +49,5 @@ struct Salts {
     #[key]
     id: u128,
     salts: Array<felt252>
-}
-
-#[dojo::event]
-#[derive(Drop, Serde, Copy)]
-struct Attack {
-    #[key]
-    combatant_id: u128,
-    #[key]
-    round: u32,
-    attack: u128,
-    target: u128,
-    result: AttackResult,
 }
 

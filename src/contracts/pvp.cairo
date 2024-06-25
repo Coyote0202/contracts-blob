@@ -33,11 +33,11 @@ mod pvp_actions {
     use starknet::{ContractAddress, get_caller_address};
     use blob_arena::{
         components::{
-            combat::{SaltsTrait, Phase, CombatStateTrait, PlannedAttackTrait},
-            combatant::{CombatantInfo, CombatantTrait}, commitment::{Commitment,},
-            pvp_combat::{PvPCombatTrait, ABStateTrait},
+            combat::{SaltsTrait, Phase, CombatStateTrait, CombatStatesTrait, PlannedAttackTrait},
+            combatant::{CombatantInfo, CombatantTrait,}, commitment::{Commitment,},
+            pvp_combat::{PvPCombatTrait},
             pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},
-            utils::ABTTrait, warrior::{Warrior, WarriorTrait, get_warrior_id},
+            utils::{ABTTrait, ABT, ABTOtherTrait}, warrior::{Warrior, WarriorTrait, get_warrior_id},
         },
         systems::pvp_combat::PvPCombatSystemTrait, utils::{uuid, hash_value},
     };
@@ -139,8 +139,8 @@ mod pvp_actions {
             let combatant = world.get_combatant_info(combatant_id);
             combatant.assert_player();
             let mut combat = world.get_combat_state(combatant.combat_id);
+            let combatants = world.get_pvp_combatants(combat.id);
             if combat.phase == Phase::Commit {
-                let combatants = world.get_pvp_combatants(combat.id);
                 if world.check_commitments_set_with(combatants.into()) {
                     combat.phase = Phase::Reveal;
                     set!(world, (combat,))
@@ -151,34 +151,44 @@ mod pvp_actions {
             let commitment = world.get_commitment_with(combatant_id);
             if hash == commitment {
                 world.append_salt(combat.id, salt);
-            } else {}
+            } else {
+                let winner_id = combatants.other(combatant_id);
+                world.end_combat(combat, winner_id);
+                world.update_scores(world.get_combatant_info(winner_id), combatant);
+            }
         }
         fn run_round(ref world: IWorldDispatcher, combat_id: u128) {
             let mut combat = world.get_combat_state(combat_id);
             let combatants = world.get_pvp_combatants(combat_id);
+            let combatants_span: Span<u128> = combatants.into();
             assert(combat.phase == Phase::Reveal, 'Not in reveal phase');
+            let hash = world.get_salts_hash_state(combat_id);
 
-            let planned_attacks = world.get_planned_attacks(combatants.into());
+            let planned_attacks = world.get_planned_attacks(combatants_span);
             assert(planned_attacks.check_all_set(), 'Not all attacks revealed');
-            world.run_round(combat, planned_attacks);
-            // combat_world
-            //     .run_round(combat.combatants, attacks, world.get_salts_hash_state(combat_id));
-            // combat.phase = Phase::Commit;
+            let states = world
+                .run_round(combatants, planned_attacks.try_into().unwrap(), combat.round, hash);
+            let (alive, dead) = states.get_combatants_mortality();
+            if (alive.len() > 1) {
+                world.next_round(combat, combatants_span);
+            } else {
+                let winner_id = *alive.at(0);
+                let winner = world.get_combatant_info(winner_id);
+                let looser = world.get_combatant_info(*dead.at(0));
 
-            world.clear_planned_attacks(combatants.into());
-            world.next_round(combat);
+                world.end_combat(combat, winner_id);
+                world.update_scores(winner, looser);
+            }
         }
-        fn forfeit(
-            ref world: IWorldDispatcher, combatant_id: u128
-        ) { // let combatant = world.get_combatant_info(combatant_id);
-        // let mut combat = world.get_combat_state(combatant_id.combat_id);
-        // combat.assert_running();
-        // let ab = combat.combatants.get_combatant_ab(warrior_id);
-        // let combatant = combat.combatants.get(ab);
-        // combatant.assert_player();
-        // let winner: PvPWinner = (!ab).into();
-        // world.end_game(combat_id, winner);
-        // world.update_scores(combat.combatants, winner);
+        fn forfeit(ref world: IWorldDispatcher, combatant_id: u128) {
+            let loser = world.get_combatant_info(combatant_id);
+            loser.assert_player();
+            let mut combat = world.get_running_combat_state(loser.combat_id);
+            let combatants = world.get_pvp_combatants(combat.id);
+            let winner_id = combatants.other(loser.id);
+            let winner = world.get_combatant_info(winner_id);
+            world.end_combat(combat, winner_id);
+            world.update_scores(winner, loser);
         }
         fn kick_inactive_player(
             ref world: IWorldDispatcher, combatant_id: u128

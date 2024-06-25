@@ -1,4 +1,4 @@
-use blob_arena::components::{combat::{Phase, AttackResult}, utils::{AB, ABT}};
+use blob_arena::components::{combat::{Phase, AttackEffect}, utils::{AB, ABT}};
 use starknet::{ContractAddress};
 use dojo::database::introspect::Introspect;
 
@@ -36,14 +36,6 @@ struct PvPCombatants {
     #[key]
     id: u128,
     combatants: (u128, u128),
-}
-
-#[dojo::model]
-#[derive(Drop, Serde)]
-struct PvPPlannedAttack {
-    #[key]
-    id: u128,
-    attack: u128,
 }
 
 
@@ -84,13 +76,4 @@ struct PvPChallengeResponse {
     id: u128,
     combatant: u128,
     open: bool,
-}
-
-#[dojo::model]
-#[derive(Copy, Drop, Print, Serde, Introspect)]
-struct PvPRoundEvent {
-    #[key]
-    combat_id: u128,
-    first: AB,
-    attack_results: ABT<AttackResult>
 }

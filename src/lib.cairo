@@ -34,6 +34,7 @@ mod contracts {
     mod attack;
     mod item;
     mod pvp;
+    mod pvp_admin;
 }
 // mod constants;
 

@@ -12,10 +12,8 @@ use blob_arena::models::{
     combatant::{CombatantInfo, CombatantStats, CombatantState, PlannedAttack},
     item::Item as ItemModel, commitment::Commitment as CommitmentModel,
     pvp::{
-        PvPCombatants as PvPCombatantsModel, PvPPlannedAttack as PvPPlannedAttackModel,
-        PvPChallengeInvite, PvPChallengeResponse, PvPChallengeScore as PvPChallengeScoreModel
+        PvPCombatants as PvPCombatantsModel, PvPChallengeInvite, PvPChallengeResponse,
+        PvPChallengeScore as PvPChallengeScoreModel
     },
-    combat::{
-        CombatState, Salts as SaltsModel, Attack as AttackEvent, AttackResult, AttackHit, Phase
-    },
+    combat::{CombatState, Salts as SaltsModel, AttackResult, AttackEffect, AttackHit, Phase},
 };

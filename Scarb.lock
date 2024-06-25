@@ -39,9 +39,15 @@ name = "blob_arena"
 version = "0.1.0"
 dependencies = [
  "alexandria_math",
+ "cubit",
  "dojo",
  "token",
 ]
+
+[[package]]
+name = "cubit"
+version = "1.3.0"
+source = "git+https://github.com/notV4l/cubit.git?branch=cairo_2.7#cadb27aa62509ad9059dfac4f075317893f1f614"
 
 [[package]]
 name = "dojo"

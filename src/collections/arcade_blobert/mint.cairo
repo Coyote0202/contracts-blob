@@ -1,8 +1,10 @@
-use starknet::{ContractAddress, get_caller_address};
+use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use alexandria_math::BitShift;
 
-use blob_arena::{utils::felt252_to_uuid, collections::blobert::external::{Seed, TokenTrait}};
+use blob_arena::{
+    utils::{felt252_to_uuid, uuid, hash_value}, collections::blobert::external::{Seed, TokenTrait}
+};
 use super::blobert::{ArcadeBlobertTrait, ArcadeBlobert};
 
 const ARMOUR_COUNT: u8 = 17;
@@ -10,6 +12,16 @@ const JEWELRY_COUNT: u8 = 8;
 const BACKGROUND_COUNT: u8 = 12;
 const MASK_COUNT: u8 = 26;
 const WEAPON_COUNT: u8 = 43;
+
+const SECONDS_IN_DAY: u64 = 86400;
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct LastMint {
+    #[key]
+    player: ContractAddress,
+    timestamp: u64,
+}
 
 
 fn generate_seed(randomness: felt252) -> Seed {
@@ -37,12 +49,10 @@ fn generate_seed(randomness: felt252) -> Seed {
 
 #[generate_trait]
 impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
-    fn get_random_felt(self: @IWorldDispatcher) -> felt252 {
-        0
-    }
     fn mint_blobert(self: IWorldDispatcher) -> u256 {
         let caller = get_caller_address();
-        let random = self.get_random_felt();
+        let timestamp = get_block_timestamp();
+        let random = hash_value(('arcade', get_block_timestamp(), uuid(self)));
         let token_id = felt252_to_uuid(random);
         let seed = generate_seed(random);
 
@@ -52,4 +62,8 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
             );
         token_id.into()
     }
+    fn get_last_mint(self: @IWorldDispatcher, caller: ContractAddress) -> u64 {
+        get!((*self), (caller), LastMint)
+    }
+    fn set_last_min
 }

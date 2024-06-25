@@ -1,8 +1,9 @@
 mod blobert;
 mod mint;
+use dojo::world::{IWorldDispatcher};
 
 #[dojo::interface]
-trait IArcadeBlobert {
+trait IArcadeBlobert<TContractState> {
     fn mint(ref world: IWorldDispatcher) -> u256;
 }
 
@@ -11,8 +12,9 @@ mod arcade_blobert_actions {
     use starknet::ContractAddress;
     use blob_arena::collections::{
         interface::ICollection, blobert::{items::BlobertItemsTrait},
-        arcade_blobert::blobert::{ArcadeBlobert, ArcadeBlobertTrait}
+        arcade_blobert::{blobert::{ArcadeBlobert, ArcadeBlobertTrait}, mint::ArcadeBlobertMintTrait}
     };
+    use super::IArcadeBlobert;
 
 
     #[abi(embed_v0)]
@@ -27,6 +29,13 @@ mod arcade_blobert_actions {
             let blobert_trait = world.get_traits(token_id);
             let (background, armour, jewelry, mask, weapon) = world.get_item_ids(blobert_trait);
             array![background, armour, jewelry, mask, weapon].span()
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl IArcadeBlobertImpl of IArcadeBlobert<ContractState> {
+        fn mint(ref world: IWorldDispatcher) -> u256 {
+            world.mint_blobert()
         }
     }
 }

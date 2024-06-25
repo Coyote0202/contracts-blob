@@ -42,8 +42,18 @@ struct ABT<T> {
     b: T,
 }
 
-// impl ABTDropImpl<T, +Drop<T>> of Drop<ABT<T>>;
+// impl ABTDropImpl<T, +Drop<T>, -Drop<ABT<T>>> of Drop<ABT<T>>;
 // impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
+
+impl SpanTryIntoABT<T, +Drop<T>, +Copy<T>> of TryInto<Span<T>, ABT<T>> {
+    fn try_into(self: Span<T>) -> Option<ABT<T>> {
+        if self.len() == 2 {
+            Option::Some(ABT { a: *self.at(0), b: *self.at(1) })
+        } else {
+            Option::None
+        }
+    }
+}
 
 impl TupleIntoABT<T, +Drop<T>,> of Into<(T, T), ABT<T>> {
     fn into(self: (T, T)) -> ABT<T> {
@@ -101,6 +111,38 @@ impl ABTImpl<T, +Drop<T>> of ABTTrait<T> {
     }
 }
 
+#[generate_trait]
+impl ABTOtherImpl<T, +PartialEq<T>, +Drop<T>> of ABTOtherTrait<T> {
+    fn other(self: ABT<T>, value: T) -> T {
+        if self.a == value {
+            self.b
+        } else if self.b == value {
+            self.a
+        } else {
+            panic!("Value not found in ABT")
+        }
+    }
+}
+
+#[generate_trait]
+impl ABTLogicImpl<T, +Zero<T>, +Drop<T>> of ABTLogicTrait<T> {
+    fn is_neither_zero(self: @ABT<T>) -> bool {
+        self.a.is_non_zero() && self.b.is_non_zero()
+    }
+}
+
+impl ABTZeroImpl<T, +Zero<T>, +Drop<T>> of Zero<ABT<T>> {
+    fn zero() -> ABT<T> {
+        ABT { a: Zero::<T>::zero(), b: Zero::zero() }
+    }
+    fn is_zero(self: @ABT<T>) -> bool {
+        self.a.is_zero() && self.b.is_zero()
+    }
+    fn is_non_zero(self: @ABT<T>) -> bool {
+        !self.is_zero()
+    }
+}
+
 #[derive(Copy, Drop, Print, Serde, PartialEq)]
 enum Winner {
     A,
@@ -149,6 +191,17 @@ impl NotAB of Not<AB> {
             AB::A => AB::B,
             AB::B => AB::A,
         }
+    }
+}
+
+#[generate_trait]
+impl ABBoolImpl of ABBoolTrait {
+    fn both_true(self: ABT<bool>) -> bool {
+        self.a && self.b
+    }
+    fn reset(ref self: ABT<bool>) {
+        self.a = false;
+        self.b = false;
     }
 }
 // impl DisplayImplT<T, +Into<T, ByteArray>, +Copy<T>> of Display<T> {

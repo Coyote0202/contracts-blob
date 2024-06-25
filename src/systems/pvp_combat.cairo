@@ -6,7 +6,7 @@ use blob_arena::{
         combatant::{CombatantStats, CombatantState, CombatantTrait}, attack::{Attack, AttackTrait},
         utils::{AB, ABT, ABTTrait}
     },
-    systems::{combat::{AttackResult, CombatWorldTraits}},
+    systems::{combat::{AttackEffect, CombatWorldTraits}}, models::PlannedAttack,
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
@@ -26,12 +26,12 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         planned_attacks: ABT<PlannedAttack>,
         round: u32,
         hash: HashState
-    ) -> ABT<CombatantState> {
+    ) -> Span<CombatantState> {
         let stats = ABTTrait::new(
             self.get_combatant_stats(combatant_ids.a), self.get_combatant_stats(combatant_ids.b)
         );
         let attacks = ABTTrait::new(
-            self.get_attack(planned_attacks.a.attack), self.get_attack(attack_ids.b)
+            self.get_attack(planned_attacks.a.attack), self.get_attack(planned_attacks.a.attack)
         );
 
         let speed_a = attacks.a.speed + stats.a.speed;
@@ -52,10 +52,6 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         self.run_attack(stats_1, ref state_1, ref state_2, attacks.get(first), round, hash);
         self.run_attack(stats_2, ref state_2, ref state_1, attacks.get(!first), round, hash);
         set!(self, (state_1, state_2));
-
-        match first {
-            AB::A => (ABTTrait::new(state_1, state_2)),
-            AB::B => (ABTTrait::new(state_2, state_1)),
-        }
+        array![state_1, state_2].span()
     }
 }

@@ -3,7 +3,7 @@ use dojo::world::{IWorldDispatcher};
 
 #[dojo::interface]
 trait IAttackActions {
-    fn set_attack(
+    fn new_attack(
         ref world: IWorldDispatcher,
         name: ByteArray,
         damage: u8,
@@ -28,7 +28,7 @@ mod attack_actions {
 
     #[abi(embed_v0)]
     impl IAttackActionsImpl of IAttackActions<ContractState> {
-        fn set_attack(
+        fn new_attack(
             ref world: IWorldDispatcher,
             name: ByteArray,
             damage: u8,

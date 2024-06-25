@@ -36,7 +36,7 @@ struct CombatantState {
 
 
 #[dojo::model]
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
     #[key]
     id: u128,

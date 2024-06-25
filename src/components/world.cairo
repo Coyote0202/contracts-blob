@@ -28,7 +28,12 @@ impl ContractIntoFelt252 of Into<Contract, felt252> {
 impl WorldImpl of WorldTrait {
     fn assert_caller_is_writer(self: @IWorldDispatcher, contract: Contract) -> ContractAddress {
         let caller = get_caller_address();
-        assert((*self).is_writer(contract.into(), caller), 'Not Admin');
+        assert((*self).is_writer(contract.into(), caller), 'Not Writer');
+        caller
+    }
+    fn assert_caller_is_owner(self: @IWorldDispatcher, contract: ContractAddress) -> ContractAddress {
+        let caller = get_caller_address();
+        assert((*self).is_owner(contract, caller.into()), 'Not Admin');
         caller
     }
 }

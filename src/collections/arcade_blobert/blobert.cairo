@@ -3,7 +3,7 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::collections::blobert::{external::TokenTrait};
 
 #[dojo::model]
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde, Copy)]
 struct ArcadeBlobert {
     #[key]
     token_id: u128,
