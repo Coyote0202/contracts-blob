@@ -3,8 +3,7 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 use blob_arena::{
     components::{attack::Attack, item::{Item, IdsTrait, ItemIdsImpl, ItemTrait}},
-    models::{WarriorToken, WarriorItemsModel}, collections::{CollectionTrait},
-    utils::{value_to_uuid, hash_value}
+    collections::{CollectionTrait}, utils::{value_to_uuid, hash_value}
 };
 
 

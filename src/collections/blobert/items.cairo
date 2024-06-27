@@ -46,7 +46,7 @@ struct ItemMap {
 
 
 fn get_trait_id(blobert_trait: BlobertTrait, trait_id: u8) -> u128 {
-    value_to_uuid((blobert_trait, trait_id))
+    value_to_uuid(('seed', blobert_trait, trait_id))
 }
 
 fn get_custom_trait_id(blobert_trait: BlobertTrait, custom_id: u8) -> u128 {
@@ -55,10 +55,18 @@ fn get_custom_trait_id(blobert_trait: BlobertTrait, custom_id: u8) -> u128 {
 
 #[generate_trait]
 impl BlobertItems of BlobertItemsTrait {
-    fn set_item_map(
+    fn set_seed_item_id(
         self: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
     ) {
         set!(self, ItemMap { blobert_trait_id: get_trait_id(blobert_trait, trait_id), item_id, });
+    }
+    fn set_custom_item_id(
+        self: IWorldDispatcher, blobert_trait: BlobertTrait, custom_id: u8, item_id: u128
+    ) {
+        set!(
+            self,
+            ItemMap { blobert_trait_id: get_custom_trait_id(blobert_trait, custom_id), item_id, }
+        );
     }
     fn get_seed_item_id(
         self: @IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8

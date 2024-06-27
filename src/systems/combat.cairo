@@ -21,6 +21,7 @@ use blob_arena::{
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 const TWO_HUNDREDTH: felt252 = 368934881474191032;
+const TWO_TENTHS: felt252 = 3689348814741910320;
 const FIXED_255: u128 = 4703919738795935662080;
 
 #[derive(Drop, Serde, Copy)]
@@ -55,22 +56,31 @@ fn get_new_stun_chance(current_stun: u8, strength: u8, attack_stun: u8) -> u8 {
     new_stun.try_into().unwrap()
 }
 
+fn damage_calculation(attack: u8, damage: u8, critical: bool) -> u8 {
+    if damage == 0 {
+        return 0;
+    };
+    let mut calc_damage: u32 = ((damage.into() / FixedTrait::from_unscaled_felt(100))
+        .pow(FixedTrait::from_felt(TWO_TENTHS))
+        * (200 + attack).into())
+        .try_into()
+        .unwrap(); // max value 300
+    calc_damage /= if critical {
+        4
+    } else {
+        8
+    };
+    if calc_damage > 255 {
+        calc_damage = 255;
+    };
+    calc_damage.try_into().unwrap()
+}
 
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
     fn get_damage(self: CombatantStats, attack: Attack, critical: bool, seed: u256) -> u8 {
         //TODO: Implement damage calculation
-        let mut damage: u32 = attack.damage.into() * 2 + self.attack.into(); // max value 300
-
-        damage /= if critical {
-            4
-        } else {
-            8
-        };
-        if damage > 255 {
-            damage = 255;
-        };
-        damage.try_into().unwrap()
+        damage_calculation(self.attack, attack.damage, critical)
     }
 
     fn did_hit(self: CombatantStats, attack: Attack, seed: u256) -> bool {

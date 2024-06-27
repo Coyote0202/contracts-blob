@@ -37,7 +37,7 @@ mod pvp_actions {
             combatant::{CombatantInfo, CombatantTrait,}, commitment::{Commitment,},
             pvp_combat::{PvPCombatTrait},
             pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},
-            utils::{ABTTrait, ABT, ABTOtherTrait}, warrior::{Warrior, WarriorTrait, get_warrior_id},
+            utils::{ABTTrait, ABT, ABTOtherTrait}
         },
         systems::pvp_combat::PvPCombatSystemTrait, utils::{uuid, hash_value},
     };

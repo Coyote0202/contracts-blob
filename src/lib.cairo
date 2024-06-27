@@ -5,7 +5,7 @@ mod utils;
 mod world;
 mod components {
     mod attack;
-    mod warrior;
+    // mod warrior;
     mod stats;
     mod combatant;
     mod item;
@@ -38,8 +38,8 @@ mod contracts {
 }
 // mod constants;
 
-// mod tests {
-//     mod combat_test;
-// }
-
+#[cfg(test)]
+mod tests {
+    mod pvp_test;
+}
 

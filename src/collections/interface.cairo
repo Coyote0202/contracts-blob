@@ -1,6 +1,9 @@
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
+
+
+// TODO: make it go through the world
 #[starknet::interface]
 #[dojo::interface]
 trait ICollection<TContractState> {

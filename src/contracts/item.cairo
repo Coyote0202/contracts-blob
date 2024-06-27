@@ -71,7 +71,6 @@ mod item_actions {
         fn new_item(
             ref world: IWorldDispatcher, name: ByteArray, stats: Stats, attacks: Array<u128>
         ) -> u128 {
-            world.assert_caller_is_writer(Contract::Item);
             let id = uuid(world);
             set!(world, ItemModel { id, name, stats, attacks });
             id
@@ -79,7 +78,6 @@ mod item_actions {
         fn new_item_with_attacks(
             ref world: IWorldDispatcher, name: ByteArray, stats: Stats, attacks: Array<Attack>
         ) -> u128 {
-            world.assert_caller_is_writer(Contract::Item);
             let attack_ids = world.set_new_attacks(attacks);
             let id = uuid(world);
             set!(world, ItemModel { id, name, stats, attacks: attack_ids });

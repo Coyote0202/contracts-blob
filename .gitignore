@@ -1,3 +1,6 @@
 target/
 abis/
-manifests/
+.env*
+test.ipynb
+venv/
+node_modules/

@@ -1,4 +1,4 @@
-use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
+use starknet::{ContractAddress, get_caller_address, get_block_timestamp, get_contract_address};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use alexandria_math::BitShift;
 
@@ -52,7 +52,9 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn mint_blobert(self: IWorldDispatcher) -> u256 {
         let caller = get_caller_address();
         let timestamp = get_block_timestamp();
-        assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
+        if self.is_owner(get_contract_address(), caller.into()) {
+            assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
+        }
 
         let random = hash_value(('arcade', timestamp, uuid(self)));
         let token_id = felt252_to_uuid(random);

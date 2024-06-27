@@ -42,7 +42,6 @@ mod attack_actions {
             let attack = AttackModel {
                 id, name, damage, speed, accuracy, critical, stun, cooldown,
             };
-            world.assert_caller_is_writer(Contract::Attack);
             set!(world, (attack,));
             id
         }

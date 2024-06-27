@@ -7,7 +7,8 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 trait IPvPAdminActions {
     fn create_challenge(
         ref world: IWorldDispatcher,
-        collection_address: ContractAddress,
+        collection_address_a: ContractAddress,
+        collection_address_b: ContractAddress,
         player_a: ContractAddress,
         player_b: ContractAddress,
         token_a_id: u256,
@@ -31,7 +32,8 @@ mod pvp_admin_actions {
     impl IPvPAdminActionsImpl of IPvPAdminActions<ContractState> {
         fn create_challenge(
             ref world: IWorldDispatcher,
-            collection_address: ContractAddress,
+            collection_address_a: ContractAddress,
+            collection_address_b: ContractAddress,
             player_a: ContractAddress,
             player_b: ContractAddress,
             token_a_id: u256,
@@ -39,8 +41,10 @@ mod pvp_admin_actions {
         ) -> u128 {
             world.assert_caller_is_owner(get_contract_address());
             let combat_id = uuid(world);
-            let mut combatant_a = world.create_combatant(collection_address, token_a_id, combat_id);
-            let mut combatant_b = world.create_combatant(collection_address, token_b_id, combat_id);
+            let mut combatant_a = world
+                .create_combatant(collection_address_a, token_a_id, combat_id);
+            let mut combatant_b = world
+                .create_combatant(collection_address_b, token_b_id, combat_id);
             combatant_a.player = player_a;
             combatant_b.player = player_b;
             world.set_combatant(combatant_a);

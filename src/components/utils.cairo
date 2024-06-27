@@ -36,7 +36,7 @@ impl ABIntoByteArray of Into<AB, ByteArray> {
     }
 }
 
-#[derive(Copy, Drop, Print, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 struct ABT<T> {
     a: T,
     b: T,

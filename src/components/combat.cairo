@@ -37,13 +37,20 @@ impl SaltsImpl of SaltsTrait {
     }
 
     fn get_salts_hash_state(self: IWorldDispatcher, id: u128) -> HashState {
-        let salts = self.get_salts_model(id).salts;
-        let (mut n, len) = (0, salts.len());
+        let mut salts = self.get_salts_model(id).salts;
         let mut hash_state = PoseidonTrait::new();
-        while n < len {
-            hash_state.update(*salts.at(n));
-            n += 1;
+        loop {
+            match salts.pop_front() {
+                Option::Some(salt) => { hash_state.update(salt); },
+                Option::None => { break; },
+            }
         };
+        // let (mut n, len) = (0, salts.len());
+
+        // while n < len {
+        //     hash_state.update(*salts.at(n));
+        //     n += 1;
+        // };
         hash_state
     }
 }

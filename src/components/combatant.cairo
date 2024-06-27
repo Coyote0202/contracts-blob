@@ -4,7 +4,7 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     components::{
         stats::Stats, attack::{Attack, AttackIdsImpl, IdsTrait, AttackTrait},
-        warrior::{Warrior, WarriorTrait}, item::{Item, ItemTrait, ItemsTrait}
+        item::{Item, ItemTrait, ItemsTrait}
     },
     models::{CombatantInfo, CombatantState, CombatantStats, AvailableAttack}, utils::value_to_uuid,
     collections::CollectionTrait
@@ -14,7 +14,7 @@ fn get_combatant_id(collection_address: ContractAddress, token_id: u256, combat_
     value_to_uuid((collection_address, token_id, combat_id))
 }
 
-#[derive(Drop, Copy, Print)]
+#[derive(Drop, Copy)]
 struct Combatant {
     id: u128,
     combat_id: u128,
