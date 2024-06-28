@@ -1,11 +1,13 @@
 mod blobert;
 mod mint;
+use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher};
 use blob_arena::collections::blobert::external::TokenTrait;
 
 #[dojo::interface]
 trait IArcadeBlobert<TContractState> {
     fn mint(ref world: IWorldDispatcher) -> u256;
+    fn mint_with_traits(ref world: IWorldDispatcher, player: ContractAddress, traits: TokenTrait) -> u256;
     fn traits(world: @IWorldDispatcher, token_id: u256) -> TokenTrait;
 }
 
@@ -39,8 +41,13 @@ mod arcade_blobert_actions {
         fn mint(ref world: IWorldDispatcher) -> u256 {
             world.mint_blobert()
         }
+        fn mint_with_traits(ref world: IWorldDispatcher, player: ContractAddress, traits: TokenTrait) -> u256{
+            world.mint_blobert_with_traits(player, traits)
+            
+        }
         fn traits(world: @IWorldDispatcher, token_id: u256) -> TokenTrait {
             world.get_traits(token_id)
         }
+        
     }
 }

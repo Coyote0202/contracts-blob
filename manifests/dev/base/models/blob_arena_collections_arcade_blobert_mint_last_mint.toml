@@ -1,0 +1,15 @@
+kind = "DojoModel"
+class_hash = "0x37172813620168fcaea5ede09b8b120c48295fba216d1cab9323a179737ef1d"
+original_class_hash = "0x37172813620168fcaea5ede09b8b120c48295fba216d1cab9323a179737ef1d"
+abi = "manifests/dev/abis/base/models/blob_arena_collections_arcade_blobert_mint_last_mint.json"
+name = "blob_arena::collections::arcade_blobert::mint::last_mint"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "timestamp"
+type = "u64"
+key = false

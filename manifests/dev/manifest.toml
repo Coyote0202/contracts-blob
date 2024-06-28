@@ -1,0 +1,568 @@
+[world]
+kind = "WorldContract"
+class_hash = "0x3f63cecdc4964acafb921ba2934c6507d1b3c344edb64c2762cf08053169ab9"
+original_class_hash = "0x3f63cecdc4964acafb921ba2934c6507d1b3c344edb64c2762cf08053169ab9"
+abi = "manifests/dev/abis/deployments/dojo_world_world.json"
+address = "0x712caad4c0075842266195a01d1c5583abef22023aa7db1b73507f00475b2d1"
+transaction_hash = "0x61a215652f93c9d16407f54482c66478cb7afba8bfdd319f25764e23540e776"
+seed = "blob_arena"
+name = "dojo::world::world"
+
+[world.metadata]
+profile_name = "dev"
+rpc_url = "https://starknet-sepolia.public.blastapi.io/rpc/v0_7"
+
+[base]
+kind = "Class"
+class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+original_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+name = "dojo::base::base"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x678cb9edc1f280c954d7b9872f22c5532c92b8d5c4d08823664b242e07ed7d1"
+class_hash = "0x7f3e2f096eb5d28cefd510fcfbadf97d6c6e24368603c771f1b2320e1dd66e"
+original_class_hash = "0x7f3e2f096eb5d28cefd510fcfbadf97d6c6e24368603c771f1b2320e1dd66e"
+base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+abi = "manifests/dev/abis/deployments/contracts/blob_arena_collections_arcade_blobert_arcade_blobert_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::collections::arcade_blobert::arcade_blobert_actions"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x299968317ad9c2c2f3d8a8063b1881468aa9e3a1eaa58754f006f375b719562"
+class_hash = "0x284d7f21cb6c76c6d520bfb780d01f6ac4059b4a7489eaba5e8cbfad05d4edc"
+original_class_hash = "0x284d7f21cb6c76c6d520bfb780d01f6ac4059b4a7489eaba5e8cbfad05d4edc"
+base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+abi = "manifests/dev/abis/deployments/contracts/blob_arena_collections_blobert_blobert_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::collections::blobert::blobert_actions"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x435f88ff6175e32cbff509d13eb9f031765e2d469c5eeb255af6ab5bd230c80"
+class_hash = "0x666b7f74eed2fda627b8b1c17b0ee39780cd99a29a1adb238bae33e3a6696dd"
+original_class_hash = "0x666b7f74eed2fda627b8b1c17b0ee39780cd99a29a1adb238bae33e3a6696dd"
+base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+abi = "manifests/dev/abis/deployments/contracts/blob_arena_contracts_attack_attack_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::contracts::attack::attack_actions"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x760d529b82b05c099e0ee1e6dc10bdf0825eaefdb603e0315c6f4747d60f53a"
+class_hash = "0x3949afc49038229d1bfc36ec8607ac45315697264875e5848af8340c5f90666"
+original_class_hash = "0x3949afc49038229d1bfc36ec8607ac45315697264875e5848af8340c5f90666"
+base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+abi = "manifests/dev/abis/deployments/contracts/blob_arena_contracts_item_item_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::contracts::item::item_actions"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x1e71d82f2e77727f9fdbe618fc9aeb8827426396cffb35e848ea6b3b346f7bd"
+class_hash = "0x31c1aba7e90e5ad49327d1cb3f6083bf99b77abd3335fce9e61227bc8b97fcf"
+original_class_hash = "0x31c1aba7e90e5ad49327d1cb3f6083bf99b77abd3335fce9e61227bc8b97fcf"
+base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+abi = "manifests/dev/abis/deployments/contracts/blob_arena_contracts_pvp_admin_pvp_admin_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::contracts::pvp_admin::pvp_admin_actions"
+
+[[contracts]]
+kind = "DojoContract"
+address = "0x34434b44e1f3213f6ab8e05cd6aa7f95f7cf9817b0fba46bd0ea6be3a6068e7"
+class_hash = "0x416a5b3e378a1b9bf8926bfdb3fd0b6e47439a4574bbc1c59deba371007c60a"
+original_class_hash = "0x416a5b3e378a1b9bf8926bfdb3fd0b6e47439a4574bbc1c59deba371007c60a"
+base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
+abi = "manifests/dev/abis/deployments/contracts/blob_arena_contracts_pvp_pvp_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::contracts::pvp::pvp_actions"
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x589f247c2b1fc2d57541defa0056cba530ef9dbd870e47f0dc347b23044b8df"
+original_class_hash = "0x589f247c2b1fc2d57541defa0056cba530ef9dbd870e47f0dc347b23044b8df"
+abi = "manifests/dev/abis/deployments/models/blob_arena_collections_arcade_blobert_blobert_arcade_blobert.json"
+name = "blob_arena::collections::arcade_blobert::blobert::arcade_blobert"
+
+[[models.members]]
+name = "token_id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "owner"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "traits"
+type = "TokenTrait"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x37172813620168fcaea5ede09b8b120c48295fba216d1cab9323a179737ef1d"
+original_class_hash = "0x37172813620168fcaea5ede09b8b120c48295fba216d1cab9323a179737ef1d"
+abi = "manifests/dev/abis/deployments/models/blob_arena_collections_arcade_blobert_mint_last_mint.json"
+name = "blob_arena::collections::arcade_blobert::mint::last_mint"
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "timestamp"
+type = "u64"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x67a1d72e9a2da1f40ec4c878bab8fc398cfcdd611783a40555836d54d4c109d"
+original_class_hash = "0x67a1d72e9a2da1f40ec4c878bab8fc398cfcdd611783a40555836d54d4c109d"
+abi = "manifests/dev/abis/deployments/models/blob_arena_collections_blobert_items_item_map.json"
+name = "blob_arena::collections::blobert::items::item_map"
+
+[[models.members]]
+name = "blobert_trait_id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "item_id"
+type = "u128"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x69304c0476bdb2dec54afa6983183bba425b05948b91bfd27fddd1fb420139"
+original_class_hash = "0x69304c0476bdb2dec54afa6983183bba425b05948b91bfd27fddd1fb420139"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_attack_attack.json"
+name = "blob_arena::models::attack::attack"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "name"
+type = "ByteArray"
+key = false
+
+[[models.members]]
+name = "damage"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "speed"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "accuracy"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "critical"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "stun"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "cooldown"
+type = "u8"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x7a2895744b83bd77b7ac499bee05a1809ca4365569a8757d13efa042e28e1c2"
+original_class_hash = "0x7a2895744b83bd77b7ac499bee05a1809ca4365569a8757d13efa042e28e1c2"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_attack_available_attack.json"
+name = "blob_arena::models::attack::available_attack"
+
+[[models.members]]
+name = "combatant_id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "attack_id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "available"
+type = "bool"
+key = false
+
+[[models.members]]
+name = "last_used"
+type = "u32"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x2c2f21a9f623112c4026201803e62674f3f5d3a7cc94da5b544622bb232023b"
+original_class_hash = "0x2c2f21a9f623112c4026201803e62674f3f5d3a7cc94da5b544622bb232023b"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_combat_combat_state.json"
+name = "blob_arena::models::combat::combat_state"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "round"
+type = "u32"
+key = false
+
+[[models.members]]
+name = "phase"
+type = "Phase"
+key = false
+
+[[models.members]]
+name = "block_number"
+type = "u64"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x243e065a87c88a5281ab34e355e0b360d4100867c2adb977790c360a79949d9"
+original_class_hash = "0x243e065a87c88a5281ab34e355e0b360d4100867c2adb977790c360a79949d9"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_combat_salts.json"
+name = "blob_arena::models::combat::salts"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "salts"
+type = "Array<felt252>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x406a86342e9ae38b2515e8d78e65b6ac19c46de9e834a7e771da3b3f2820248"
+original_class_hash = "0x406a86342e9ae38b2515e8d78e65b6ac19c46de9e834a7e771da3b3f2820248"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_combatant_combatant_info.json"
+name = "blob_arena::models::combatant::combatant_info"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "combat_id"
+type = "u128"
+key = false
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "collection_address"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "token_id"
+type = "u256"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x79bc85c67c392b6cca95366c343d41da4bcd2ca5e77b4b7e295615d4893131a"
+original_class_hash = "0x79bc85c67c392b6cca95366c343d41da4bcd2ca5e77b4b7e295615d4893131a"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_combatant_combatant_state.json"
+name = "blob_arena::models::combatant::combatant_state"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "health"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "stun_chance"
+type = "u8"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x52db709a76c5b369c4b2747bb436f331a03b7269445d0aadb355e0c88fa804a"
+original_class_hash = "0x52db709a76c5b369c4b2747bb436f331a03b7269445d0aadb355e0c88fa804a"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_combatant_combatant_stats.json"
+name = "blob_arena::models::combatant::combatant_stats"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "attack"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "defense"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "speed"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "strength"
+type = "u8"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0xb7d20a0d4322c37b7ce38069e509c3e588e38bea4e6c544483c441f03999d9"
+original_class_hash = "0xb7d20a0d4322c37b7ce38069e509c3e588e38bea4e6c544483c441f03999d9"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_combatant_planned_attack.json"
+name = "blob_arena::models::combatant::planned_attack"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "attack"
+type = "u128"
+key = false
+
+[[models.members]]
+name = "target"
+type = "u128"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x2d2f68172753390454e181c634cd1c68ecfdf05590423f2ff6165ce0f6ab84e"
+original_class_hash = "0x2d2f68172753390454e181c634cd1c68ecfdf05590423f2ff6165ce0f6ab84e"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_commitment_commitment.json"
+name = "blob_arena::models::commitment::commitment"
+
+[[models.members]]
+name = "id"
+type = "felt252"
+key = true
+
+[[models.members]]
+name = "commitment"
+type = "felt252"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x4eea394cdbfdebefaa98d83899040d33653d56653f61244483cfe9234e1a9ba"
+original_class_hash = "0x4eea394cdbfdebefaa98d83899040d33653d56653f61244483cfe9234e1a9ba"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_item_item.json"
+name = "blob_arena::models::item::item"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "name"
+type = "ByteArray"
+key = false
+
+[[models.members]]
+name = "stats"
+type = "Stats"
+key = false
+
+[[models.members]]
+name = "attacks"
+type = "Array<u128>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x6d14b06adadef31e64972ad44b71c970aabb116dbbb98e7eb740b83bd0943e9"
+original_class_hash = "0x6d14b06adadef31e64972ad44b71c970aabb116dbbb98e7eb740b83bd0943e9"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_pvp_pv_p_challenge_invite.json"
+name = "blob_arena::models::pvp::pv_p_challenge_invite"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "sender"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "receiver"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "collection_address"
+type = "ContractAddress"
+key = false
+
+[[models.members]]
+name = "combatant"
+type = "u128"
+key = false
+
+[[models.members]]
+name = "phase_time"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "open"
+type = "bool"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x4892ad7fae019672656f8a94f0a6659ce1a0fb1a9be4202582832f62e11d6ee"
+original_class_hash = "0x4892ad7fae019672656f8a94f0a6659ce1a0fb1a9be4202582832f62e11d6ee"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_pvp_pv_p_challenge_response.json"
+name = "blob_arena::models::pvp::pv_p_challenge_response"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "combatant"
+type = "u128"
+key = false
+
+[[models.members]]
+name = "open"
+type = "bool"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x2414ca790739f7b77342ddb3c904d7ba2141df23d0e413d0c6a2ad945f3969c"
+original_class_hash = "0x2414ca790739f7b77342ddb3c904d7ba2141df23d0e413d0c6a2ad945f3969c"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_pvp_pv_p_challenge_score.json"
+name = "blob_arena::models::pvp::pv_p_challenge_score"
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "collection_address"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "token_high"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "token_low"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "wins"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "losses"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "max_consecutive_wins"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "current_consecutive_wins"
+type = "u64"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x33f9dd9f192f3e4db9970a173a13bdd8ef165979d0c64023ef37a8e47e51a37"
+original_class_hash = "0x33f9dd9f192f3e4db9970a173a13bdd8ef165979d0c64023ef37a8e47e51a37"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_pvp_pv_p_combatants.json"
+name = "blob_arena::models::pvp::pv_p_combatants"
+
+[[models.members]]
+name = "id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "combatants"
+type = "(u128, u128)"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x81eb53edb6ef82ac26c52a35986e477975dd3b74b8756bed86da2a53f67fa9"
+original_class_hash = "0x81eb53edb6ef82ac26c52a35986e477975dd3b74b8756bed86da2a53f67fa9"
+abi = "manifests/dev/abis/deployments/models/blob_arena_utils_random_seed.json"
+name = "blob_arena::utils::random_seed"
+
+[[models.members]]
+name = "key"
+type = "bool"
+key = true
+
+[[models.members]]
+name = "value"
+type = "felt252"
+key = false

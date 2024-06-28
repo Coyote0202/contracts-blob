@@ -1,0 +1,32 @@
+{
+  "owner": {},
+  "writer": {
+    "arcade_blobert_actions": ["ArcadeBlobert", "LastMint"],
+    "blobert_actions": ["ItemMap"],
+    "attack_actions": ["Attack"],
+    "item_actions": ["Item", "Attack"],
+    "pvp_actions": [
+      "AvailableAttack",
+      "CombatState",
+      "Salts",
+      "CombatantInfo",
+      "CombatantState",
+      "CombatantStats",
+      "PlannedAttack",
+      "Commitment",
+      "Item",
+      "PvPChallengeInvite",
+      "PvPChallengeResponse",
+      "PvPChallengeScore",
+      "PvPCombatants"
+    ],
+    "pvp_admin_actions": [
+      "AvailableAttack",
+      "CombatState",
+      "CombatantInfo",
+      "CombatantState",
+      "CombatantStats",
+      "PvPCombatants"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+kind = "DojoModel"
+class_hash = "0x589f247c2b1fc2d57541defa0056cba530ef9dbd870e47f0dc347b23044b8df"
+original_class_hash = "0x589f247c2b1fc2d57541defa0056cba530ef9dbd870e47f0dc347b23044b8df"
+abi = "manifests/dev/abis/base/models/blob_arena_collections_arcade_blobert_blobert_arcade_blobert.json"
+name = "blob_arena::collections::arcade_blobert::blobert::arcade_blobert"
+
+[[members]]
+name = "token_id"
+type = "u128"
+key = true
+
+[[members]]
+name = "owner"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "traits"
+type = "TokenTrait"
+key = false

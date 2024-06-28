@@ -1,4 +1,3 @@
-use core::traits::Into;
 use core::{
     hash::HashStateTrait, poseidon::{PoseidonTrait, HashState},
     dict::{Felt252Dict, Felt252DictTrait}
@@ -20,9 +19,11 @@ use blob_arena::{
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-const TWO_HUNDREDTH: felt252 = 368934881474191032;
-const TWO_TENTHS: felt252 = 3689348814741910320;
+const HUNDRED: felt252 = 1844674407370955161600;
 const FIXED_255: u128 = 4703919738795935662080;
+const HUNDREDTH: felt252 = 184467440737095516;
+const THREE_TENTHS: felt252 = 5534023222112865484;
+
 
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
@@ -31,13 +32,17 @@ struct PlannedAttack {
     target: u128,
 }
 
-
-fn apply_strength_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>>(strength: u8, value: u8) -> T {
-    let value_float: Fixed = value.into() / 100_u8.into();
-    let strength_float: Fixed = FixedTrait::from_felt(HALF)
-        + (100 - strength).into() * FixedTrait::from_felt(TWO_HUNDREDTH);
-
-    let new_value = (value_float.pow(strength_float) * Fixed { mag: FIXED_255, sign: false });
+fn apply_strength_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
+    value: u8, strength: u8
+) -> T {
+    if value == 0 {
+        return Zeroable::zero();
+    };
+    let strength_float: Fixed = strength.into();
+    let strength_ratio: Fixed = (300_u16 - strength.into()).into()
+        / (200_u16 + strength.into()).into();
+    let value_float: Fixed = value.into() / FixedTrait::from_felt(HUNDRED);
+    let new_value = (value_float.pow(strength_ratio) * Fixed { mag: FIXED_255, sign: false });
     if new_value.mag > FIXED_255 {
         255_u8.into()
     } else {
@@ -45,8 +50,8 @@ fn apply_strength_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>>(strength: u8, va
     }
 }
 
-fn get_new_stun_chance(current_stun: u8, strength: u8, attack_stun: u8) -> u8 {
-    let stun_chance = apply_strength_modifier(strength, attack_stun);
+fn get_new_stun_chance(current_stun: u8, attack_stun: u8, strength: u8) -> u8 {
+    let stun_chance = apply_strength_modifier(attack_stun, strength);
     let mut new_stun = current_stun.into()
         + stun_chance
         - (current_stun.into() * stun_chance / 255_u16);
@@ -60,15 +65,15 @@ fn damage_calculation(attack: u8, damage: u8, critical: bool) -> u8 {
     if damage == 0 {
         return 0;
     };
-    let mut calc_damage: u32 = ((damage.into() / FixedTrait::from_unscaled_felt(100))
-        .pow(FixedTrait::from_felt(TWO_TENTHS))
-        * (200 + attack).into())
+    let mut calc_damage: u32 = ((damage.into() / FixedTrait::from_felt(HUNDRED))
+        .pow(FixedTrait::from_felt(THREE_TENTHS))
+        * (200_u8.into() + attack.into()))
         .try_into()
         .unwrap(); // max value 300
     calc_damage /= if critical {
-        4
+        6
     } else {
-        8
+        12
     };
     if calc_damage > 255 {
         calc_damage = 255;
@@ -88,7 +93,7 @@ impl AttackerImpl of AttackerTrait {
     }
 
     fn did_critical(self: CombatantStats, attack: Attack, seed: u256) -> bool {
-        let critical: u8 = apply_strength_modifier(self.strength, attack.critical);
+        let critical: u8 = apply_strength_modifier(attack.critical, self.strength);
         (BitShift::shr(seed, 16) % 255).try_into().unwrap() < critical
     }
 
@@ -157,7 +162,7 @@ impl CombatWorldImp of CombatWorldTraits {
                 defender_state
                     .stun_chance =
                         get_new_stun_chance(
-                            defender_state.stun_chance, attacker_stats.strength, attack.stun
+                            defender_state.stun_chance, attack.stun, attacker_stats.strength
                         );
             };
             AttackEffect::Hit(AttackHit { damage, stun: attack.stun, critical })

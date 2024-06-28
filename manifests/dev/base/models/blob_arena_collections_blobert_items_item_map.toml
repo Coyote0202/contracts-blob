@@ -1,0 +1,15 @@
+kind = "DojoModel"
+class_hash = "0x67a1d72e9a2da1f40ec4c878bab8fc398cfcdd611783a40555836d54d4c109d"
+original_class_hash = "0x67a1d72e9a2da1f40ec4c878bab8fc398cfcdd611783a40555836d54d4c109d"
+abi = "manifests/dev/abis/base/models/blob_arena_collections_blobert_items_item_map.json"
+name = "blob_arena::collections::blobert::items::item_map"
+
+[[members]]
+name = "blobert_trait_id"
+type = "u128"
+key = true
+
+[[members]]
+name = "item_id"
+type = "u128"
+key = false

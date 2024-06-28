@@ -14,8 +14,8 @@ struct ArcadeBlobert {
 
 #[generate_trait]
 impl ArcadeBlobertImpl of ArcadeBlobertTrait {
-    fn set_arcade_blobert(self: IWorldDispatcher, arcade_blobert: ArcadeBlobert) {
-        set!(self, (arcade_blobert,));
+    fn set_arcade_blobert(self: IWorldDispatcher, token_id: u128, owner: ContractAddress, traits: TokenTrait) {
+        set!(self, ArcadeBlobert{ token_id, owner, traits});
     }
 
     fn get_arcade_blobert<T, +TryInto<T, u128>>(

@@ -1,0 +1,25 @@
+kind = "DojoModel"
+class_hash = "0x7a2895744b83bd77b7ac499bee05a1809ca4365569a8757d13efa042e28e1c2"
+original_class_hash = "0x7a2895744b83bd77b7ac499bee05a1809ca4365569a8757d13efa042e28e1c2"
+abi = "manifests/dev/abis/base/models/blob_arena_models_attack_available_attack.json"
+name = "blob_arena::models::attack::available_attack"
+
+[[members]]
+name = "combatant_id"
+type = "u128"
+key = true
+
+[[members]]
+name = "attack_id"
+type = "u128"
+key = true
+
+[[members]]
+name = "available"
+type = "bool"
+key = false
+
+[[members]]
+name = "last_used"
+type = "u32"
+key = false

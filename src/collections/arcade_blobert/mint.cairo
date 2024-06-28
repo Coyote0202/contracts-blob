@@ -3,7 +3,7 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use alexandria_math::BitShift;
 
 use blob_arena::{
-    utils::{felt252_to_uuid, uuid, hash_value}, collections::blobert::external::{Seed, TokenTrait}
+    utils::{felt252_to_uuid, uuid, hash_value}, collections::blobert::external::{Seed, TokenTrait}, world::WorldTrait
 };
 use super::blobert::{ArcadeBlobertTrait, ArcadeBlobert};
 
@@ -61,11 +61,15 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
 
         let seed = generate_seed(random);
 
-        self
-            .set_arcade_blobert(
-                ArcadeBlobert { token_id, owner: caller, traits: TokenTrait::Regular(seed) }
-            );
+        self.set_arcade_blobert(token_id,caller, TokenTrait::Regular(seed));
         self.set_last_mint(caller, timestamp);
+        token_id.into()
+    }
+    fn mint_blobert_with_traits(self: IWorldDispatcher, player: ContractAddress, traits: TokenTrait) -> u256 {
+        self.assert_caller_is_owner(get_contract_address());
+        let token_id = uuid(self);
+
+        self.set_arcade_blobert(token_id, player, traits);
         token_id.into()
     }
     fn get_last_mint(self: @IWorldDispatcher, caller: ContractAddress) -> u64 {

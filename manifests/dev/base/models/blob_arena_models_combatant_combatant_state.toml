@@ -1,0 +1,20 @@
+kind = "DojoModel"
+class_hash = "0x79bc85c67c392b6cca95366c343d41da4bcd2ca5e77b4b7e295615d4893131a"
+original_class_hash = "0x79bc85c67c392b6cca95366c343d41da4bcd2ca5e77b4b7e295615d4893131a"
+abi = "manifests/dev/abis/base/models/blob_arena_models_combatant_combatant_state.json"
+name = "blob_arena::models::combatant::combatant_state"
+
+[[members]]
+name = "id"
+type = "u128"
+key = true
+
+[[members]]
+name = "health"
+type = "u8"
+key = false
+
+[[members]]
+name = "stun_chance"
+type = "u8"
+key = false
