@@ -37,7 +37,7 @@ impl WorldImpl of WorldTrait {
         self: @IWorldDispatcher, contract: ContractAddress
     ) -> ContractAddress {
         let caller = get_caller_address();
-        assert((*self).is_owner(contract, caller.into()), 'Not Admin');
+        assert((*self).is_owner(caller, contract.into()), 'Not Admin');
         caller
     }
 }
