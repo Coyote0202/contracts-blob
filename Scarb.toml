@@ -3,8 +3,14 @@ cairo-version = "2.6.3"
 name = "blob_arena"
 version = "0.1.0"
 
-# [cairo]
-# sierra-replace-ids = true
+[cairo]
+sierra-replace-ids = true
+
+[tool.dojo]
+initializer_class_hash = "0xbeef"
+
+[tool.fmt]
+sort-module-level-items = true
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v0.7.2" }
@@ -14,7 +20,6 @@ cubit = { git = "https://github.com/notV4l/cubit.git", branch = "cairo_2.7" }
 
 # openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v0.13.0" }
 
-[lib]
 
 [[target.dojo]]
 

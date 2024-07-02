@@ -1,7 +1,7 @@
 import "dotenv";
 import { RpcProvider, Contract, Account, CairoCustomEnum } from "starknet";
 import seed_data from "./seed-attributes.json" assert { type: "json" };
-import custom_data from "./custom-attributes.json" assert { type: "json" };
+// import custom_data from "./custom-attributes.json" assert { type: "json" };
 
 const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
 const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
@@ -39,10 +39,9 @@ const newItem = async (provider, contract, item) => {
     item.attacks
   );
   await provider.waitForTransaction(res.transaction_hash);
-  console.log(res.transaction_hash);
   const events = (await provider.getTransactionReceipt(res.transaction_hash))
     .events;
-  return events[events.length - 2].data[2];
+  return [res.transaction_hash, events[events.length - 2].data[2]];
 };
 
 const setSeedItemId = async (provider, contract, trait, n, item_id) => {
@@ -52,8 +51,8 @@ const setSeedItemId = async (provider, contract, trait, n, item_id) => {
     n,
     item_id
   );
-  console.log(res.transaction_hash);
   await provider.waitForTransaction(res.transaction_hash);
+  return res.transaction_hash;
 };
 
 const setCustomItem = async (provider, contract, trait, n, item_id) => {
@@ -65,6 +64,7 @@ const setCustomItem = async (provider, contract, trait, n, item_id) => {
   );
   console.log(res.transaction_hash);
   await provider.waitForTransaction(res.transaction_hash);
+  return res.transaction_hash;
 };
 
 const setupSeedItem = async (
@@ -76,10 +76,26 @@ const setupSeedItem = async (
   item
 ) => {
   console.log(trait, n, item.name);
-  const item_id = await newItem(provider, itemsContract, item);
-  console.log(item_id);
-  await setSeedItemId(provider, blobertContract, trait, n, item_id);
+  const [newItemTxHash, item_id] = await newItem(provider, itemsContract, item);
+  console.log(trait, n, item.name, item_id, newItemTxHash);
+  const setItemTxHash = await setSeedItemId(
+    provider,
+    blobertContract,
+    trait,
+    n,
+    item_id
+  );
+  console.log(trait, n, item.name, setItemTxHash);
 };
+
+async function parallel(arr, fn, threads = 2) {
+  const result = [];
+  while (arr.length) {
+    const res = await Promise.all(arr.splice(0, threads).map((x) => fn(x)));
+    result.push(res);
+  }
+  return result.flat();
+}
 
 const setupCustomItem = async (
   provider,
@@ -95,8 +111,12 @@ const setupCustomItem = async (
   await setCustomItem(provider, blobertContract, trait, n, item_id);
 };
 
+let seed_items = [];
+let custom_items = [];
+
 for (const [trait, traits] of Object.entries(seed_data)) {
   for (const [n, item] of Object.entries(traits)) {
+    // seed_items.push((trait, Number(n), item));
     await setupSeedItem(
       provider,
       itemsContract,
@@ -108,15 +128,16 @@ for (const [trait, traits] of Object.entries(seed_data)) {
   }
 }
 
-for (const [n, traits] of Object.entries(custom_data)) {
-  for (const [trait, item] of Object.entries(traits)) {
-    await setCustomItem(
-      provider,
-      itemsContract,
-      blobertContract,
-      trait,
-      Number(n),
-      item
-    );
-  }
-}
+// for (const [n, traits] of Object.entries(custom_data)) {
+//   for (const [trait, item] of Object.entries(traits)) {
+//     custom_items.push((trait, Number(n), item));
+//     await setupCustomItem(
+//       provider,
+//       itemsContract,
+//       blobertContract,
+//       trait,
+//       Number(n),
+//       item
+//     );
+//   }
+// }
