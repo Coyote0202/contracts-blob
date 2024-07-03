@@ -2353,8 +2353,8 @@
     {
       "kind": "DojoContract",
       "address": "0x34434b44e1f3213f6ab8e05cd6aa7f95f7cf9817b0fba46bd0ea6be3a6068e7",
-      "class_hash": "0x416a5b3e378a1b9bf8926bfdb3fd0b6e47439a4574bbc1c59deba371007c60a",
-      "original_class_hash": "0x416a5b3e378a1b9bf8926bfdb3fd0b6e47439a4574bbc1c59deba371007c60a",
+      "class_hash": "0x2cac7119d4bcca93477e331d972cfc019a95bd684198047a74ecf9f2b0ccd35",
+      "original_class_hash": "0x2cac7119d4bcca93477e331d972cfc019a95bd684198047a74ecf9f2b0ccd35",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -2580,18 +2580,6 @@
                 {
                   "name": "salt",
                   "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "run_round",
-              "inputs": [
-                {
-                  "name": "combat_id",
-                  "type": "core::integer::u128"
                 }
               ],
               "outputs": [],

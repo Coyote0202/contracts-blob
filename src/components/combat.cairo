@@ -133,7 +133,9 @@ impl PlannedAttackImpl of PlannedAttackTrait {
         };
         attacks.span()
     }
-
+    fn set_planned_attack(self: IWorldDispatcher, attack: PlannedAttack) {
+        set!(self, (attack,))
+    }
     fn check_all_set(self: Span<PlannedAttack>) -> bool {
         let (mut n, len) = (0, self.len());
         let mut set = true;
