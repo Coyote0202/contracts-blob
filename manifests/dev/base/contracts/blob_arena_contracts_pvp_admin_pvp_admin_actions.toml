@@ -1,6 +1,6 @@
 kind = "DojoContract"
-class_hash = "0x619f43d38e675ab7c216d2269612ac88c2e7323df0e15d474c48925ff80159f"
-original_class_hash = "0x619f43d38e675ab7c216d2269612ac88c2e7323df0e15d474c48925ff80159f"
+class_hash = "0x7ba09667535f41aef0465f53e6bb182b8afc94f5250b5992c8a93176ab39ba3"
+original_class_hash = "0x7ba09667535f41aef0465f53e6bb182b8afc94f5250b5992c8a93176ab39ba3"
 base_class_hash = "0x0"
 abi = "manifests/dev/abis/base/contracts/blob_arena_contracts_pvp_admin_pvp_admin_actions.json"
 reads = []

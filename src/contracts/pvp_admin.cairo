@@ -22,7 +22,8 @@ mod pvp_admin_actions {
     use starknet::{ContractAddress, get_caller_address, get_contract_address};
     use blob_arena::{
         components::{
-            combatant::CombatantTrait, combat::CombatStateTrait, pvp_combat::PvPCombatTrait,
+            combatant::CombatantTrait, combat::{CombatStateTrait, CombatStatesTrait},
+            pvp_combat::PvPCombatTrait, pvp_challenge::PvPChallengeScoreTrait, utils::ABTOtherTrait
         },
         utils::uuid, world::{Contract, WorldTrait}
     };
@@ -55,6 +56,13 @@ mod pvp_admin_actions {
         }
         fn set_winner(ref world: IWorldDispatcher, combatant_id: u128) {
             world.assert_caller_is_owner(get_contract_address());
+
+            let winner = world.get_combatant_info(combatant_id);
+            let mut combat = world.get_running_combat_state(winner.combat_id);
+            let combatants = world.get_pvp_combatants(combat.id);
+            let loser = world.get_combatant_info(combatants.other(winner.id));
+            world.end_combat(combat, winner.id);
+            world.update_scores(winner, loser);
         }
     }
 }
