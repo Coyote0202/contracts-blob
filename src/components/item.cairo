@@ -3,7 +3,7 @@ use core::array::ArrayTrait;
 use starknet::{ContractAddress};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    models::ItemModel,
+    models::{ItemModel, HasAttack},
     components::{stats::Stats, attack::{Attack, AttackTrait}, utils::{IdTrait, IdsTrait, TIdsImpl}}
 };
 
@@ -11,7 +11,6 @@ use blob_arena::{
 struct Item {
     id: u128,
     stats: Stats,
-    attacks: Span<u128>,
 }
 
 // impl ByteArrayCopyImpl of Copy<ByteArray>;
@@ -27,15 +26,6 @@ impl ItemIdsImpl = TIdsImpl<Item>;
 
 #[generate_trait]
 impl ItemsImpl of ItemsTrait {
-    fn get_attack_ids(self: Span<Item>) -> Span<u128> {
-        let mut ids: Array<u128> = ArrayTrait::new();
-        let (len, mut n) = (self.len(), 0_usize);
-        while n < len {
-            ids.append_span(*self.at(n).attacks);
-            n += 1;
-        };
-        ids.unique().span()
-    }
     // fn get_attacks(self: Span<Item>) -> Array<Attack> {
     //     let mut attacks: Array<Attack> = ArrayTrait::new();
     //     let (len, mut n) = (self.len(), 0_usize);
@@ -72,9 +62,9 @@ impl ItemsImpl of ItemsTrait {
 #[generate_trait]
 impl ItemImpl of ItemTrait {
     fn get_item(self: @IWorldDispatcher, id: u128) -> Item {
-        let ItemModel { id, name: _, stats, attacks } = get!((*self), id, ItemModel);
+        let ItemModel { id, name: _, stats } = get!((*self), id, ItemModel);
         // let attacks = self.get_attacks(attack_ids);
-        Item { id, stats, attacks: attacks.span() }
+        Item { id, stats, }
     }
     fn get_items(self: @IWorldDispatcher, ids: Span<u128>) -> Span<Item> {
         let mut items: Array<Item> = ArrayTrait::new();
@@ -84,6 +74,15 @@ impl ItemImpl of ItemTrait {
             n += 1;
         };
         items.span()
+    }
+    fn set_has_attack(self: IWorldDispatcher, item_id: u128, attack: u128) {
+        set!(self, HasAttack { id: item_id, attack, has: true });
+    }
+    fn remove_has_attack(self: IWorldDispatcher, item_id: u128, attack: u128) {
+        delete!(self, HasAttack { id: item_id, attack, has: true });
+    }
+    fn check_has_attack(self: @IWorldDispatcher, item_id: u128, attack: u128) -> bool {
+        get!((*self), (item_id, attack), HasAttack).has
     }
 }
 

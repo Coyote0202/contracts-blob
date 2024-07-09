@@ -8,5 +8,14 @@ struct Item {
     id: u128,
     name: ByteArray,
     stats: Stats,
-    attacks: Array<u128>,
+}
+
+#[dojo::model]
+#[derive(Drop, Serde, Copy)]
+struct HasAttack {
+    #[key]
+    id: u128,
+    #[key]
+    attack: u128,
+    has: bool,
 }

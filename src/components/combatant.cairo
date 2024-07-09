@@ -83,7 +83,11 @@ impl CombatantImpl of CombatantTrait {
         }
     }
     fn create_combatant(
-        self: IWorldDispatcher, collection_address: ContractAddress, token_id: u256, combat_id: u128
+        self: IWorldDispatcher,
+        collection_address: ContractAddress,
+        token_id: u256,
+        combat_id: u128,
+        attacks: Span<u128>
     ) -> Combatant {
         let items = self.get_items(collection_address.get_items(token_id));
         let stats = items.get_stats();
@@ -100,7 +104,7 @@ impl CombatantImpl of CombatantTrait {
             collection_address,
             token_id,
             stats,
-            attacks: items.get_attack_ids(),
+            attacks,
             health,
             stun_chance: 0,
         }
