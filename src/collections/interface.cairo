@@ -1,29 +1,53 @@
 use starknet::ContractAddress;
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::world::{IWorldDispatcher};
+use blob_arena::components::{stats::Stats};
 
-
-
-// TODO: make it go through the world
-#[starknet::interface]
 #[dojo::interface]
-trait ICollection<TContractState> {
-    fn owner_of(self: @TContractState, token_id: u256) -> ContractAddress;
-    fn get_items(self: @TContractState, token_id: u256) -> Span<u128>;
+trait ICollection {
+    fn url(world: @IWorldDispatcher) -> ByteArray;
+    fn owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
+    fn get_health(world: @IWorldDispatcher, token_id: u256) -> u8;
+    fn get_stats(world: @IWorldDispatcher, token_id: u256) -> Stats;
+    fn get_speed(world: @IWorldDispatcher, token_id: u256, attack_id: u128) -> Span<u128>;
+    fn has_attack(world: @IWorldDispatcher, token_id: u256, attack_id: u128, item_id: u128) -> bool;
 }
-// fn owner_of_erc721(contract_address: ContractAddress, token_id: u256) -> ContractAddress {
-//     let erc721 = IERC721Dispatcher { contract_address };
-//     erc721.owner_of(token_id)
+fn get_collection_dispatcher(contract_address: ContractAddress) -> ICollectionDispatcher {
+    ICollectionDispatcher { contract_address }
+}
+// #[dojo::interface]
+// trait IAttack<TContractState> {
+//     fn run_attack(self: TContractState, token_id: u256, attack_id: u128, calldata: ByteArray);
 // }
 
-#[generate_trait]
-impl CollectionImpl of CollectionTrait {
-    fn owner_of(self: @ContractAddress, token_id: u256) -> ContractAddress {
-        let dispatcher = ICollectionDispatcher { contract_address: *self };
-        dispatcher.owner_of(token_id)
-    }
-    fn get_items(self: @ContractAddress, token_id: u256) -> Span<u128> {
-        let dispatcher = ICollectionDispatcher { contract_address: *self };
-        dispatcher.get_items(token_id)
-    }
-}
+// struct CollectionWorld {
+//     world: IWorldDispatcher,
+//     collection_address: ContractAddress,
+// }
+// #[generate_trait]
+// impl CollectionImpl of CollectionTrait {
+//     
+//     fn new(self: @IWorldDispatcher, collection_address: ContractAddress) -> CollectionWorld {
+//         CollectionWorld { world: *self, collection_address }
+//     }
+//     fn url(self: @CollectionWorld) -> ByteArray {
+//         get_collection_dispatcher(*self.collection_address).url()
+//     }
+
+//     fn owner(self: @CollectionWorld, token_id: u256) -> ContractAddress {
+//         get_collection_dispatcher(*self.collection_address).owner(token_id)
+//     }
+
+//     fn get_health(self: @CollectionWorld, token_id: u256) -> Span<u128> {
+//         get_collection_dispatcher(*self.collection_address).get_health(token_id)
+//     }
+
+//     fn get_speed(self: @CollectionWorld, token_id: u256, attack_id: u128) -> Span<u128> {
+//         get_collection_dispatcher(*self.collection_address).get_speed(token_id, attack_id)
+//     }
+
+//     fn has_attack(self: @CollectionWorld, token_id: u256, attack_id: u128) -> bool {
+//         get_collection_dispatcher(*self.collection_address).has_attack(token_id, attack_id)
+//     }
+// }
+
 

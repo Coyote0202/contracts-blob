@@ -41,6 +41,7 @@ mod pvp_actions {
             pvp_challenge::{PvPChallengeTrait, PvPChallengeInvite, PvPChallengeScoreTrait},
             utils::{ABTTrait, ABT, ABTOtherTrait}
         },
+        collections::{get_collection_dispatcher, ICollectionDispatcher, ICollectionDispatcherTrait},
         systems::pvp_combat::PvPCombatSystemTrait, utils::{uuid, hash_value},
     };
     use super::{IPvPCombatActions, IPvPChallengeActions};
@@ -53,9 +54,12 @@ mod pvp_actions {
             challenge_id: u128,
             collection_address: ContractAddress,
             token_id: u256,
-            player: ContractAddress
+            player: ContractAddress,
+            attacks: Span<(u128, u128)>
         ) -> CombatantInfo {
-            let combatant = self.create_combatant(collection_address, token_id, challenge_id);
+            let collection = get_collection_dispatcher(collection_address);
+            let combatant = self
+                .create_combatant(collection, token_id, challenge_id, player, attacks);
             assert(player == combatant.player, 'Not Owner');
             self.set_combatant(combatant);
             combatant.into()
@@ -187,6 +191,7 @@ mod pvp_actions {
                 world.update_scores(world.get_combatant_info(winner_id), combatant);
             }
         }
+        fn run_round()
         fn forfeit(ref world: IWorldDispatcher, combatant_id: u128) {
             let loser = world.get_combatant_info(combatant_id);
             loser.assert_player();

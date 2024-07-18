@@ -33,7 +33,7 @@ mod blobert_actions {
     use super::IBlobertItems;
     #[abi(embed_v0)]
     impl ICollectionImpl of ICollection<ContractState> {
-        fn owner_of(self: @ContractState, token_id: u256) -> ContractAddress {
+        fn owner(self: @ContractState, token_id: u256) -> ContractAddress {
             let dispatcher = get_erc271_dispatcher();
             IERC721DispatcherTrait::owner_of(dispatcher, token_id)
         }

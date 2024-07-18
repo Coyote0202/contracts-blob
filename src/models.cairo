@@ -4,8 +4,7 @@ mod item;
 mod commitment;
 mod pvp;
 mod combat;
-mod tournament;
-
+// mod tournament;
 
 use blob_arena::models::{
     attack::{Attack as AttackModel, AvailableAttack},

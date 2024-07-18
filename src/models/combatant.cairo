@@ -13,7 +13,6 @@ struct CombatantInfo {
     token_id: u256,
 }
 
-
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
 struct CombatantStats {

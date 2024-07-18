@@ -4,3 +4,4 @@ abis/
 test.ipynb
 venv/
 node_modules/
+bindings/
