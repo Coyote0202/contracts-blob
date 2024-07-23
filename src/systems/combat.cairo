@@ -38,7 +38,6 @@ fn apply_strength_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
     if value == 0 {
         return Zeroable::zero();
     };
-    let strength_float: Fixed = strength.into();
     let strength_ratio: Fixed = (300_u16 - strength.into()).into()
         / (200_u16 + strength.into()).into();
     let value_float: Fixed = value.into() / FixedTrait::from_felt(HUNDRED);
@@ -132,11 +131,11 @@ impl CombatWorldImp of CombatWorldTraits {
         self: IWorldDispatcher,
         combatant_id: u128,
         round: u32,
-        attack: u128,
+        attack_id: u128,
         target: u128,
         effect: AttackEffect
     ) {
-        emit!(self, AttackResult { combatant_id, round, attack, target, effect });
+        emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
     }
 
     fn run_attack(

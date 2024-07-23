@@ -2,12 +2,24 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use alexandria_math::BitShift;
 
 use blob_arena::{
-    models::{AttackModel, AvailableAttack}, components::{utils::{IdTrait, IdsTrait, TIdsImpl}}
+    utils::uuid, models::{AttackModel, AvailableAttack},
+    components::{utils::{IdTrait, IdsTrait, TIdsImpl}},
 };
 
 #[derive(Drop, Serde, Copy)]
 struct Attack {
     id: u128,
+    damage: u8,
+    speed: u8,
+    accuracy: u8,
+    critical: u8,
+    stun: u8,
+    cooldown: u8,
+}
+
+#[derive(Drop, Serde)]
+struct AttackInput {
+    name: ByteArray,
     damage: u8,
     speed: u8,
     accuracy: u8,
@@ -35,14 +47,11 @@ impl AttackImpl of AttackTrait {
             .get_attack_model(id);
         Attack { id, damage, speed, accuracy, critical, stun, cooldown, }
     }
-    fn get_attacks(self: @IWorldDispatcher, ids: Span<u128>) -> Span<Attack> {
-        let mut attacks: Array<Attack> = ArrayTrait::new();
-        let (len, mut n) = (ids.len(), 0_usize);
-        while n < len {
-            attacks.append(self.get_attack(*ids[n]));
-            n += 1;
-        };
-        attacks.span()
+    fn create_new_attack(self: IWorldDispatcher, attack: AttackInput) -> u128 {
+        let AttackInput { name, damage, speed, accuracy, critical, stun, cooldown } = attack;
+        let id = uuid(self);
+        set!(self, AttackModel { id, name, damage, speed, accuracy, critical, stun, cooldown });
+        id
     }
 // fn get_available_attack(
 //     self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,

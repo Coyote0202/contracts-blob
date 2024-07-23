@@ -14,8 +14,8 @@ struct Item {
 #[derive(Drop, Serde, Copy)]
 struct HasAttack {
     #[key]
-    id: u128,
+    item_id: u128,
     #[key]
-    attack: u128,
+    attack_id: u128,
     has: bool,
 }

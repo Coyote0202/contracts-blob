@@ -1,10 +1,13 @@
 use alexandria_data_structures::array_ext::ArrayTraitExt;
-use core::array::ArrayTrait;
 use starknet::{ContractAddress};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    models::{ItemModel, HasAttack},
-    components::{stats::Stats, attack::{Attack, AttackTrait}, utils::{IdTrait, IdsTrait, TIdsImpl}}
+    models::{ItemModel, HasAttack, AttackModel},
+    components::{
+        stats::Stats, attack::{Attack, AttackTrait, AttackInput},
+        utils::{IdTrait, IdsTrait, TIdsImpl}
+    },
+    utils::uuid
 };
 
 #[derive(Drop, Serde, Copy)]
@@ -12,6 +15,7 @@ struct Item {
     id: u128,
     stats: Stats,
 }
+
 
 // impl ByteArrayCopyImpl of Copy<ByteArray>;
 // impl ItemCopyImpl of Copy<Item>;
@@ -75,14 +79,40 @@ impl ItemImpl of ItemTrait {
         };
         items.span()
     }
-    fn set_has_attack(self: IWorldDispatcher, item_id: u128, attack: u128) {
-        set!(self, HasAttack { id: item_id, attack, has: true });
+    fn create_new_item(self: IWorldDispatcher, name: ByteArray, stats: Stats) -> u128 {
+        let id = uuid(self);
+        set!(self, ItemModel { id, name, stats });
+        id
     }
-    fn remove_has_attack(self: IWorldDispatcher, item_id: u128, attack: u128) {
-        delete!(self, HasAttack { id: item_id, attack, has: true });
+    fn set_has_attack(self: IWorldDispatcher, item_id: u128, attack_id: u128) {
+        set!(self, HasAttack { item_id, attack_id, has: true });
     }
-    fn check_has_attack(self: @IWorldDispatcher, item_id: u128, attack: u128) -> bool {
-        get!((*self), (item_id, attack), HasAttack).has
+    fn remove_has_attack(self: IWorldDispatcher, item_id: u128, attack_id: u128) {
+        delete!(self, HasAttack { item_id, attack_id, has: true });
+    }
+    fn check_has_attack(self: @IWorldDispatcher, item_id: u128, attack_id: u128) -> bool {
+        get!((*self), (item_id, attack_id), HasAttack).has
+    }
+    fn create_and_set_new_attack(
+        self: IWorldDispatcher, item_id: u128, attack: AttackInput
+    ) -> u128 {
+        let id = self.create_new_attack(attack);
+        self.set_has_attack(item_id, id);
+        id
+    }
+    fn create_and_set_new_attacks(
+        self: IWorldDispatcher, item_id: u128, mut attacks: Array<AttackInput>
+    ) -> Span<u128> {
+        let mut attack_ids = ArrayTrait::<u128>::new();
+        loop {
+            match attacks.pop_front() {
+                Option::Some(attack) => {
+                    attack_ids.append(self.create_and_set_new_attack(item_id, attack));
+                },
+                Option::None => { break; }
+            }
+        };
+        attack_ids.span()
     }
 }
 

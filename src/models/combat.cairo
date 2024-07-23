@@ -38,7 +38,7 @@ struct AttackResult {
     combatant_id: u128,
     #[key]
     round: u32,
-    attack: u128,
+    attack_id: u128,
     target: u128,
     effect: AttackEffect,
 }

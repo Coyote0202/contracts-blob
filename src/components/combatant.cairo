@@ -84,6 +84,20 @@ impl CombatantImpl of CombatantTrait {
         info
     }
 
+    fn create_player_combatant(
+        self: IWorldDispatcher,
+        collection_address: ContractAddress,
+        token_id: u256,
+        challenge_id: u128,
+        player: ContractAddress,
+        attacks: Span<(u128, u128)>
+    ) -> CombatantInfo {
+        let collection = get_collection_dispatcher(collection_address);
+        let owner = collection.owner(token_id);
+        assert(player == owner, 'Not Owner');
+        self.create_combatant(collection, token_id, challenge_id, player, attacks)
+    }
+
     fn get_player_combatant_info(self: @IWorldDispatcher, id: u128) -> CombatantInfo {
         let combatant = self.get_combatant_info(id);
         combatant.assert_player();
