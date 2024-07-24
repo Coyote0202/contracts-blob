@@ -5,6 +5,7 @@ use blob_arena::components::{stats::Stats};
 #[dojo::interface]
 trait ICollection {
     fn get_owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
+    fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<u128>;
     fn get_health(world: @IWorldDispatcher, token_id: u256) -> u8;
     fn get_stats(world: @IWorldDispatcher, token_id: u256) -> Stats;
     fn has_attack(world: @IWorldDispatcher, token_id: u256, item_id: u128, attack_id: u128) -> bool;

@@ -72,6 +72,10 @@ mod blobert_actions {
             let traits = world.get_blobert_traits(token_id);
             world.get_blobert_stats(traits)
         }
+        fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<u128> {
+            let traits = world.get_blobert_traits(token_id);
+            world.get_blobert_item_ids(traits).span()
+        }
         fn has_attack(
             world: @IWorldDispatcher, token_id: u256, item_id: u128, attack_id: u128
         ) -> bool {

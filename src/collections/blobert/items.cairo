@@ -109,9 +109,12 @@ impl BlobertItems of BlobertItemsTrait {
 
 #[generate_trait]
 impl BlobertStatsImpl of BlobertStatsTrait {
-    fn get_blobert_stats(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Stats {
+    fn get_blobert_item_ids(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Array<u128> {
         let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
-        self.get_items(array![background, armour, jewelry, mask, weapon].span()).get_stats()
+        array![background, armour, jewelry, mask, weapon]
+    }
+    fn get_blobert_stats(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Stats {
+        self.get_items(self.get_blobert_item_ids(blobert_trait).span()).get_stats()
     }
     fn get_blobert_health(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> u8 {
         let stats = self.get_blobert_stats(blobert_trait);
@@ -124,8 +127,7 @@ impl BlobertStatsImpl of BlobertStatsTrait {
     fn blobert_has_attack(
         self: @IWorldDispatcher, blobert_trait: TokenTrait, item_id: u128, attack_id: u128
     ) -> bool {
-        let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
-        let mut item_ids = array![weapon, jewelry, mask, armour, background];
+        let mut item_ids = self.get_blobert_item_ids(blobert_trait);
         let mut has = false;
         loop {
             match item_ids.pop_front() {

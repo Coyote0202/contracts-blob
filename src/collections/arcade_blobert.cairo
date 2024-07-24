@@ -34,6 +34,10 @@ mod arcade_blobert_actions {
         fn get_owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress {
             world.get_arcade_blobert_owner(token_id)
         }
+        fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<u128> {
+            let traits = world.get_arcade_blobert_traits(token_id);
+            world.get_blobert_item_ids(traits).span()
+        }
         fn get_health(world: @IWorldDispatcher, token_id: u256) -> u8 {
             let traits = world.get_arcade_blobert_traits(token_id);
             world.get_blobert_health(traits)
