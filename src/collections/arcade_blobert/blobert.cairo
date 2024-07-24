@@ -14,8 +14,10 @@ struct ArcadeBlobert {
 
 #[generate_trait]
 impl ArcadeBlobertImpl of ArcadeBlobertTrait {
-    fn set_arcade_blobert(self: IWorldDispatcher, token_id: u128, owner: ContractAddress, traits: TokenTrait) {
-        set!(self, ArcadeBlobert{ token_id, owner, traits});
+    fn set_arcade_blobert(
+        self: IWorldDispatcher, token_id: u128, owner: ContractAddress, traits: TokenTrait
+    ) {
+        set!(self, ArcadeBlobert { token_id, owner, traits });
     }
 
     fn get_arcade_blobert<T, +TryInto<T, u128>>(
@@ -24,11 +26,15 @@ impl ArcadeBlobertImpl of ArcadeBlobertTrait {
         let token_id: u128 = token_id.try_into().unwrap();
         get!(*self, token_id, ArcadeBlobert)
     }
-    fn get_owner<T, +TryInto<T, u128>>(self: @IWorldDispatcher, token_id: T) -> ContractAddress {
+    fn get_arcade_blobert_owner<T, +TryInto<T, u128>>(
+        self: @IWorldDispatcher, token_id: T
+    ) -> ContractAddress {
         self.get_arcade_blobert(token_id).owner
     }
 
-    fn get_traits<T, +TryInto<T, u128>>(self: @IWorldDispatcher, token_id: T) -> TokenTrait {
+    fn get_arcade_blobert_traits<T, +TryInto<T, u128>>(
+        self: @IWorldDispatcher, token_id: T
+    ) -> TokenTrait {
         self.get_arcade_blobert(token_id).traits
     }
 }

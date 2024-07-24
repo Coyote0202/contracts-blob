@@ -4,12 +4,10 @@ use blob_arena::components::{stats::Stats};
 
 #[dojo::interface]
 trait ICollection {
-    fn url(world: @IWorldDispatcher) -> ByteArray;
-    fn owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
+    fn get_owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
     fn get_health(world: @IWorldDispatcher, token_id: u256) -> u8;
     fn get_stats(world: @IWorldDispatcher, token_id: u256) -> Stats;
-    fn get_speed(world: @IWorldDispatcher, token_id: u256, attack_id: u128) -> Span<u128>;
-    fn has_attack(world: @IWorldDispatcher, token_id: u256, attack_id: u128, item_id: u128) -> bool;
+    fn has_attack(world: @IWorldDispatcher, token_id: u256, item_id: u128, attack_id: u128) -> bool;
 }
 fn get_collection_dispatcher(contract_address: ContractAddress) -> ICollectionDispatcher {
     ICollectionDispatcher { contract_address }

@@ -13,10 +13,7 @@ trait IItemActions {
 mod item_actions {
     use starknet::{ContractAddress, get_caller_address, get_contract_address};
 
-    use blob_arena::{
-        components::{stats::Stats, item::{ItemTrait, AttackInput}}, models::{ItemModel},
-        utils::uuid, world::{WorldTrait, Contract}
-    };
+    use blob_arena::{components::{stats::Stats, item::{ItemTrait, AttackInput}}};
 
     use super::{IItemActions};
 

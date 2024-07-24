@@ -1,0 +1,15 @@
+kind = "DojoModel"
+class_hash = "0x81eb53edb6ef82ac26c52a35986e477975dd3b74b8756bed86da2a53f67fa9"
+original_class_hash = "0x81eb53edb6ef82ac26c52a35986e477975dd3b74b8756bed86da2a53f67fa9"
+abi = "manifests/dev/abis/base/models/blob_arena_utils_random_seed.json"
+name = "blob_arena::utils::random_seed"
+
+[[members]]
+name = "key"
+type = "bool"
+key = true
+
+[[members]]
+name = "value"
+type = "felt252"
+key = false

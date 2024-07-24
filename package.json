@@ -2,7 +2,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "jq": "^1.7.2",
-    "starknet": "^6.2.0"
+    "starknet": "6.11"
   },
   "type": "module"
 }

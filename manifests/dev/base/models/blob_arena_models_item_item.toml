@@ -1,0 +1,20 @@
+kind = "DojoModel"
+class_hash = "0x20e0a5ca9826ea4d4d88bfe7d85e2f1e616450bd05e76a3d777ee5429891663"
+original_class_hash = "0x20e0a5ca9826ea4d4d88bfe7d85e2f1e616450bd05e76a3d777ee5429891663"
+abi = "manifests/dev/abis/base/models/blob_arena_models_item_item.json"
+name = "blob_arena::models::item::item"
+
+[[members]]
+name = "id"
+type = "u128"
+key = true
+
+[[members]]
+name = "name"
+type = "ByteArray"
+key = false
+
+[[members]]
+name = "stats"
+type = "Stats"
+key = false

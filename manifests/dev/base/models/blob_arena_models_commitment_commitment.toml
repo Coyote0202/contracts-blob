@@ -1,0 +1,15 @@
+kind = "DojoModel"
+class_hash = "0x2d2f68172753390454e181c634cd1c68ecfdf05590423f2ff6165ce0f6ab84e"
+original_class_hash = "0x2d2f68172753390454e181c634cd1c68ecfdf05590423f2ff6165ce0f6ab84e"
+abi = "manifests/dev/abis/base/models/blob_arena_models_commitment_commitment.json"
+name = "blob_arena::models::commitment::commitment"
+
+[[members]]
+name = "id"
+type = "felt252"
+key = true
+
+[[members]]
+name = "commitment"
+type = "felt252"
+key = false

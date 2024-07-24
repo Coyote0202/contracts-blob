@@ -1,0 +1,10 @@
+kind = "DojoContract"
+class_hash = "0x31372d6c59a421e08edc94eda867ed3f336d27a5be4aca0e6584cfa52454331"
+original_class_hash = "0x31372d6c59a421e08edc94eda867ed3f336d27a5be4aca0e6584cfa52454331"
+base_class_hash = "0x0"
+abi = "manifests/dev/abis/base/contracts/blob_arena_collections_arcade_blobert_arcade_blobert_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::collections::arcade_blobert::arcade_blobert_actions"

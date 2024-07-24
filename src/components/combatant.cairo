@@ -93,7 +93,7 @@ impl CombatantImpl of CombatantTrait {
         attacks: Span<(u128, u128)>
     ) -> CombatantInfo {
         let collection = get_collection_dispatcher(collection_address);
-        let owner = collection.owner(token_id);
+        let owner = collection.get_owner(token_id);
         assert(player == owner, 'Not Owner');
         self.create_combatant(collection, token_id, challenge_id, player, attacks)
     }

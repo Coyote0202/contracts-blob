@@ -1,6 +1,9 @@
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use super::external::{Seed, TokenTrait};
-use blob_arena::{core::TTupleSize5, utils::{value_to_uuid, HashStateTrait}};
+use blob_arena::{
+    core::TTupleSize5, utils::{value_to_uuid, HashStateTrait},
+    components::{stats::{Stats}, item::{ItemTrait, ItemsTrait, AttackInput}},
+};
 use core::hash::into_felt252_based;
 type SeedIds = TTupleSize5<u128>;
 
@@ -100,6 +103,43 @@ impl BlobertItems of BlobertItemsTrait {
         match blobert_trait {
             TokenTrait::Regular(seed) => self.get_seed_item_ids(seed),
             TokenTrait::Custom(custom_id) => self.get_custom_item_ids(custom_id),
+        }
+    }
+}
+
+#[generate_trait]
+impl BlobertStatsImpl of BlobertStatsTrait {
+    fn get_blobert_stats(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Stats {
+        let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
+        self.get_items(array![background, armour, jewelry, mask, weapon].span()).get_stats()
+    }
+    fn get_blobert_health(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> u8 {
+        let stats = self.get_blobert_stats(blobert_trait);
+        if stats.defense > 155 {
+            255
+        } else {
+            100 + stats.defense
+        }
+    }
+    fn blobert_has_attack(
+        self: @IWorldDispatcher, blobert_trait: TokenTrait, item_id: u128, attack_id: u128
+    ) -> bool {
+        let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
+        let mut item_ids = array![weapon, jewelry, mask, armour, background];
+        let mut has = false;
+        loop {
+            match item_ids.pop_front() {
+                Option::Some(id) => { if id == item_id {
+                    has = true;
+                    break;
+                } },
+                Option::None => { break; },
+            }
+        };
+        if has {
+            self.check_has_attack(item_id, attack_id)
+        } else {
+            false
         }
     }
 }

@@ -1,0 +1,10 @@
+kind = "DojoContract"
+class_hash = "0x7984e72697c8893d069fc24e6e268b282ac3866c59975027779f2de7491bc2f"
+original_class_hash = "0x7984e72697c8893d069fc24e6e268b282ac3866c59975027779f2de7491bc2f"
+base_class_hash = "0x0"
+abi = "manifests/dev/abis/base/contracts/blob_arena_contracts_pvp_pvp_actions.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+name = "blob_arena::contracts::pvp::pvp_actions"

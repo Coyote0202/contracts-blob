@@ -10,7 +10,7 @@ name = "dojo::world::world"
 
 [world.metadata]
 profile_name = "dev"
-rpc_url = "https://starknet-sepolia.public.blastapi.io/rpc/v0_7"
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
 
 [base]
 kind = "Class"
@@ -21,8 +21,8 @@ name = "dojo::base::base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x678cb9edc1f280c954d7b9872f22c5532c92b8d5c4d08823664b242e07ed7d1"
-class_hash = "0x2c9e5a5c2bb9842b4c1fe4c894e9363df9e4f43bd4fd98cfb049706c65e2fbc"
-original_class_hash = "0x2c9e5a5c2bb9842b4c1fe4c894e9363df9e4f43bd4fd98cfb049706c65e2fbc"
+class_hash = "0x31372d6c59a421e08edc94eda867ed3f336d27a5be4aca0e6584cfa52454331"
+original_class_hash = "0x31372d6c59a421e08edc94eda867ed3f336d27a5be4aca0e6584cfa52454331"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/blob_arena_collections_arcade_blobert_arcade_blobert_actions.json"
 reads = []
@@ -34,8 +34,8 @@ name = "blob_arena::collections::arcade_blobert::arcade_blobert_actions"
 [[contracts]]
 kind = "DojoContract"
 address = "0x299968317ad9c2c2f3d8a8063b1881468aa9e3a1eaa58754f006f375b719562"
-class_hash = "0x7524d17d0fb2c50bec6d265385acb2a8b0cf685950190210a2e39f439ccae40"
-original_class_hash = "0x7524d17d0fb2c50bec6d265385acb2a8b0cf685950190210a2e39f439ccae40"
+class_hash = "0x2fa5aa5384677ea07ac8c68d6f1428db6cd852839cf376d30ffc46c8beda73"
+original_class_hash = "0x2fa5aa5384677ea07ac8c68d6f1428db6cd852839cf376d30ffc46c8beda73"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/blob_arena_collections_blobert_blobert_actions.json"
 reads = []
@@ -60,8 +60,8 @@ name = "blob_arena::contracts::attack::attack_actions"
 [[contracts]]
 kind = "DojoContract"
 address = "0x760d529b82b05c099e0ee1e6dc10bdf0825eaefdb603e0315c6f4747d60f53a"
-class_hash = "0x6bb808ee2d5cb80847ab75c5cc5036da67f59110f6ea6e05e4464e362de5f43"
-original_class_hash = "0x6bb808ee2d5cb80847ab75c5cc5036da67f59110f6ea6e05e4464e362de5f43"
+class_hash = "0x44d77844cd2f5f88c49eba7bb0c356cab38a9331e9ba4ded0307d6ec3bf3796"
+original_class_hash = "0x44d77844cd2f5f88c49eba7bb0c356cab38a9331e9ba4ded0307d6ec3bf3796"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/blob_arena_contracts_item_item_actions.json"
 reads = []
@@ -73,8 +73,8 @@ name = "blob_arena::contracts::item::item_actions"
 [[contracts]]
 kind = "DojoContract"
 address = "0x1e71d82f2e77727f9fdbe618fc9aeb8827426396cffb35e848ea6b3b346f7bd"
-class_hash = "0x7ba09667535f41aef0465f53e6bb182b8afc94f5250b5992c8a93176ab39ba3"
-original_class_hash = "0x7ba09667535f41aef0465f53e6bb182b8afc94f5250b5992c8a93176ab39ba3"
+class_hash = "0x710b01f1a6963e5abcee72e36b7cb3bd708aa0928a6c9263c07633c3fbc427b"
+original_class_hash = "0x710b01f1a6963e5abcee72e36b7cb3bd708aa0928a6c9263c07633c3fbc427b"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/blob_arena_contracts_pvp_admin_pvp_admin_actions.json"
 reads = []
@@ -86,8 +86,8 @@ name = "blob_arena::contracts::pvp_admin::pvp_admin_actions"
 [[contracts]]
 kind = "DojoContract"
 address = "0x34434b44e1f3213f6ab8e05cd6aa7f95f7cf9817b0fba46bd0ea6be3a6068e7"
-class_hash = "0x2cac7119d4bcca93477e331d972cfc019a95bd684198047a74ecf9f2b0ccd35"
-original_class_hash = "0x2cac7119d4bcca93477e331d972cfc019a95bd684198047a74ecf9f2b0ccd35"
+class_hash = "0x7984e72697c8893d069fc24e6e268b282ac3866c59975027779f2de7491bc2f"
+original_class_hash = "0x7984e72697c8893d069fc24e6e268b282ac3866c59975027779f2de7491bc2f"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/blob_arena_contracts_pvp_pvp_actions.json"
 reads = []
@@ -397,8 +397,30 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x4eea394cdbfdebefaa98d83899040d33653d56653f61244483cfe9234e1a9ba"
-original_class_hash = "0x4eea394cdbfdebefaa98d83899040d33653d56653f61244483cfe9234e1a9ba"
+class_hash = "0x4cde3af16e5c0a3807e6027e8d7422958bc1634b5a95b063b96f3c3d5dc5317"
+original_class_hash = "0x4cde3af16e5c0a3807e6027e8d7422958bc1634b5a95b063b96f3c3d5dc5317"
+abi = "manifests/dev/abis/deployments/models/blob_arena_models_item_has_attack.json"
+name = "blob_arena::models::item::has_attack"
+
+[[models.members]]
+name = "item_id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "attack_id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "has"
+type = "bool"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x20e0a5ca9826ea4d4d88bfe7d85e2f1e616450bd05e76a3d777ee5429891663"
+original_class_hash = "0x20e0a5ca9826ea4d4d88bfe7d85e2f1e616450bd05e76a3d777ee5429891663"
 abi = "manifests/dev/abis/deployments/models/blob_arena_models_item_item.json"
 name = "blob_arena::models::item::item"
 
@@ -415,11 +437,6 @@ key = false
 [[models.members]]
 name = "stats"
 type = "Stats"
-key = false
-
-[[models.members]]
-name = "attacks"
-type = "Array<u128>"
 key = false
 
 [[models]]
