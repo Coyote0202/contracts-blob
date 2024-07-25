@@ -1,5 +1,5 @@
 {
-  "world": "0x712caad4c0075842266195a01d1c5583abef22023aa7db1b73507f00475b2d1",
+  "world": "0x1f8efe679bebd8a5ed8f105dc41da9ea343de7f94302843cfd8bdc862968bf1",
   "models": {
     "ArcadeBlobert": {
       "path": "blob_arena::collections::arcade_blobert::blobert::arcade_blobert",
@@ -49,9 +49,13 @@
       "path": "blob_arena::models::commitment::commitment",
       "class_hash": "0x2d2f68172753390454e181c634cd1c68ecfdf05590423f2ff6165ce0f6ab84e"
     },
+    "HasAttack": {
+      "path": "blob_arena::models::item::has_attack",
+      "class_hash": "0x4cde3af16e5c0a3807e6027e8d7422958bc1634b5a95b063b96f3c3d5dc5317"
+    },
     "Item": {
       "path": "blob_arena::models::item::item",
-      "class_hash": "0x4eea394cdbfdebefaa98d83899040d33653d56653f61244483cfe9234e1a9ba"
+      "class_hash": "0x20e0a5ca9826ea4d4d88bfe7d85e2f1e616450bd05e76a3d777ee5429891663"
     },
     "PvPChallengeInvite": {
       "path": "blob_arena::models::pvp::pv_p_challenge_invite",
@@ -69,14 +73,6 @@
       "path": "blob_arena::models::pvp::pv_p_combatants",
       "class_hash": "0x33f9dd9f192f3e4db9970a173a13bdd8ef165979d0c64023ef37a8e47e51a37"
     },
-    "WarriorItems": {
-      "path": "blob_arena::models::warrior::warrior_items",
-      "class_hash": "0x101d003a2c393733beeee67373265c7d0c2d1fd320eb7a837f45e822622c09f"
-    },
-    "WarriorToken": {
-      "path": "blob_arena::models::warrior::warrior_token",
-      "class_hash": "0x5108b0aae45a85d8eae92e6974f32c6898de7725f9f2a028f9007c775c2e856"
-    },
     "RandomSeed": {
       "path": "blob_arena::utils::random_seed",
       "class_hash": "0x81eb53edb6ef82ac26c52a35986e477975dd3b74b8756bed86da2a53f67fa9"
@@ -85,33 +81,33 @@
   "contracts": {
     "arcade_blobert_actions": {
       "path": "blob_arena::collections::arcade_blobert::arcade_blobert_actions",
-      "contract_address": "0x678cb9edc1f280c954d7b9872f22c5532c92b8d5c4d08823664b242e07ed7d1",
-      "class_hash": "0x4b1c610ce8a632399d81eb68f6ba85a0d063c63f29df915478e37b6427ea730"
+      "contract_address": "0x5bbfe9e505e70eed149ee62a77bddbae28428e152f75f5367989312bb175c84",
+      "class_hash": "0x3a0dd38862a08c5740aac3530a4436289838df74908f864d784ab9f94142d8c"
     },
     "blobert_actions": {
       "path": "blob_arena::collections::blobert::blobert_actions",
-      "contract_address": "0x299968317ad9c2c2f3d8a8063b1881468aa9e3a1eaa58754f006f375b719562",
-      "class_hash": "0x2fbaac8ba5ae34966172409bb9b1a9b0db50e5e629c23858821bcf44b6923c"
+      "contract_address": "0x5ca814bce77c02d2381d3d66c842947ef33327a1ba69bf5861aa3e8a9b2fddb",
+      "class_hash": "0x4bac30ec5627544197bb305fd555fdab33bfbb63f5815fd44786d2930af5312"
     },
     "attack_actions": {
       "path": "blob_arena::contracts::attack::attack_actions",
-      "contract_address": "0x435f88ff6175e32cbff509d13eb9f031765e2d469c5eeb255af6ab5bd230c80",
-      "class_hash": "0x35bf6d2369be4a96ebd11bd8b39ebedb3dcae04f75a9f94e22b293193447242"
+      "contract_address": "0x4919d2e50095f40a64f6109cf29f684f80955d515aa720a2145697366242ddf",
+      "class_hash": "0x666b7f74eed2fda627b8b1c17b0ee39780cd99a29a1adb238bae33e3a6696dd"
     },
     "item_actions": {
       "path": "blob_arena::contracts::item::item_actions",
-      "contract_address": "0x760d529b82b05c099e0ee1e6dc10bdf0825eaefdb603e0315c6f4747d60f53a",
-      "class_hash": "0x87f1072c9e9f92b89afbb04d2ac32d0afbadbf7492f02511a1d9c144f0d2eb"
+      "contract_address": "0xf376276f6b873e69736ae66daa82616616600307bd163a48c3b49ecfd79a57",
+      "class_hash": "0x44d77844cd2f5f88c49eba7bb0c356cab38a9331e9ba4ded0307d6ec3bf3796"
     },
     "pvp_actions": {
       "path": "blob_arena::contracts::pvp::pvp_actions",
-      "contract_address": "0x34434b44e1f3213f6ab8e05cd6aa7f95f7cf9817b0fba46bd0ea6be3a6068e7",
-      "class_hash": "0x1f3daa51e3515ab5e179991210851b56904bd43b091e500edf5e1dd3ca18d21"
+      "contract_address": "0xc6e2d0f30fd47875607de55f659dff70d5018163f4261c32d8ea0ad1825c07",
+      "class_hash": "0x7984e72697c8893d069fc24e6e268b282ac3866c59975027779f2de7491bc2f"
     },
     "pvp_admin_actions": {
       "path": "blob_arena::contracts::pvp_admin::pvp_admin_actions",
-      "contract_address": "0x1e71d82f2e77727f9fdbe618fc9aeb8827426396cffb35e848ea6b3b346f7bd",
-      "class_hash": "0x31c1aba7e90e5ad49327d1cb3f6083bf99b77abd3335fce9e61227bc8b97fcf"
+      "contract_address": "0x11f293469f40b844c26bf2790754d502ff4fb5f63bab21ff104fd67f7370de4",
+      "class_hash": "0x710b01f1a6963e5abcee72e36b7cb3bd708aa0928a6c9263c07633c3fbc427b"
     }
   }
 }

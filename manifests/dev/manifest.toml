@@ -3,9 +3,9 @@ kind = "WorldContract"
 class_hash = "0x3f63cecdc4964acafb921ba2934c6507d1b3c344edb64c2762cf08053169ab9"
 original_class_hash = "0x3f63cecdc4964acafb921ba2934c6507d1b3c344edb64c2762cf08053169ab9"
 abi = "manifests/dev/abis/deployments/dojo_world_world.json"
-address = "0x712caad4c0075842266195a01d1c5583abef22023aa7db1b73507f00475b2d1"
-transaction_hash = "0x61a215652f93c9d16407f54482c66478cb7afba8bfdd319f25764e23540e776"
-seed = "blob_arena"
+address = "0x1f8efe679bebd8a5ed8f105dc41da9ea343de7f94302843cfd8bdc862968bf1"
+transaction_hash = "0x7bbe8020cf8344a355b357b8599ae67b4bf8f324fd321894da6998a1af8cb0c"
+seed = "blob-arena-0.2.0"
 name = "dojo::world::world"
 
 [world.metadata]
@@ -20,7 +20,7 @@ name = "dojo::base::base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x678cb9edc1f280c954d7b9872f22c5532c92b8d5c4d08823664b242e07ed7d1"
+address = "0x5bbfe9e505e70eed149ee62a77bddbae28428e152f75f5367989312bb175c84"
 class_hash = "0x3a0dd38862a08c5740aac3530a4436289838df74908f864d784ab9f94142d8c"
 original_class_hash = "0x3a0dd38862a08c5740aac3530a4436289838df74908f864d784ab9f94142d8c"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
@@ -33,7 +33,7 @@ name = "blob_arena::collections::arcade_blobert::arcade_blobert_actions"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x299968317ad9c2c2f3d8a8063b1881468aa9e3a1eaa58754f006f375b719562"
+address = "0x5ca814bce77c02d2381d3d66c842947ef33327a1ba69bf5861aa3e8a9b2fddb"
 class_hash = "0x4bac30ec5627544197bb305fd555fdab33bfbb63f5815fd44786d2930af5312"
 original_class_hash = "0x4bac30ec5627544197bb305fd555fdab33bfbb63f5815fd44786d2930af5312"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
@@ -46,7 +46,7 @@ name = "blob_arena::collections::blobert::blobert_actions"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x435f88ff6175e32cbff509d13eb9f031765e2d469c5eeb255af6ab5bd230c80"
+address = "0x4919d2e50095f40a64f6109cf29f684f80955d515aa720a2145697366242ddf"
 class_hash = "0x666b7f74eed2fda627b8b1c17b0ee39780cd99a29a1adb238bae33e3a6696dd"
 original_class_hash = "0x666b7f74eed2fda627b8b1c17b0ee39780cd99a29a1adb238bae33e3a6696dd"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
@@ -59,7 +59,7 @@ name = "blob_arena::contracts::attack::attack_actions"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x760d529b82b05c099e0ee1e6dc10bdf0825eaefdb603e0315c6f4747d60f53a"
+address = "0xf376276f6b873e69736ae66daa82616616600307bd163a48c3b49ecfd79a57"
 class_hash = "0x44d77844cd2f5f88c49eba7bb0c356cab38a9331e9ba4ded0307d6ec3bf3796"
 original_class_hash = "0x44d77844cd2f5f88c49eba7bb0c356cab38a9331e9ba4ded0307d6ec3bf3796"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
@@ -72,7 +72,7 @@ name = "blob_arena::contracts::item::item_actions"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x1e71d82f2e77727f9fdbe618fc9aeb8827426396cffb35e848ea6b3b346f7bd"
+address = "0x11f293469f40b844c26bf2790754d502ff4fb5f63bab21ff104fd67f7370de4"
 class_hash = "0x710b01f1a6963e5abcee72e36b7cb3bd708aa0928a6c9263c07633c3fbc427b"
 original_class_hash = "0x710b01f1a6963e5abcee72e36b7cb3bd708aa0928a6c9263c07633c3fbc427b"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
@@ -85,7 +85,7 @@ name = "blob_arena::contracts::pvp_admin::pvp_admin_actions"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x34434b44e1f3213f6ab8e05cd6aa7f95f7cf9817b0fba46bd0ea6be3a6068e7"
+address = "0xc6e2d0f30fd47875607de55f659dff70d5018163f4261c32d8ea0ad1825c07"
 class_hash = "0x7984e72697c8893d069fc24e6e268b282ac3866c59975027779f2de7491bc2f"
 original_class_hash = "0x7984e72697c8893d069fc24e6e268b282ac3866c59975027779f2de7491bc2f"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"

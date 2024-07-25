@@ -1,13 +1,11 @@
 [package]
 cairo-version = "2.6.3"
 name = "blob_arena"
-version = "0.1.0"
+version = "0.2.0"
 
 [cairo]
 sierra-replace-ids = true
 
-[tool.dojo]
-initializer_class_hash = "0xbeef"
 
 [tool.fmt]
 sort-module-level-items = true
@@ -18,19 +16,15 @@ token = { git = "https://github.com/dojoengine/origami", tag = "v0.7.2" }
 alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git", tag = "cairo-v2.6.0" }
 cubit = { git = "https://github.com/notV4l/cubit.git", branch = "cairo_2.7" }
 
-# openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v0.13.0" }
-
-
 [[target.dojo]]
 
-
-# [tool.dojo]
+[tool.dojo]
 # initializer_class_hash = "0xbeef"
 
-# [profile.dev.tool.dojo.env]
-# rpc_url = "http://localhost:5050"
-# account_address = "0xb3ff441a68610b30fd5e2abbf3a1548eb6ba6f3559f2862bf2dc757e5828ca"
-# private_key = "0x2bbf4f9fd0bbb2e60b0316c1fe0b76cf7a4d0198bd493ced9b8df2a3a24d68a"
+
+[profile.dev.tool.dojo.env]
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
 
 # [tool.fmt]
 # sort-module-level-Stats = true
