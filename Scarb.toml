@@ -1,5 +1,5 @@
 [package]
-cairo-version = "2.6.3"
+cairo-version = "2.7.0-rc.3"
 name = "blob_arena"
 version = "0.2.0"
 
@@ -11,20 +11,15 @@ sierra-replace-ids = true
 sort-module-level-items = true
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v0.7.2" }
-token = { git = "https://github.com/dojoengine/origami", tag = "v0.7.2" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.5" }
+origami_token = { git = "https://github.com/dojoengine/origami", tag = "v1.0.0-alpha.5" }
 alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git", tag = "cairo-v2.6.0" }
-cubit = { git = "https://github.com/notV4l/cubit.git", branch = "cairo_2.7" }
+cubit = { git = "https://github.com/dojoengine/cubit", branch = "cairo_2.7" }
 
 [[target.dojo]]
 
 [tool.dojo]
-# initializer_class_hash = "0xbeef"
+initializer_class_hash = "0xbeef"
 
-
-[profile.dev.tool.dojo.env]
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
-account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
-
-# [tool.fmt]
-# sort-module-level-Stats = true
+[tool.dojo.world.namespace]
+default = "blob_arena"

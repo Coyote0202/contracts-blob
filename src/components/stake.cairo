@@ -1,5 +1,5 @@
 #[dojo::model]
-#[derive(Copy, Drop, Print, Serde, PartialEq)]
+#[derive(Copy, Drop, Serde, PartialEq)]
 struct Stake {
     #[key]
     combat_id: u128,

@@ -8,14 +8,14 @@ use blob_arena::components::{stats::Stats, item::AttackInput};
 #[dojo::interface]
 trait IBlobertItems {
     fn set_seed_item_id(
-        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+        ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
     );
     fn set_custom_item_id(
-        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+        ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
     );
     fn new_seed_item_with_attacks(
         ref world: IWorldDispatcher,
-        blobert_trait: BlobertTrait,
+        blobert_trait: u8,
         trait_id: u8,
         item_name: ByteArray,
         stats: Stats,
@@ -23,7 +23,7 @@ trait IBlobertItems {
     );
     fn new_custom_item_with_attacks(
         ref world: IWorldDispatcher,
-        blobert_trait: BlobertTrait,
+        blobert_trait: u8,
         trait_id: u8,
         item_name: ByteArray,
         stats: Stats,
@@ -34,7 +34,9 @@ trait IBlobertItems {
 #[dojo::contract]
 mod blobert_actions {
     use starknet::{ContractAddress, get_contract_address};
-    use token::components::token::{erc721::interface::{IERC721Dispatcher, IERC721DispatcherTrait}};
+    use origami_token::components::token::{
+        erc721::interface::{IERC721Dispatcher, IERC721DispatcherTrait}
+    };
     use blob_arena::{
         collections::{
             interface::ICollection,
@@ -86,20 +88,20 @@ mod blobert_actions {
     #[abi(embed_v0)]
     impl IBlobertItemsImpl of IBlobertItems<ContractState> {
         fn set_seed_item_id(
-            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+            ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
         ) {
             world.assert_caller_is_owner(get_contract_address());
-            world.set_seed_item_id(blobert_trait, trait_id, item_id);
+            world.set_seed_item_id(blobert_trait.into(), trait_id, item_id);
         }
         fn set_custom_item_id(
-            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+            ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
         ) {
             world.assert_caller_is_owner(get_contract_address());
-            world.set_custom_item_id(blobert_trait, trait_id, item_id);
+            world.set_custom_item_id(blobert_trait.into(), trait_id, item_id);
         }
         fn new_seed_item_with_attacks(
             ref world: IWorldDispatcher,
-            blobert_trait: BlobertTrait,
+            blobert_trait: u8,
             trait_id: u8,
             item_name: ByteArray,
             stats: Stats,
@@ -108,11 +110,11 @@ mod blobert_actions {
             world.assert_caller_is_owner(get_contract_address());
             let item_id = world.create_new_item(item_name, stats);
             world.create_and_set_new_attacks(item_id, attacks);
-            world.set_seed_item_id(blobert_trait, trait_id, item_id);
+            world.set_seed_item_id(blobert_trait.into(), trait_id, item_id);
         }
         fn new_custom_item_with_attacks(
             ref world: IWorldDispatcher,
-            blobert_trait: BlobertTrait,
+            blobert_trait: u8,
             trait_id: u8,
             item_name: ByteArray,
             stats: Stats,
@@ -121,7 +123,7 @@ mod blobert_actions {
             world.assert_caller_is_owner(get_contract_address());
             let item_id = world.create_new_item(item_name, stats);
             world.create_and_set_new_attacks(item_id, attacks);
-            world.set_custom_item_id(blobert_trait, trait_id, item_id);
+            world.set_custom_item_id(blobert_trait.into(), trait_id, item_id);
         }
     }
 }

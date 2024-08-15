@@ -1,5 +1,5 @@
 use starknet::{ContractAddress, class_hash::class_hash_const};
-use token::components::token::{
+use origami_token::components::token::{
     erc721::interface::{IERC721Dispatcher, IERC721, IERC721DispatcherTrait}
 };
 

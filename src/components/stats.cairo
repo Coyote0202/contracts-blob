@@ -1,7 +1,7 @@
 use core::option::OptionTrait;
 use core::fmt::{Display, Formatter, Error};
 
-#[derive(Copy, Drop, Print, Serde, SerdeLen, Introspect)]
+#[derive(Copy, Drop, Serde, Introspect)]
 struct Stats {
     attack: u8,
     defense: u8,

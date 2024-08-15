@@ -1,8 +1,7 @@
 use blob_arena::components::{combat::{Phase, AttackEffect}, utils::{AB, ABT}};
 use starknet::{ContractAddress};
-use dojo::database::introspect::Introspect;
 
-#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum PvPWinner {
     None,
     A,
@@ -40,7 +39,7 @@ struct PvPCombatants {
 
 
 #[dojo::model]
-#[derive(Copy, Drop, Print, Serde)]
+#[derive(Copy, Drop, Serde)]
 struct PvPChallengeScore {
     #[key]
     player: ContractAddress,
@@ -57,7 +56,7 @@ struct PvPChallengeScore {
 }
 
 #[dojo::model]
-#[derive(Copy, Drop, Print, Serde)]
+#[derive(Copy, Drop, Serde)]
 struct PvPChallengeInvite {
     #[key]
     id: u128,
@@ -70,7 +69,7 @@ struct PvPChallengeInvite {
 }
 
 #[dojo::model]
-#[derive(Copy, Drop, Print, Serde)]
+#[derive(Copy, Drop, Serde)]
 struct PvPChallengeResponse {
     #[key]
     id: u128,

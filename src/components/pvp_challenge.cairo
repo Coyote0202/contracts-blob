@@ -8,7 +8,7 @@ use blob_arena::{
     models::{PvPChallengeInvite, PvPChallengeResponse, PvPChallengeScoreModel, PvPCombatantsModel}
 };
 
-#[derive(Copy, Drop, Print, Serde)]
+#[derive(Copy, Drop, Serde)]
 struct PvPChallenge {
     id: u128,
     sender: ContractAddress,

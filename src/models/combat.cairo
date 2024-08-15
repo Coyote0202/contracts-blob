@@ -1,4 +1,4 @@
-#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum Phase {
     Setup,
     Commit,
@@ -31,16 +31,17 @@ enum AttackEffect {
     Hit: AttackHit,
 }
 
+#[derive(Drop, Serde, Copy, Introspect)]
+#[dojo::model]
 #[dojo::event]
-#[derive(Drop, Serde, Copy)]
-struct AttackResult {
+pub struct AttackResult {
     #[key]
-    combatant_id: u128,
+    pub combatant_id: u128,
     #[key]
-    round: u32,
-    attack_id: u128,
-    target: u128,
-    effect: AttackEffect,
+    pub round: u32,
+    pub attack_id: u128,
+    pub target: u128,
+    pub effect: AttackEffect,
 }
 
 #[dojo::model]

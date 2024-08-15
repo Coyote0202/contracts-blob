@@ -21,7 +21,7 @@ impl TIdsImpl<T, +IdTrait<T>, +Drop<T>, +Copy<T>> of IdsTrait<T> {
 }
 
 
-#[derive(Copy, Drop, Print, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum AB {
     A,
     B,
@@ -143,13 +143,13 @@ impl ABTZeroImpl<T, +Zero<T>, +Drop<T>> of Zero<ABT<T>> {
     }
 }
 
-#[derive(Copy, Drop, Print, Serde, PartialEq)]
+#[derive(Copy, Drop, Serde, PartialEq)]
 enum Winner {
     A,
     B,
     Draw
 }
-#[derive(Copy, Drop, Print, Serde, PartialEq)]
+#[derive(Copy, Drop, Serde, PartialEq)]
 enum Status {
     Running,
     Finished: Winner,

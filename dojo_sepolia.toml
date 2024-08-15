@@ -1,0 +1,11 @@
+[world]
+name = "blob_arena"
+seed = "blob-arena-0.3.0"
+
+[namespace]
+default = "blob_arena"
+
+[env]
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
+world_address = "0x1f8efe679bebd8a5ed8f105dc41da9ea343de7f94302843cfd8bdc862968bf1"

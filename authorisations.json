@@ -2,9 +2,9 @@
   "owner": {},
   "writer": {
     "arcade_blobert_actions": ["ArcadeBlobert", "LastMint"],
-    "blobert_actions": ["ItemMap"],
+    "blobert_actions": ["ItemMap", "Item", "Attack", "HasAttack"],
     "attack_actions": ["Attack"],
-    "item_actions": ["Item", "Attack"],
+    "item_actions": ["Item", "Attack", "HasAttack"],
     "pvp_actions": [
       "AvailableAttack",
       "CombatState",

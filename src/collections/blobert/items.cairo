@@ -15,7 +15,7 @@ struct BlobertTraitsSeed {
     weapon: u128,
 }
 
-#[derive(Copy, Drop, Print, Serde, SerdeLen, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum BlobertTrait {
     Background,
     Armour,
@@ -35,6 +35,19 @@ impl BlobertTraitIntoFelt252 of Into<BlobertTrait, felt252> {
             BlobertTrait::Jewelry => 'jewelry',
             BlobertTrait::Mask => 'mask',
             BlobertTrait::Weapon => 'weapon',
+        }
+    }
+}
+
+impl U8IntoBlobertTrait of Into<u8, BlobertTrait> {
+    fn into(self: u8) -> BlobertTrait {
+        match self {
+            0 => BlobertTrait::Background,
+            1 => BlobertTrait::Armour,
+            2 => BlobertTrait::Jewelry,
+            3 => BlobertTrait::Mask,
+            4 => BlobertTrait::Weapon,
+            _ => panic!("Invalid BlobertTrait"),
         }
     }
 }

@@ -2,7 +2,7 @@ use starknet::{get_caller_address, ContractAddress};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 
-#[derive(Copy, Drop, Print, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum Contract {
     World,
     Attack,

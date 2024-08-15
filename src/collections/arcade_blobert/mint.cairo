@@ -3,7 +3,8 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use alexandria_math::BitShift;
 
 use blob_arena::{
-    utils::{felt252_to_uuid, uuid, hash_value}, collections::blobert::external::{Seed, TokenTrait}, world::WorldTrait
+    utils::{felt252_to_uuid, uuid, hash_value}, collections::blobert::external::{Seed, TokenTrait},
+    world::WorldTrait
 };
 use super::blobert::{ArcadeBlobertTrait, ArcadeBlobert};
 
@@ -35,7 +36,7 @@ fn generate_seed(randomness: felt252) -> Seed {
     let background: u8 = (randomness % background_count).try_into().unwrap();
     let armour: u8 = (BitShift::shr(randomness, 48) % armour_count).try_into().unwrap();
 
-    // only allow the mask to be one of the first 8 masks 
+    // only allow the mask to be one of the first 8 masks
     // where the armour is sheep wool or kigurumi
     if armour == 0 || armour == 1 {
         mask_count = 8;
@@ -52,7 +53,7 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn mint_blobert(self: IWorldDispatcher) -> u256 {
         let caller = get_caller_address();
         let timestamp = get_block_timestamp();
-        if self.is_owner(get_contract_address(), caller.into()) {
+        if self.is_owner(get_contract_address().into(), caller.into()) {
             assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
         }
 
@@ -61,11 +62,13 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
 
         let seed = generate_seed(random);
 
-        self.set_arcade_blobert(token_id,caller, TokenTrait::Regular(seed));
+        self.set_arcade_blobert(token_id, caller, TokenTrait::Regular(seed));
         self.set_last_mint(caller, timestamp);
         token_id.into()
     }
-    fn mint_blobert_with_traits(self: IWorldDispatcher, player: ContractAddress, traits: TokenTrait) -> u256 {
+    fn mint_blobert_with_traits(
+        self: IWorldDispatcher, player: ContractAddress, traits: TokenTrait
+    ) -> u256 {
         self.assert_caller_is_owner(get_contract_address());
         let token_id = uuid(self);
 
