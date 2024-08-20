@@ -1,4 +1,4 @@
-use core::{integer::BoundedInt, num::traits::{Zero, One}, fmt::{Display, Formatter, Error}};
+use core::{num::traits::{Zero, One, Bounded}, fmt::{Display, Formatter, Error}};
 
 trait IdTrait<T> {
     fn id(self: T) -> u128;
@@ -165,7 +165,7 @@ impl WinnerIntoAB of Into<Winner, AB> {
     }
 }
 
-impl BoundedIntIntoAB<T, +Drop<T>, +BoundedInt<T>, +Zero<T>, +One<T>> of Into<T, AB> {
+impl BoundedIntIntoAB<T, +Drop<T>, +Zero<T>, +One<T>> of Into<T, AB> {
     fn into(self: T) -> AB {
         if self.is_zero() {
             AB::A

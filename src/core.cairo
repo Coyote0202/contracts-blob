@@ -1,4 +1,4 @@
-use core::integer::BoundedInt;
+use core::num::traits::Bounded;
 
 #[derive(Copy, Drop)]
 type TTupleSize5<T> = (T, T, T, T, T);
@@ -14,12 +14,12 @@ trait LimitAdd<T> {
     fn addeq(ref self: T, other: T);
 }
 
-impl TLimitSubImpl<T, +BoundedInt<T>, +Sub<T>, +PartialOrd<T>, +Copy<T>, +Drop<T>> of LimitSub<T> {
+impl TLimitSubImpl<T, +Bounded<T>, +Sub<T>, +PartialOrd<T>, +Copy<T>, +Drop<T>> of LimitSub<T> {
     fn sub(self: T, other: T) -> T {
         if other < self {
             self - other
         } else {
-            BoundedInt::min()
+            Bounded::MIN
         }
     }
 
@@ -28,12 +28,12 @@ impl TLimitSubImpl<T, +BoundedInt<T>, +Sub<T>, +PartialOrd<T>, +Copy<T>, +Drop<T
     }
 }
 
-impl TLimitAddImpl<T, +BoundedInt<T>, +Add<T>, +PartialOrd<T>, +Copy<T>, +Drop<T>> of LimitAdd<T> {
+impl TLimitAddImpl<T, +Bounded<T>, +Add<T>, +PartialOrd<T>, +Copy<T>, +Drop<T>> of LimitAdd<T> {
     fn add(self: T, other: T) -> T {
-        if self + other < BoundedInt::max() {
+        if self + other < Bounded::MAX {
             self + other
         } else {
-            BoundedInt::max()
+            Bounded::MAX
         }
     }
 
@@ -51,4 +51,5 @@ impl Felt252BitAnd of BitAnd<felt252> {
 }
 // impl U8ArrayCopyImpl of Copy<Array<u8>>;
 // impl U128ArrayCopyImpl of Copy<Array<u128>>;
+
 

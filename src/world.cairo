@@ -33,11 +33,11 @@ impl WorldImpl of WorldTrait {
         assert((*self).is_writer(contract.into(), caller), 'Not Writer');
         caller
     }
-    fn assert_caller_is_owner(
-        self: @IWorldDispatcher, contract: ContractAddress
+    fn assert_caller_is_owner<T, +Into<T, felt252>, +Drop<T>>(
+        self: @IWorldDispatcher, contract: T
     ) -> ContractAddress {
         let caller = get_caller_address();
-        assert((*self).is_owner(caller, contract.into()), 'Not Admin');
+        assert((*self).is_owner(contract.into(), caller), 'Not Admin');
         caller
     }
 }

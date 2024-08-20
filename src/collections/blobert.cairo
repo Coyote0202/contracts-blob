@@ -34,12 +34,9 @@ trait IBlobertItems {
 #[dojo::contract]
 mod blobert_actions {
     use starknet::{ContractAddress, get_contract_address};
-    use origami_token::components::token::{
-        erc721::interface::{IERC721Dispatcher, IERC721DispatcherTrait}
-    };
     use blob_arena::{
         collections::{
-            interface::ICollection,
+            interface::{ICollection, IERC721Dispatcher, IERC721DispatcherTrait},
             blobert::{
                 external::{
                     get_erc271_dispatcher, get_blobert_dispatcher, IBlobertDispatcher,

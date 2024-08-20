@@ -49,7 +49,6 @@ mod pvp_actions {
         systems::pvp_combat::PvPCombatSystemTrait, utils::{uuid, hash_value},
     };
     use super::{IPvPCombatActions, IPvPChallengeActions};
-    use core::hash::TupleSize2Hash;
 
     #[abi(embed_v0)]
     impl IPvPChallengeActionsImpl of IPvPChallengeActions<ContractState> {
@@ -136,30 +135,32 @@ mod pvp_actions {
         }
         fn reveal_attack(
             ref world: IWorldDispatcher, combatant_id: u128, attack: u128, salt: felt252
-        ) { // let combatant = world.get_combatant_info(combatant_id);
-        // combatant.assert_player();
-        // let mut combat = world.get_combat_state(combatant.combat_id);
-        // let combatants = world.get_pvp_combatants(combat.id);
-        // if combat.phase == Phase::Commit {
-        //     if world.check_commitments_set_with(combatants.into()) {
-        //         combat.phase = Phase::Reveal;
-        //         set!(world, (combat,))
-        //     };
-        // };
-        // assert(combat.phase == Phase::Reveal, 'Not in reveal phase');
-        // let hash = hash_value((attack, salt));
-        // let commitment = world.get_commitment_with(combatant_id);
-        // if hash == commitment {
-        //     world.append_salt(combat.id, salt);
-        //     let planned_attack = PlannedAttack {
-        //         id: combatant_id, attack, target: other_combatant,
-        //     };
-        //     world.set_planned_attack(planned_attack);
-        // } else {
-        //     let winner_id = combatants.other(combatant_id);
-        //     world.end_combat(combat, winner_id);
-        //     world.update_scores(world.get_combatant_info(winner_id), combatant);
-        // }
+        ) {
+            let combatant = world.get_combatant_info(combatant_id);
+            combatant.assert_player();
+            let mut combat = world.get_combat_state(combatant.combat_id);
+            let combatants = world.get_pvp_combatants(combat.id);
+            if combat.phase == Phase::Commit {
+                if world.check_commitments_set_with(combatants.into()) {
+                    combat.phase = Phase::Reveal;
+                    set!(world, (combat,))
+                };
+            };
+            assert(combat.phase == Phase::Reveal, 'Not in reveal phase');
+            let hash = hash_value((attack, salt));
+            let commitment = world.get_commitment_with(combatant_id);
+            if hash == commitment {
+                world.append_salt(combat.id, salt);
+                let other_combatant = combatants.other(combatant_id);
+                let planned_attack = PlannedAttack {
+                    id: combatant_id, attack, target: other_combatant,
+                };
+                world.set_planned_attack(planned_attack);
+            } else {
+                let winner_id = combatants.other(combatant_id);
+                world.end_combat(combat, winner_id);
+                world.update_scores(world.get_combatant_info(winner_id), combatant);
+            }
         }
         fn run_round(ref world: IWorldDispatcher, combat_id: u128) {
             let mut combat = world.get_combat_state(combat_id);

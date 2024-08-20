@@ -2,6 +2,50 @@ use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher};
 use blob_arena::components::{stats::Stats};
 
+
+#[dojo::interface]
+trait IERC721 {
+    fn balance_of(world: @IWorldDispatcher, account: ContractAddress) -> u256;
+    fn owner_of(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
+    fn safe_transfer_from(
+        ref world: IWorldDispatcher,
+        from: ContractAddress,
+        to: ContractAddress,
+        token_id: u256,
+        data: Span<felt252>
+    );
+    fn transfer_from(
+        ref world: IWorldDispatcher, from: ContractAddress, to: ContractAddress, token_id: u256
+    );
+    fn approve(ref world: IWorldDispatcher, to: ContractAddress, token_id: u256);
+    fn set_approval_for_all(ref world: IWorldDispatcher, operator: ContractAddress, approved: bool);
+    fn get_approved(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
+    fn is_approved_for_all(
+        world: @IWorldDispatcher, owner: ContractAddress, operator: ContractAddress
+    ) -> bool;
+    fn name(world: @IWorldDispatcher) -> felt252;
+    fn symbol(world: @IWorldDispatcher) -> felt252;
+    fn token_uri(world: @IWorldDispatcher, token_id: u256) -> felt252;
+    fn balanceOf(world: @IWorldDispatcher, account: ContractAddress) -> u256;
+    fn ownerOf(world: @IWorldDispatcher, tokenId: u256) -> ContractAddress;
+    fn safeTransferFrom(
+        ref world: IWorldDispatcher,
+        from: ContractAddress,
+        to: ContractAddress,
+        tokenId: u256,
+        data: Span<felt252>
+    );
+    fn transferFrom(
+        ref world: IWorldDispatcher, from: ContractAddress, to: ContractAddress, tokenId: u256
+    );
+    fn setApprovalForAll(ref world: IWorldDispatcher, operator: ContractAddress, approved: bool);
+    fn getApproved(world: @IWorldDispatcher, tokenId: u256) -> ContractAddress;
+    fn isApprovedForAll(
+        world: @IWorldDispatcher, owner: ContractAddress, operator: ContractAddress
+    ) -> bool;
+    fn tokenURI(world: @IWorldDispatcher, tokenId: u256) -> felt252;
+}
+
 #[dojo::interface]
 trait ICollection {
     fn get_owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
@@ -13,40 +57,4 @@ trait ICollection {
 fn get_collection_dispatcher(contract_address: ContractAddress) -> ICollectionDispatcher {
     ICollectionDispatcher { contract_address }
 }
-// #[dojo::interface]
-// trait IAttack<TContractState> {
-//     fn run_attack(self: TContractState, token_id: u256, attack_id: u128, calldata: ByteArray);
-// }
-
-// struct CollectionWorld {
-//     world: IWorldDispatcher,
-//     collection_address: ContractAddress,
-// }
-// #[generate_trait]
-// impl CollectionImpl of CollectionTrait {
-//     
-//     fn new(self: @IWorldDispatcher, collection_address: ContractAddress) -> CollectionWorld {
-//         CollectionWorld { world: *self, collection_address }
-//     }
-//     fn url(self: @CollectionWorld) -> ByteArray {
-//         get_collection_dispatcher(*self.collection_address).url()
-//     }
-
-//     fn owner(self: @CollectionWorld, token_id: u256) -> ContractAddress {
-//         get_collection_dispatcher(*self.collection_address).owner(token_id)
-//     }
-
-//     fn get_health(self: @CollectionWorld, token_id: u256) -> Span<u128> {
-//         get_collection_dispatcher(*self.collection_address).get_health(token_id)
-//     }
-
-//     fn get_speed(self: @CollectionWorld, token_id: u256, attack_id: u128) -> Span<u128> {
-//         get_collection_dispatcher(*self.collection_address).get_speed(token_id, attack_id)
-//     }
-
-//     fn has_attack(self: @CollectionWorld, token_id: u256, attack_id: u128) -> bool {
-//         get_collection_dispatcher(*self.collection_address).has_attack(token_id, attack_id)
-//     }
-// }
-
 

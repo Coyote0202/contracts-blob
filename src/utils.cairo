@@ -1,5 +1,5 @@
 use core::{
-    integer::BoundedInt, hash::{HashStateTrait, HashStateExTrait, Hash},
+    num::traits::Bounded, hash::{HashStateTrait, HashStateExTrait, Hash},
     poseidon::{PoseidonTrait, HashState}
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
@@ -13,7 +13,7 @@ fn hash_value<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> felt252 {
 }
 
 fn felt252_to_uuid(value: felt252) -> u128 {
-    (value & BoundedInt::<u128>::max().into()).try_into().unwrap()
+    (value & Bounded::<u128>::MAX.into()).try_into().unwrap()
 }
 
 fn value_to_uuid<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> u128 {

@@ -85,7 +85,7 @@ impl CombatantImpl of CombatantTrait {
     }
 
     fn create_player_combatant(
-        ref self: IWorldDispatcher,
+        self: IWorldDispatcher,
         collection_address: ContractAddress,
         token_id: u256,
         challenge_id: u128,
