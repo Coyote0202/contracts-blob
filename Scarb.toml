@@ -11,9 +11,8 @@ sierra-replace-ids = true
 sort-module-level-items = true
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.5" }
-origami_token = { git = "https://github.com/dojoengine/origami", tag = "v1.0.0-alpha.5" }
-alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git", tag = "cairo-v2.6.0" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.6" }
+alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git" }
 cubit = { git = "https://github.com/dojoengine/cubit", branch = "cairo_2.7" }
 
 [[target.dojo]]
