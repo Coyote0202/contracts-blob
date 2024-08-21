@@ -69,7 +69,7 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
     fn mint_blobert_with_traits(
         self: IWorldDispatcher, player: ContractAddress, traits: TokenTrait
     ) -> u256 {
-        self.assert_caller_is_owner(get_contract_address());
+        self.assert_caller_is_owner();
         let token_id = uuid(self);
 
         self.set_arcade_blobert(token_id, player, traits);

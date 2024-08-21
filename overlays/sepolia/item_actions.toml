@@ -1,0 +1,2 @@
+tag = "blob_arena-item_actions"
+writes = ["Item", "Attack", "HasAttack"]

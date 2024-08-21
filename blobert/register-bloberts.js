@@ -13,7 +13,10 @@ const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
 const privateKey1 = process.env.DOJO_PRIVATE_KEY;
 const account = new Account(provider, account1Address, privateKey1);
 const blobertContractAddress =
-  "0x5ca814bce77c02d2381d3d66c842947ef33327a1ba69bf5861aa3e8a9b2fddb";
+  "0x1df087ac9ca9df0b642d0ee843c9c083e299f3d67c7d5aa8d49656d0fec6790";
+
+
+const traitsEnum = ["background", "armour", "jewelry", "mask", "weapon",];
 
 const makeAttacksStruct = (attacks) => {
   let attacksStructs = [];
@@ -33,19 +36,15 @@ const makeAttacksStruct = (attacks) => {
 const makeSeedItemsMultiCall = (items) => {
   let calls = [];
   for (const [trait, n, item] of items) {
-    const traitEnum = trait.charAt(0).toUpperCase() + trait.slice(1);
-    
-
+    const traitIndex = traitsEnum.indexOf(trait);
     const calldata = {
-      blobert_trait: new CairoCustomEnum({
-        [traitEnum]: {},
-      }),
+      blobert_trait: traitIndex,
       trait_id: n,
       item_name: byteArray.byteArrayFromString(item.name),
       stats: item.stats,
       attacks: makeAttacksStruct(item.attacks),
     };
-    console.log(trait, n, item.name, traitEnum, calldata.blobert_trait)
+    console.log(trait, n, item.name, traitIndex, calldata.blobert_trait)
     const call = {
       contractAddress: blobertContractAddress,
       entrypoint: "new_seed_item_with_attacks",

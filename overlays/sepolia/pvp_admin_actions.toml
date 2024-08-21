@@ -1,0 +1,2 @@
+tag = "blob_arena-pvp_admin_actions"
+writes = ["AvailableAttack", "CombatState", "CombatantInfo", "CombatantState", "CombatantStats", "PvPCombatants"]

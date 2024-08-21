@@ -1,0 +1,2 @@
+tag = "blob_arena-blobert_actions"
+writes = ["ItemMap", "Item", "Attack", "HasAttack"]

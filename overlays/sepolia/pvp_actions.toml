@@ -1,0 +1,16 @@
+tag = "blob_arena-pvp_actions"
+writes = [
+    "AvailableAttack",
+    "CombatState",
+    "Salts",
+    "CombatantInfo",
+    "CombatantState",
+    "CombatantStats",
+    "PlannedAttack",
+    "Commitment",
+    "Item",
+    "PvPChallengeInvite",
+    "PvPChallengeResponse",
+    "PvPChallengeScore",
+    "PvPCombatants",
+]

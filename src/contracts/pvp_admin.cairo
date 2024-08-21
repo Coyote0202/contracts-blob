@@ -45,7 +45,7 @@ mod pvp_admin_actions {
             attacks_a: Span<(u128, u128)>,
             attacks_b: Span<(u128, u128)>,
         ) -> u128 {
-            world.assert_caller_is_owner(get_contract_address());
+            world.assert_caller_is_owner();
             let combat_id = uuid(world);
             let collection_a = get_collection_dispatcher(collection_address_a);
             let collection_b = get_collection_dispatcher(collection_address_b);
@@ -58,7 +58,7 @@ mod pvp_admin_actions {
             combat_id
         }
         fn set_winner(ref world: IWorldDispatcher, combatant_id: u128) {
-            world.assert_caller_is_owner(get_contract_address());
+            world.assert_caller_is_owner();
 
             let winner = world.get_combatant_info(combatant_id);
             let mut combat = world.get_running_combat_state(winner.combat_id);

@@ -1251,8 +1251,8 @@
     {
       "kind": "DojoContract",
       "address": "0x61069a380ea63b024a1543010f6b9e372c235f072fa4a1a9def484093505ec9",
-      "class_hash": "0xf4f8e73c5c7e5dfdeba16d959a5b09f8f6417304ac9385ca03bfde2b4d4800",
-      "original_class_hash": "0xf4f8e73c5c7e5dfdeba16d959a5b09f8f6417304ac9385ca03bfde2b4d4800",
+      "class_hash": "0x1a3bd85d93d0d02353163030632f739724b38b4bacb63065c83f020dd86a3de",
+      "original_class_hash": "0x1a3bd85d93d0d02353163030632f739724b38b4bacb63065c83f020dd86a3de",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1718,7 +1718,10 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "ArcadeBlobert",
+        "LastMint"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-arcade_blobert_actions",
       "systems": [],
@@ -1988,7 +1991,9 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "Attack"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-attack_actions",
       "systems": [],
@@ -1997,8 +2002,8 @@
     {
       "kind": "DojoContract",
       "address": "0x1df087ac9ca9df0b642d0ee843c9c083e299f3d67c7d5aa8d49656d0fec6790",
-      "class_hash": "0x6a5898c4420c503b018600025c6b8030182b73e6b89aa757a8e40f3cf580f33",
-      "original_class_hash": "0x6a5898c4420c503b018600025c6b8030182b73e6b89aa757a8e40f3cf580f33",
+      "class_hash": "0x4361bf7a0b4617b6e8a169a80faadbeb50b9d7f755cfb001d651c917a9cfcec",
+      "original_class_hash": "0x4361bf7a0b4617b6e8a169a80faadbeb50b9d7f755cfb001d651c917a9cfcec",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2507,7 +2512,12 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "ItemMap",
+        "Item",
+        "Attack",
+        "HasAttack"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-blobert_actions",
       "systems": [
@@ -2842,7 +2852,11 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "Item",
+        "Attack",
+        "HasAttack"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-item_actions",
       "systems": [],
@@ -3291,7 +3305,21 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "AvailableAttack",
+        "CombatState",
+        "Salts",
+        "CombatantInfo",
+        "CombatantState",
+        "CombatantStats",
+        "PlannedAttack",
+        "Commitment",
+        "Item",
+        "PvPChallengeInvite",
+        "PvPChallengeResponse",
+        "PvPChallengeScore",
+        "PvPCombatants"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-pvp_actions",
       "systems": [
@@ -3312,8 +3340,8 @@
     {
       "kind": "DojoContract",
       "address": "0x76bd3b9d686612b5ac6cbf33978e2f3c1d522a7662b4c3ff5db0454e397da80",
-      "class_hash": "0x4d551e32e8a423254110a93f0ec3c49c4101fb5cfbdd1d2f3f84cac7bf941ce",
-      "original_class_hash": "0x4d551e32e8a423254110a93f0ec3c49c4101fb5cfbdd1d2f3f84cac7bf941ce",
+      "class_hash": "0x6cddb617c1e8a80c15e8b1abf6744487f3e070eb90578320dc7faeb40787930",
+      "original_class_hash": "0x6cddb617c1e8a80c15e8b1abf6744487f3e070eb90578320dc7faeb40787930",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3613,7 +3641,14 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "AvailableAttack",
+        "CombatState",
+        "CombatantInfo",
+        "CombatantState",
+        "CombatantStats",
+        "PvPCombatants"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-pvp_admin_actions",
       "systems": [

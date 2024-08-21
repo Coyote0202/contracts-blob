@@ -1,5 +1,8 @@
-use starknet::{get_caller_address, ContractAddress};
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use starknet::{get_caller_address, ContractAddress, get_contract_address};
+use dojo::{
+    world::{IWorldDispatcher, IWorldDispatcherTrait},
+    contract::{IContractDispatcherTrait, IContractDispatcher}
+};
 
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
@@ -26,18 +29,11 @@ impl ContractIntoFelt252 of Into<Contract, felt252> {
 
 #[generate_trait]
 impl WorldImpl of WorldTrait {
-    fn assert_caller_is_writer<T, +Into<T, felt252>, +Drop<T>>(
-        self: @IWorldDispatcher, contract: T
-    ) -> ContractAddress {
+    fn assert_caller_is_owner(self: @IWorldDispatcher) -> ContractAddress {
+        let dispatcher = IContractDispatcher { contract_address: get_contract_address(), };
+        let selector = dispatcher.selector();
         let caller = get_caller_address();
-        assert((*self).is_writer(contract.into(), caller), 'Not Writer');
-        caller
-    }
-    fn assert_caller_is_owner<T, +Into<T, felt252>, +Drop<T>>(
-        self: @IWorldDispatcher, contract: T
-    ) -> ContractAddress {
-        let caller = get_caller_address();
-        assert((*self).is_owner(contract.into(), caller), 'Not Admin');
+        assert((*self).is_owner(selector, caller), 'Not Admin');
         caller
     }
 }
