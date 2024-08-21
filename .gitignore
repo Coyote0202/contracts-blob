@@ -1,8 +1,8 @@
 target/
 abis/
-.env*
+*.env*
 test.ipynb
 venv/
 node_modules/
 bindings/
-manifests/
+manifests/*/base/

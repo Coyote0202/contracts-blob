@@ -1,11 +1,10 @@
 [package]
 cairo-version = "2.7.0-rc.3"
 name = "blob_arena"
-version = "0.2.0"
+version = "0.3.0"
 
 [cairo]
 sierra-replace-ids = true
-
 
 [tool.fmt]
 sort-module-level-items = true
@@ -22,3 +21,5 @@ initializer_class_hash = "0xbeef"
 
 [tool.dojo.world.namespace]
 default = "blob_arena"
+
+[profile.sepolia]
