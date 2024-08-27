@@ -1890,7 +1890,7 @@
           "cooldown": 1
         },
         {
-          "name": "Harmonic Hit",
+          "name": "Harmonic Bash",
           "damage": 30,
           "speed": 50,
           "accuracy": 75,

@@ -8,4 +8,3 @@ default = "blob_arena"
 [env]
 rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
 account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
-world_address = "0x62bca01f729f9e4c3f931db557f19dab65cd713d9252ffaa944ac7b4e2b508c"

@@ -56,7 +56,11 @@ impl U8IntoBlobertTrait of Into<u8, BlobertTrait> {
 #[derive(Drop, Serde, Copy)]
 struct ItemMap {
     #[key]
-    blobert_trait_id: u128,
+    custom: bool,
+    #[key]
+    blobert_trait: BlobertTrait,
+    #[key]
+    blobert_trait_id: u8,
     item_id: u128,
 }
 
@@ -72,27 +76,24 @@ fn get_custom_trait_id(blobert_trait: BlobertTrait, custom_id: u8) -> u128 {
 #[generate_trait]
 impl BlobertItems of BlobertItemsTrait {
     fn set_seed_item_id(
-        self: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+        self: IWorldDispatcher, blobert_trait: BlobertTrait, blobert_trait_id: u8, item_id: u128
     ) {
-        set!(self, ItemMap { blobert_trait_id: get_trait_id(blobert_trait, trait_id), item_id, });
+        set!(self, ItemMap { custom: false, blobert_trait, blobert_trait_id, item_id, });
     }
     fn set_custom_item_id(
-        self: IWorldDispatcher, blobert_trait: BlobertTrait, custom_id: u8, item_id: u128
+        self: IWorldDispatcher, blobert_trait: BlobertTrait, blobert_trait_id: u8, item_id: u128
     ) {
-        set!(
-            self,
-            ItemMap { blobert_trait_id: get_custom_trait_id(blobert_trait, custom_id), item_id, }
-        );
+        set!(self, ItemMap { custom: true, blobert_trait, blobert_trait_id, item_id, });
     }
     fn get_seed_item_id(
-        self: @IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8
+        self: @IWorldDispatcher, blobert_trait: BlobertTrait, blobert_trait_id: u8
     ) -> u128 {
-        get!(*self, get_trait_id(blobert_trait, trait_id), ItemMap).item_id
+        get!(*self, (false, blobert_trait, blobert_trait_id), ItemMap).item_id
     }
     fn get_custom_item_id(
-        self: @IWorldDispatcher, blobert_trait: BlobertTrait, custom_id: u8
+        self: @IWorldDispatcher, blobert_trait: BlobertTrait, blobert_trait_id: u8
     ) -> u128 {
-        get!(*self, get_custom_trait_id(blobert_trait, custom_id), ItemMap).item_id
+        get!(*self, (false, blobert_trait, blobert_trait_id), ItemMap).item_id
     }
     fn get_seed_item_ids(self: @IWorldDispatcher, traits: Seed) -> SeedIds {
         (

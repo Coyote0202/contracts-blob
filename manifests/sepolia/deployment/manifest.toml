@@ -1,10 +1,10 @@
 [world]
 kind = "WorldContract"
-class_hash = "0x458d0ce5b14a4844092bdb62050f462d53362304a13febbac6d973691d61be2"
-original_class_hash = "0x458d0ce5b14a4844092bdb62050f462d53362304a13febbac6d973691d61be2"
+class_hash = "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a"
+original_class_hash = "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a"
 abi = "manifests/sepolia/deployment/abis/dojo-world.json"
-address = "0x62bca01f729f9e4c3f931db557f19dab65cd713d9252ffaa944ac7b4e2b508c"
-transaction_hash = "0x4a3b046b28c7fc37ab3f037f67b1312a2d855a2978f9d259f530aa16ba8b5dd"
+address = "0x3a91becce329befa670772c38966ed116871b2eec3dd8e9e8cbfb424ed5ccbb"
+transaction_hash = "0x776fa9900e1d38324b75a588331c3c883e60073550b3debf06b35cb10952f57"
 seed = "blob-arena-0.3-alpha.5"
 manifest_name = "dojo-world"
 
@@ -22,9 +22,9 @@ manifest_name = "dojo-base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0xc42a863a097909473a1469529af9021c9dbe86a5f414f27645bd10609e5686"
-class_hash = "0x1a3bd85d93d0d02353163030632f739724b38b4bacb63065c83f020dd86a3de"
-original_class_hash = "0x1a3bd85d93d0d02353163030632f739724b38b4bacb63065c83f020dd86a3de"
+address = "0x2fa8cb86da229500731a64cb32a35d80592c36ba7618a5a3878cb2def1ba45e"
+class_hash = "0x3758989035782ec0d5c2aa4a54284767f53437a756a1b8a45cef6423aca76a7"
+original_class_hash = "0x3758989035782ec0d5c2aa4a54284767f53437a756a1b8a45cef6423aca76a7"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-arcade_blobert_actions-64e66191.json"
 reads = []
@@ -38,9 +38,9 @@ manifest_name = "blob_arena-arcade_blobert_actions-64e66191"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x6365003287bcfdea789d3f790507b1b0a259282250577bb9ae512548de59928"
-class_hash = "0x30f68d86dc07eb785e3b02264e995ab30c431d9860720c600d98b7c3b6e2903"
-original_class_hash = "0x30f68d86dc07eb785e3b02264e995ab30c431d9860720c600d98b7c3b6e2903"
+address = "0x759a1482da766fb48387837f8ec371867124bfb8388722b289e71c867fd1b59"
+class_hash = "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f"
+original_class_hash = "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-attack_actions-1aec710d.json"
 reads = []
@@ -51,9 +51,9 @@ manifest_name = "blob_arena-attack_actions-1aec710d"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x11165a091d6dd6141000f31c2e9ff474f93b90456f6de3dd5ce5818195d5a9a"
-class_hash = "0x4361bf7a0b4617b6e8a169a80faadbeb50b9d7f755cfb001d651c917a9cfcec"
-original_class_hash = "0x4361bf7a0b4617b6e8a169a80faadbeb50b9d7f755cfb001d651c917a9cfcec"
+address = "0x4b9dede6e48336e0aedf457913ba6097377078c525d30334292015abbc76f69"
+class_hash = "0x786d687e38ba8b1c6705d4902c6c5f9879a00902aaf9518bb5c979fd7fc70dd"
+original_class_hash = "0x786d687e38ba8b1c6705d4902c6c5f9879a00902aaf9518bb5c979fd7fc70dd"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-blobert_actions-6e38837a.json"
 reads = []
@@ -69,9 +69,9 @@ manifest_name = "blob_arena-blobert_actions-6e38837a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x566d21410575df5e0bb654808214b00c2ea484a07019f1041ff99b8052830e7"
-class_hash = "0x18bd22723c584d2590122639a1af5ef8c7e5b5e71f3f3e512808243d398d023"
-original_class_hash = "0x18bd22723c584d2590122639a1af5ef8c7e5b5e71f3f3e512808243d398d023"
+address = "0x40a5528df6dee762a90eb4e6e34d7f1563e14f9c2d08059ab44be08e5cb1372"
+class_hash = "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891"
+original_class_hash = "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-item_actions-7087862a.json"
 reads = []
@@ -86,9 +86,9 @@ manifest_name = "blob_arena-item_actions-7087862a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x7481ccd1386b4401de16973214a302439c2968825a1bb70f5e3a31f56080688"
-class_hash = "0x4093275de0706521bd305485764d09acea5b193c7a10ca2b205242a354b568e"
-original_class_hash = "0x4093275de0706521bd305485764d09acea5b193c7a10ca2b205242a354b568e"
+address = "0x60f129e605b7864516d48158fc44cb445323bfcfa19ecbee56ca86abeead59"
+class_hash = "0x7dfbfcc6c24099da100366a349aa05d4083392d9d805bba663907ab4e248b0b"
+original_class_hash = "0x7dfbfcc6c24099da100366a349aa05d4083392d9d805bba663907ab4e248b0b"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-pvp_actions-2371c4eb.json"
 reads = []
@@ -113,9 +113,9 @@ manifest_name = "blob_arena-pvp_actions-2371c4eb"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x2d59c74214100940e2a80f74b9de402aa18a4a387cd8f138fac9ba5f3def78d"
-class_hash = "0x6cddb617c1e8a80c15e8b1abf6744487f3e070eb90578320dc7faeb40787930"
-original_class_hash = "0x6cddb617c1e8a80c15e8b1abf6744487f3e070eb90578320dc7faeb40787930"
+address = "0x624b0ebae34704425f87b193e65bae3b00c0ac44f67ed2c520f7bec6bebb675"
+class_hash = "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7"
+original_class_hash = "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-pvp_admin_actions-2959c1bc.json"
 reads = []
@@ -133,8 +133,8 @@ manifest_name = "blob_arena-pvp_admin_actions-2959c1bc"
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x2589577ca70051021adfd89dff130cfffd6cd8932dec04ee7afe924a0db6ca"
-original_class_hash = "0x2589577ca70051021adfd89dff130cfffd6cd8932dec04ee7afe924a0db6ca"
+class_hash = "0x41940ce72738be46e8eac0d3a6cbbee6add7d4ef28a57e8101f2da906de9efd"
+original_class_hash = "0x41940ce72738be46e8eac0d3a6cbbee6add7d4ef28a57e8101f2da906de9efd"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-ArcadeBlobert-773995d0.json"
 tag = "blob_arena-ArcadeBlobert"
 manifest_name = "blob_arena-ArcadeBlobert-773995d0"
@@ -156,8 +156,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x2b56a9d89bcf744a75817bed50dc8128e120331c228b18a5030dc9d18f8e839"
-original_class_hash = "0x2b56a9d89bcf744a75817bed50dc8128e120331c228b18a5030dc9d18f8e839"
+class_hash = "0x133004782cad0ef551aaafb0c64647e3ac8fd36661e081b15b6a96dd57e1ac3"
+original_class_hash = "0x133004782cad0ef551aaafb0c64647e3ac8fd36661e081b15b6a96dd57e1ac3"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-Attack-7e21e142.json"
 tag = "blob_arena-Attack"
 manifest_name = "blob_arena-Attack-7e21e142"
@@ -204,8 +204,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x2cfa3dd493eafe53aa020b45be1a70686b53d37e18a50b1825ef72c9c6ada77"
-original_class_hash = "0x2cfa3dd493eafe53aa020b45be1a70686b53d37e18a50b1825ef72c9c6ada77"
+class_hash = "0x6efeb827a1ed01c0c07368e82fdf587dcf0739e1825d327281cc2cb76738bb2"
+original_class_hash = "0x6efeb827a1ed01c0c07368e82fdf587dcf0739e1825d327281cc2cb76738bb2"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-AttackResult-13e6ce9d.json"
 tag = "blob_arena-AttackResult"
 manifest_name = "blob_arena-AttackResult-13e6ce9d"
@@ -237,8 +237,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x65e5fe5046ffe15afd41dd1d08880be3086f5b0c0778c103353fdb122c084ba"
-original_class_hash = "0x65e5fe5046ffe15afd41dd1d08880be3086f5b0c0778c103353fdb122c084ba"
+class_hash = "0x11237b6c2ba0807bc19dc2ef6613aa48e2b1bcb6e07c7953c22d8f543342dfe"
+original_class_hash = "0x11237b6c2ba0807bc19dc2ef6613aa48e2b1bcb6e07c7953c22d8f543342dfe"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-AvailableAttack-32de0cec.json"
 tag = "blob_arena-AvailableAttack"
 manifest_name = "blob_arena-AvailableAttack-32de0cec"
@@ -265,8 +265,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x35ebb379f47575193c62bfa6de97bdd5d9960779ebd9652e86f6c7da82913a2"
-original_class_hash = "0x35ebb379f47575193c62bfa6de97bdd5d9960779ebd9652e86f6c7da82913a2"
+class_hash = "0x7111b42db8a2db2c2665d8f209097484890ef92dfe4ea9f5f5c911a13b0585a"
+original_class_hash = "0x7111b42db8a2db2c2665d8f209097484890ef92dfe4ea9f5f5c911a13b0585a"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-CombatState-5fc9633c.json"
 tag = "blob_arena-CombatState"
 manifest_name = "blob_arena-CombatState-5fc9633c"
@@ -293,8 +293,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x63c240b8c2d249d8a9b6b87d26ba1181aaded00b4510a673bbdf37dbd7f5d83"
-original_class_hash = "0x63c240b8c2d249d8a9b6b87d26ba1181aaded00b4510a673bbdf37dbd7f5d83"
+class_hash = "0x253975837feecb6afd30571e300f170ff8fe8425617a6183863d575ac537754"
+original_class_hash = "0x253975837feecb6afd30571e300f170ff8fe8425617a6183863d575ac537754"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-CombatantInfo-5cdb2b07.json"
 tag = "blob_arena-CombatantInfo"
 manifest_name = "blob_arena-CombatantInfo-5cdb2b07"
@@ -326,8 +326,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x56472d727cbf6c9a1c708068cea0c835b128a131e85506d4973b9324d113a4a"
-original_class_hash = "0x56472d727cbf6c9a1c708068cea0c835b128a131e85506d4973b9324d113a4a"
+class_hash = "0x635e3c9fcf077c4aa126dd788eb686a9eb2b8fa1b297bc109ecd6514962c754"
+original_class_hash = "0x635e3c9fcf077c4aa126dd788eb686a9eb2b8fa1b297bc109ecd6514962c754"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-CombatantState-3017929c.json"
 tag = "blob_arena-CombatantState"
 manifest_name = "blob_arena-CombatantState-3017929c"
@@ -349,8 +349,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x57ecb7fcb9115b6a7f92252f7c735f0148b52b8a429ea54c4bfb84d5888ca8d"
-original_class_hash = "0x57ecb7fcb9115b6a7f92252f7c735f0148b52b8a429ea54c4bfb84d5888ca8d"
+class_hash = "0x2feef68dea9f7e5412d1ab173d4115d5e39c8c3e1bb54b06a66b2430badfc3"
+original_class_hash = "0x2feef68dea9f7e5412d1ab173d4115d5e39c8c3e1bb54b06a66b2430badfc3"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-CombatantStats-42476be5.json"
 tag = "blob_arena-CombatantStats"
 manifest_name = "blob_arena-CombatantStats-42476be5"
@@ -382,8 +382,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x1094f1de469bc0ccb072fadf2948f1b626a91afef14863aaed5c27d055fd56a"
-original_class_hash = "0x1094f1de469bc0ccb072fadf2948f1b626a91afef14863aaed5c27d055fd56a"
+class_hash = "0x111e01e5782262e809908bb29361195a85ec2c8e44fa84f599aed1e99d9da17"
+original_class_hash = "0x111e01e5782262e809908bb29361195a85ec2c8e44fa84f599aed1e99d9da17"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-Commitment-42bf7339.json"
 tag = "blob_arena-Commitment"
 manifest_name = "blob_arena-Commitment-42bf7339"
@@ -400,8 +400,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x71d1310310723835ef7264c03941cc68105ed623707189e28ad727c8e8e3f04"
-original_class_hash = "0x71d1310310723835ef7264c03941cc68105ed623707189e28ad727c8e8e3f04"
+class_hash = "0x63bdebc3c477da0bace035d17aea284161b5d08eafcf3b3b8f65d59422c62b9"
+original_class_hash = "0x63bdebc3c477da0bace035d17aea284161b5d08eafcf3b3b8f65d59422c62b9"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-HasAttack-36ee741d.json"
 tag = "blob_arena-HasAttack"
 manifest_name = "blob_arena-HasAttack-36ee741d"
@@ -423,8 +423,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x4061adb0fa63841332fdf59e8086185ea45f3a3f3bfb62c7d7402facdf3a403"
-original_class_hash = "0x4061adb0fa63841332fdf59e8086185ea45f3a3f3bfb62c7d7402facdf3a403"
+class_hash = "0x326ec04893f7820b22a1e393cfa0ceb972ae6dc70f99de13a852f0a037a87c9"
+original_class_hash = "0x326ec04893f7820b22a1e393cfa0ceb972ae6dc70f99de13a852f0a037a87c9"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-Item-44b6d01c.json"
 tag = "blob_arena-Item"
 manifest_name = "blob_arena-Item-44b6d01c"
@@ -446,15 +446,25 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x57b41497ab6d0b984900558309951e0b41d89ac9a082f17afb34e2e9d221eaf"
-original_class_hash = "0x57b41497ab6d0b984900558309951e0b41d89ac9a082f17afb34e2e9d221eaf"
+class_hash = "0x6a61e0f384bd4899fccd1e29d344a0574efc73e6fec8fe77d3f98878aa48981"
+original_class_hash = "0x6a61e0f384bd4899fccd1e29d344a0574efc73e6fec8fe77d3f98878aa48981"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-ItemMap-2770c075.json"
 tag = "blob_arena-ItemMap"
 manifest_name = "blob_arena-ItemMap-2770c075"
 
 [[models.members]]
+name = "custom"
+type = "bool"
+key = true
+
+[[models.members]]
+name = "blobert_trait"
+type = "BlobertTrait"
+key = true
+
+[[models.members]]
 name = "blobert_trait_id"
-type = "u128"
+type = "u8"
 key = true
 
 [[models.members]]
@@ -464,8 +474,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x5a6f615841d9e41c3b8dcdfcc0546eb322caf1ff91c0835069ab8facc52b730"
-original_class_hash = "0x5a6f615841d9e41c3b8dcdfcc0546eb322caf1ff91c0835069ab8facc52b730"
+class_hash = "0x504a836826a1d481870293fa67d34b2cf738e7f7986c1c172312d91e20189ec"
+original_class_hash = "0x504a836826a1d481870293fa67d34b2cf738e7f7986c1c172312d91e20189ec"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-LastMint-237efc09.json"
 tag = "blob_arena-LastMint"
 manifest_name = "blob_arena-LastMint-237efc09"
@@ -482,8 +492,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x3024f53c6d5849697044ce6704a1fe25f07d413362cd556f386b63640b44498"
-original_class_hash = "0x3024f53c6d5849697044ce6704a1fe25f07d413362cd556f386b63640b44498"
+class_hash = "0x359085612d3762cefb03aec1d7765f126b24adc9fd36f9b002ab16a4a532ae9"
+original_class_hash = "0x359085612d3762cefb03aec1d7765f126b24adc9fd36f9b002ab16a4a532ae9"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-PlannedAttack-76d19ab4.json"
 tag = "blob_arena-PlannedAttack"
 manifest_name = "blob_arena-PlannedAttack-76d19ab4"
@@ -505,8 +515,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x6e97b68e1bb5ae8113aa53908c8ac1afaa3f41665ddbaed97e8ffbea4fcadbb"
-original_class_hash = "0x6e97b68e1bb5ae8113aa53908c8ac1afaa3f41665ddbaed97e8ffbea4fcadbb"
+class_hash = "0x2cb397b411cb69db12a581dcc615a731468aa11232ddcaf46340de541b2e300"
+original_class_hash = "0x2cb397b411cb69db12a581dcc615a731468aa11232ddcaf46340de541b2e300"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-PvPChallengeInvite-61052667.json"
 tag = "blob_arena-PvPChallengeInvite"
 manifest_name = "blob_arena-PvPChallengeInvite-61052667"
@@ -548,8 +558,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x3353e072d4873086693d6ef2e255954a04f09d56dff168eb7c45f499dcc3e7f"
-original_class_hash = "0x3353e072d4873086693d6ef2e255954a04f09d56dff168eb7c45f499dcc3e7f"
+class_hash = "0x5ebf2d5d92c53e341ca93fee0eff719447aa21e85bd6a4cd1ddca46456e7604"
+original_class_hash = "0x5ebf2d5d92c53e341ca93fee0eff719447aa21e85bd6a4cd1ddca46456e7604"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-PvPChallengeResponse-1cf0daf6.json"
 tag = "blob_arena-PvPChallengeResponse"
 manifest_name = "blob_arena-PvPChallengeResponse-1cf0daf6"
@@ -571,8 +581,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x5ccca6107a4431612373bf3453e925cab89f229cd9a236d3d26a74a1d87ebd8"
-original_class_hash = "0x5ccca6107a4431612373bf3453e925cab89f229cd9a236d3d26a74a1d87ebd8"
+class_hash = "0x57471ad6b0be8c146a795b8188738d7640b974205a7290a4d470286c02928d4"
+original_class_hash = "0x57471ad6b0be8c146a795b8188738d7640b974205a7290a4d470286c02928d4"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-PvPChallengeScore-17ec3a4a.json"
 tag = "blob_arena-PvPChallengeScore"
 manifest_name = "blob_arena-PvPChallengeScore-17ec3a4a"
@@ -619,8 +629,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0xe83222c58f4cdbaad957c74cf0cc282244d57a0109be25c741b4456e29f740"
-original_class_hash = "0xe83222c58f4cdbaad957c74cf0cc282244d57a0109be25c741b4456e29f740"
+class_hash = "0x528ca49397db809f3c265259670e9e9e5bdbc864364f107853c0ae80e3c9e0c"
+original_class_hash = "0x528ca49397db809f3c265259670e9e9e5bdbc864364f107853c0ae80e3c9e0c"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-PvPCombatants-1b472645.json"
 tag = "blob_arena-PvPCombatants"
 manifest_name = "blob_arena-PvPCombatants-1b472645"
@@ -637,8 +647,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x6917c11380f192bb601e25d8e415577e5cfaf4e0bc3eb532f269968a87e1ffc"
-original_class_hash = "0x6917c11380f192bb601e25d8e415577e5cfaf4e0bc3eb532f269968a87e1ffc"
+class_hash = "0x57389fae080bc06729acb394683c00a4667821b33669da2aaea7a1ed52b4f8f"
+original_class_hash = "0x57389fae080bc06729acb394683c00a4667821b33669da2aaea7a1ed52b4f8f"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-RandomSeed-586ad963.json"
 tag = "blob_arena-RandomSeed"
 manifest_name = "blob_arena-RandomSeed-586ad963"
@@ -655,8 +665,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x642b597441e9df08cbdde2376de58a836fa9fd62a3bb83352fcf1fb9123c53"
-original_class_hash = "0x642b597441e9df08cbdde2376de58a836fa9fd62a3bb83352fcf1fb9123c53"
+class_hash = "0x46b6b5cffc45b50cbb94ba47367380349a47a995d9c52fdf304e394868caa4a"
+original_class_hash = "0x46b6b5cffc45b50cbb94ba47367380349a47a995d9c52fdf304e394868caa4a"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-Salts-10b0ca3a.json"
 tag = "blob_arena-Salts"
 manifest_name = "blob_arena-Salts-10b0ca3a"
