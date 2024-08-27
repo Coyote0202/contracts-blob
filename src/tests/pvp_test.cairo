@@ -31,6 +31,4 @@ mod test {
             strength += 20;
         };
     }
-    #[test]
-    #[available_gas(3000000000)]
 }

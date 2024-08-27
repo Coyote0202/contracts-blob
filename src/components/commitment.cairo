@@ -38,7 +38,7 @@ impl CommitmentImpl of Commitment {
         let (mut n, len) = (0, values.len());
         let mut set = true;
         while n < len {
-            if self.check_commitment_set_with(*(values.at(n))) {
+            if self.check_commitment_unset_with(*(values.at(n))) {
                 set = false;
                 break;
             }
