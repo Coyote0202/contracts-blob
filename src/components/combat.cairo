@@ -24,7 +24,7 @@ impl SaltsImpl of SaltsTrait {
     }
 
     fn reset_salts(self: IWorldDispatcher, id: u128) {
-        set!(self, (SaltsModel { id, salts: ArrayTrait::new(), },));
+        delete!(self, SaltsModel { id, salts: array![0x0] });
     }
     fn get_salts(self: IWorldDispatcher, id: u128) -> Salts {
         self.get_salts_model(id).salts
