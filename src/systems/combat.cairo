@@ -134,8 +134,7 @@ impl CombatWorldImp of CombatWorldTraits {
         attack_id: u128,
         target: u128,
         effect: AttackEffect
-    ) {
-        emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
+    ) { // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
     }
 
     fn run_attack(

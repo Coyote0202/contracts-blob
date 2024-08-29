@@ -32,8 +32,8 @@ enum AttackEffect {
 }
 
 #[derive(Drop, Serde, Copy, Introspect)]
-#[dojo::model]
-#[dojo::event]
+// #[dojo::model]
+// #[dojo::event]
 pub struct AttackResult {
     #[key]
     pub combatant_id: u128,
