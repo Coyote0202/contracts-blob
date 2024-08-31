@@ -44,11 +44,12 @@ pub struct AttackResult {
     pub effect: AttackEffect,
 }
 
+
 #[dojo::model]
 #[derive(Drop, Serde)]
 struct Salts {
     #[key]
     id: u128,
-    salts: Array<felt252>
+    salts: Option<Array<felt252>>
 }
 

@@ -17,27 +17,33 @@ impl SaltsImpl of SaltsTrait {
         get!(self, id, SaltsModel)
     }
 
+    fn set_salts(self: IWorldDispatcher, id: u128, salts: Salts) {
+        set!(self, (SaltsModel { id, salts: Option::Some(salts) },));
+    }
+
     fn append_salt(self: IWorldDispatcher, id: u128, salt: felt252) {
-        let mut model = self.get_salts_model(id);
-        model.salts.append(salt);
-        set!(self, (model,));
+        let mut salts = self.get_salts(id);
+        salts.append(salt);
+        self.set_salts(id, salts);
     }
 
     fn reset_salts(self: IWorldDispatcher, id: u128) {
-        delete!(self, SaltsModel { id, salts: array![0x0] });
+        set!(self, (SaltsModel { id, salts: Option::None(()) }));
     }
     fn get_salts(self: IWorldDispatcher, id: u128) -> Salts {
-        self.get_salts_model(id).salts
+        match self.get_salts_model(id).salts {
+            Option::Some(salts) => salts,
+            Option::None => ArrayTrait::new()
+        }
     }
 
 
     fn get_salts_hash(self: IWorldDispatcher, id: u128) -> felt252 {
-        let model = self.get_salts_model(id);
-        poseidon_hash_span(model.salts.span())
+        poseidon_hash_span(self.get_salts(id).span())
     }
 
     fn get_salts_hash_state(self: IWorldDispatcher, id: u128) -> HashState {
-        let mut salts = self.get_salts_model(id).salts;
+        let mut salts = self.get_salts(id);
         let mut hash_state = PoseidonTrait::new();
         loop {
             match salts.pop_front() {

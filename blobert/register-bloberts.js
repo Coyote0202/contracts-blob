@@ -13,7 +13,7 @@ const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
 const privateKey1 = process.env.DOJO_PRIVATE_KEY;
 const account = new Account(provider, account1Address, privateKey1);
 const blobertContractAddress =
-  "0x40af3754044b19a71604985e855b3ef649734eddb6308b63dea558935dc54cb";
+  "0x2cf16ba79b3c816ccc3e6b3517625629fa9c65cfa4a6157dc037c9256980c63";
 
 
 const traitsEnum = ["background", "armour", "jewelry", "mask", "weapon",];
