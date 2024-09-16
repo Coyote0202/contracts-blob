@@ -1,4 +1,4 @@
-import "dotenv";
+// import "dotenv";
 import {
   RpcProvider,
   Account,
@@ -13,10 +13,12 @@ const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
 const privateKey1 = process.env.DOJO_PRIVATE_KEY;
 const account = new Account(provider, account1Address, privateKey1);
 const blobertContractAddress =
-  "0x2cf16ba79b3c816ccc3e6b3517625629fa9c65cfa4a6157dc037c9256980c63";
+  "0x63eb89daecb3be0924c784e6505a32c60f690e6a5ce4a267e791ac6805dcb70";
 
+const traitsEnum = ["background", "armour", "jewelry", "mask", "weapon"];
 
-const traitsEnum = ["background", "armour", "jewelry", "mask", "weapon",];
+// const fs = require("fs");
+// const seed_data = JSON.parse(fs.readFileSync("./seed-attributes.json"));
 
 const makeAttacksStruct = (attacks) => {
   let attacksStructs = [];
@@ -32,7 +34,7 @@ const makeAttacksStruct = (attacks) => {
     });
   }
   return attacksStructs;
-}
+};
 const makeSeedItemsMultiCall = (items) => {
   let calls = [];
   for (const [trait, n, item] of items) {
@@ -44,19 +46,17 @@ const makeSeedItemsMultiCall = (items) => {
       stats: item.stats,
       attacks: makeAttacksStruct(item.attacks),
     };
-    console.log(trait, n, item.name, traitIndex, calldata.blobert_trait)
+    console.log(trait, n, item.name, traitIndex, calldata.blobert_trait);
     const call = {
       contractAddress: blobertContractAddress,
       entrypoint: "new_seed_item_with_attacks",
       calldata: CallData.compile(calldata),
-    }
+    };
     calls.push(call);
     // console.log(calldata)
   }
   return calls;
 };
-
-
 
 let items = [];
 for (const [trait, traits] of Object.entries(seed_data)) {
@@ -65,14 +65,15 @@ for (const [trait, traits] of Object.entries(seed_data)) {
   }
 }
 const multiCallSize = 20;
-for (let i = 0, x = 0; i < items.length; i += multiCallSize, x+= 1) {
+for (let i = 0, x = 0; i < items.length; i += multiCallSize, x += 1) {
   const chunk = items.slice(i, i + multiCallSize);
   const names = chunk.map(([trait, n, item]) => item.name);
-  
+
   const calls = makeSeedItemsMultiCall(chunk);
   console.log(`Uploading items ${names}`);
   const transaction = await account.execute(calls);
-  const response = await provider.waitForTransaction(transaction.transaction_hash);
-  console.log(response.transaction_hash)
+  const response = await provider.waitForTransaction(
+    transaction.transaction_hash
+  );
+  console.log(response.transaction_hash);
 }
-

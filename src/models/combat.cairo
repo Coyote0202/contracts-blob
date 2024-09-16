@@ -32,7 +32,7 @@ enum AttackEffect {
 }
 
 #[derive(Drop, Serde, Copy, Introspect)]
-// #[dojo::model]
+#[dojo::model]
 // #[dojo::event]
 pub struct AttackResult {
     #[key]

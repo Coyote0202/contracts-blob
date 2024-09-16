@@ -17,7 +17,7 @@ use blob_arena::{
     },
     models::{AttackResult},
 };
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
 const HUNDRED: felt252 = 1844674407370955161600;
 const FIXED_255: u128 = 4703919738795935662080;
@@ -120,7 +120,7 @@ impl CombatWorldImp of CombatWorldTraits {
                 return true;
             }
             let last_used = attack_available.last_used;
-            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) > round {
+            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) >= round {
                 return false;
             };
             self.set_available_attack(combatant_id, attack.id, round);
@@ -134,18 +134,21 @@ impl CombatWorldImp of CombatWorldTraits {
         attack_id: u128,
         target: u128,
         effect: AttackEffect
-    ) { // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
+    ) {
+        // Model::set(AttackResult { combatant_id, round, attack_id, target, effect }, self);
+        AttackResult { combatant_id, round, attack_id, target, effect }.set(self);
+        // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
     }
 
     fn run_attack(
         self: IWorldDispatcher,
         attacker_stats: CombatantStats,
-        ref attacker_state: CombatantState,
-        ref defender_state: CombatantState,
+        mut attacker_state: CombatantState,
+        mut defender_state: CombatantState,
         attack: Attack,
         round: u32,
         hash: HashState
-    ) {
+    ) -> (CombatantState, CombatantState) {
         let seed: u256 = hash.update(attacker_stats.id.into()).finalize().into();
         let effect = if !self.run_attack_check(attacker_stats.id, attack, round) {
             AttackEffect::Failed
@@ -168,6 +171,8 @@ impl CombatWorldImp of CombatWorldTraits {
             AttackEffect::Miss
         };
         self.emit_attack_event(attacker_stats.id, round, attack.id, defender_state.id, effect);
+
+        (attacker_state, defender_state)
     }
 }
 
