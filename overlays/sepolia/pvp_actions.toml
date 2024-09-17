@@ -13,4 +13,5 @@ writes = [
     "PvPChallengeResponse",
     "PvPChallengeScore",
     "PvPCombatants",
+    "AttackResult",
 ]
