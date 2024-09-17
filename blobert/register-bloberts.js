@@ -29,11 +29,6 @@ const manifest = loadJson(
   `../manifests/${process.argv[2]}/deployment/manifest.json`
 );
 
-// import manifest from manifest_path with { type: "json" };
-// import seed_data from "./seed-attributes.json" with { type: "json" };
-// import custom_data from "./custom-attributes.json" with { type: "json" };
-// import amma_data from "./amma-attributes.json" with { type: "json" };
-
 const blobertContractTag = "blob_arena-blobert_actions";
 const arcadeBlobertTag = "blob_arena-arcade_blobert_actions";
 const seedEntrypoint = "new_seed_item_with_attacks";
