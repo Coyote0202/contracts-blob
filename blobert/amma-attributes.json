@@ -1,0 +1,86 @@
+{
+  "1": {
+    "name": "Daniel Winter",
+    "traits": {
+      "background": {
+        "name": "No idea",
+        "stats": {
+          "attack": 5,
+          "defense": 10,
+          "speed": 15,
+          "strength": 10
+        },
+        "attacks": []
+      },
+      "armour": {
+        "name": "Armour name",
+        "stats": {
+          "attack": 5,
+          "defense": 10,
+          "speed": 15,
+          "strength": 10
+        },
+        "attacks": []
+      },
+      "jewelry": {
+        "name": "Shield",
+        "stats": {
+          "attack": 5,
+          "defense": 10,
+          "speed": 15,
+          "strength": 10
+        },
+        "attacks": [
+          {
+            "name": "Shield Bash",
+            "damage": 18,
+            "speed": 70,
+            "accuracy": 80,
+            "critical": 20,
+            "stun": 10,
+            "cooldown": 0
+          }
+        ]
+      },
+      "mask": {
+        "name": "Helmet name",
+        "stats": {
+          "attack": 5,
+          "defense": 10,
+          "speed": 15,
+          "strength": 10
+        },
+        "attacks": []
+      },
+      "weapon": {
+        "name": "Big Sword",
+        "stats": {
+          "attack": 5,
+          "defense": 10,
+          "speed": 15,
+          "strength": 10
+        },
+        "attacks": [
+          {
+            "name": "Blade Swipe",
+            "damage": 18,
+            "speed": 90,
+            "accuracy": 95,
+            "critical": 25,
+            "stun": 5,
+            "cooldown": 0
+          },
+          {
+            "name": "Swift Slice",
+            "damage": 35,
+            "speed": 60,
+            "accuracy": 90,
+            "critical": 30,
+            "stun": 5,
+            "cooldown": 1
+          }
+        ]
+      }
+    }
+  }
+}

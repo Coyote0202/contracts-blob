@@ -1,7 +1,6 @@
 mod external;
 mod items;
 use dojo::world::{IWorldDispatcher};
-use super::blobert::items::BlobertTrait;
 use blob_arena::components::{stats::Stats, item::AttackInput};
 
 
@@ -42,7 +41,10 @@ mod blobert_actions {
                     get_erc271_dispatcher, get_blobert_dispatcher, IBlobertDispatcher,
                     IBlobertDispatcherTrait, TokenTrait
                 },
-                items::{BlobertItemsTrait, BlobertTrait, BlobertStatsTrait}
+                items::{
+                    BlobertItemsTrait, BlobertTrait, BlobertStatsTrait, SEED_TRAIT_TYPE,
+                    CUSTOM_TRAIT_TYPE
+                }
             },
         },
         components::{stats::Stats, item::{ItemTrait, AttackInput}}, world::{WorldTrait, Contract}
@@ -88,13 +90,13 @@ mod blobert_actions {
             ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
         ) {
             world.assert_caller_is_owner();
-            world.set_seed_item_id(blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(SEED_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
         }
         fn set_custom_item_id(
             ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
         ) {
             world.assert_caller_is_owner();
-            world.set_custom_item_id(blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
         }
         fn new_seed_item_with_attacks(
             ref world: IWorldDispatcher,
@@ -107,7 +109,7 @@ mod blobert_actions {
             world.assert_caller_is_owner();
             let item_id = world.create_new_item(item_name, stats);
             world.create_and_set_new_attacks(item_id, attacks);
-            world.set_seed_item_id(blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(SEED_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
         }
         fn new_custom_item_with_attacks(
             ref world: IWorldDispatcher,
@@ -120,7 +122,7 @@ mod blobert_actions {
             world.assert_caller_is_owner();
             let item_id = world.create_new_item(item_name, stats);
             world.create_and_set_new_attacks(item_id, attacks);
-            world.set_custom_item_id(blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
         }
     }
 }
