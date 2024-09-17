@@ -3,10 +3,10 @@ kind = "WorldContract"
 class_hash = "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a"
 original_class_hash = "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a"
 abi = "manifests/sepolia/deployment/abis/dojo-world.json"
-address = "0x619a9d1926ee49dd16d5c7a07f1f3ba335c1ce19b9f40263abb3a05b1a93dc2"
-transaction_hash = "0x7446a69e84b88ffe6114d0dc4cefed0816bd9adcfe7a2730c11bc9fcbd2a634"
+address = "0x12b1da3be8211157696d6082ccb13b365c3296f2fffd337bcfe632186c1268b"
+transaction_hash = "0x1717c6ba1c9b83f58feacc515657edda31f5c628a7073a355e56ff0af2479aa"
 block_number = 189551
-seed = "blob-arena-0.4-alpha.5-9"
+seed = "blob-arena-0.4-alpha.5-10"
 manifest_name = "dojo-world"
 
 [world.metadata]
@@ -23,7 +23,7 @@ manifest_name = "dojo-base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x64426f302d7585f646a584eb9efa93f07695467fe57625558ef18105ceb0866"
+address = "0x1b6ddb1f5efb03e4f287af95842ca23511c59ff1e26905a6fe08123e63821d4"
 class_hash = "0x62a7b8923e67b96b9470d91e7aa104de3cd4083443431c4b31f5efcf04db147"
 original_class_hash = "0x62a7b8923e67b96b9470d91e7aa104de3cd4083443431c4b31f5efcf04db147"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -40,7 +40,7 @@ manifest_name = "blob_arena-arcade_blobert_actions-64e66191"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x5d62faa85def057500de80641d19123a784c80f11867defcfc4682d701b19b4"
+address = "0x452f8b4b10e8e440f7c782eb175b9c927baaacf145cc293c05a0dfa434a05eb"
 class_hash = "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f"
 original_class_hash = "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -53,7 +53,7 @@ manifest_name = "blob_arena-attack_actions-1aec710d"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x17eaccf8cbf14cba08ea6c4dfb64bbcd77f05e4ed6a684fd8133989404eba39"
+address = "0x1054cfa8da292c368a9792c35a6d409f11b7f6af6e65e3b758e7dcf6244aaf0"
 class_hash = "0x2c8cb7652be80b6b7b8bd0c8b87c8ab1d2a625999e68c23d3b1d06b6641aae9"
 original_class_hash = "0x2c8cb7652be80b6b7b8bd0c8b87c8ab1d2a625999e68c23d3b1d06b6641aae9"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -71,7 +71,7 @@ manifest_name = "blob_arena-blobert_actions-6e38837a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x7c5450751f4b55418f3f6215314d1472b07604549d1314d066c713a836ed470"
+address = "0x611ef02e1fc61c222cca04c81d21c0e0e705758f796e98db5f4e12c858b5504"
 class_hash = "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891"
 original_class_hash = "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -88,9 +88,9 @@ manifest_name = "blob_arena-item_actions-7087862a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x2547bde882feb30971216861b50d6b6b9a1ea53a5bf70c8031d2a80c472de70"
-class_hash = "0x490fe902544818e35a913c2a624d63540ad4dd4c2b7472f69cb825d6e7fa7f0"
-original_class_hash = "0x490fe902544818e35a913c2a624d63540ad4dd4c2b7472f69cb825d6e7fa7f0"
+address = "0x4f98a1012e148e15f49249e09e7ab1128419ade73d6bf3a3cc3d63bc7327a7d"
+class_hash = "0x2e7fdffc6fcbcf858b9575024a9c74a8de4256aaee133740cfc57574bbfb76e"
+original_class_hash = "0x2e7fdffc6fcbcf858b9575024a9c74a8de4256aaee133740cfc57574bbfb76e"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-pvp_actions-2371c4eb.json"
 reads = []
@@ -116,7 +116,7 @@ manifest_name = "blob_arena-pvp_actions-2371c4eb"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x316b661adea3cd0123397b345db940f78f023d48fb64dc653b99b9c6b5b065d"
+address = "0x2044db36e717cfe3765c6f411e62a262bc36277387d34304109e650ee5c921e"
 class_hash = "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7"
 original_class_hash = "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"

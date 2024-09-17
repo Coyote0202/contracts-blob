@@ -35,7 +35,11 @@ impl CombatantImpl of CombatantTrait {
             self, AvailableAttack { combatant_id, attack_id, available: true, last_used: last_used }
         );
     }
-
+    fn get_combatant_info_in_combat(self: @IWorldDispatcher, id: u128) -> CombatantInfo {
+        let combatant = self.get_combatant_info(id);
+        assert(combatant.combat_id.is_non_zero(), 'Not valid combatant');
+        combatant
+    }
     fn has_attack(
         self: @IWorldDispatcher,
         collection: ICollectionDispatcher,
