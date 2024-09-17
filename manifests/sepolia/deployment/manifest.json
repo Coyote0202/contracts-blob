@@ -1229,10 +1229,10 @@
         ]
       }
     ],
-    "address": "0x6d448b1006654abcbb5b5432a4a22f39974bce1d483f5d579827de55b1e4cde",
-    "transaction_hash": "0x53ecdd12e42317fb34709c7095b13074c22e2dcaf3c88ccae30efe7cb36ea40",
+    "address": "0x619a9d1926ee49dd16d5c7a07f1f3ba335c1ce19b9f40263abb3a05b1a93dc2",
+    "transaction_hash": "0x7446a69e84b88ffe6114d0dc4cefed0816bd9adcfe7a2730c11bc9fcbd2a634",
     "block_number": 189551,
-    "seed": "blob-arena-0.4-alpha.5-8",
+    "seed": "blob-arena-0.4-alpha.5-9",
     "metadata": {
       "profile_name": "sepolia",
       "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
@@ -1250,7 +1250,7 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x3920452eb18c133edb174449f99d8e4603a6dddbfcfa785f6ed61f9fca8919f",
+      "address": "0x64426f302d7585f646a584eb9efa93f07695467fe57625558ef18105ceb0866",
       "class_hash": "0x62a7b8923e67b96b9470d91e7aa104de3cd4083443431c4b31f5efcf04db147",
       "original_class_hash": "0x62a7b8923e67b96b9470d91e7aa104de3cd4083443431c4b31f5efcf04db147",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -1776,7 +1776,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x5ee1e2072d07a5e592a208069d764d650a2002f376ab3587d68c96813bd9157",
+      "address": "0x5d62faa85def057500de80641d19123a784c80f11867defcfc4682d701b19b4",
       "class_hash": "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f",
       "original_class_hash": "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2047,7 +2047,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x230390660fb6f38aa136c19472d22beaf6b5df0108eda802e4ac2c6a9cf19f9",
+      "address": "0x17eaccf8cbf14cba08ea6c4dfb64bbcd77f05e4ed6a684fd8133989404eba39",
       "class_hash": "0x2c8cb7652be80b6b7b8bd0c8b87c8ab1d2a625999e68c23d3b1d06b6641aae9",
       "original_class_hash": "0x2c8cb7652be80b6b7b8bd0c8b87c8ab1d2a625999e68c23d3b1d06b6641aae9",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2570,7 +2570,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x30a18bfba1a8180064d72712643fcedeaad335e6135a0a6dba55c7e19da9141",
+      "address": "0x7c5450751f4b55418f3f6215314d1472b07604549d1314d066c713a836ed470",
       "class_hash": "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891",
       "original_class_hash": "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2903,9 +2903,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x26884da07641fce7876a990fab1464e5dd4ffef92374fe1088e6628fa8db46a",
-      "class_hash": "0x470c3c035913bf850afacf9fe19467f26e863da556bb6531b0a68d128ee2233",
-      "original_class_hash": "0x470c3c035913bf850afacf9fe19467f26e863da556bb6531b0a68d128ee2233",
+      "address": "0x2547bde882feb30971216861b50d6b6b9a1ea53a5bf70c8031d2a80c472de70",
+      "class_hash": "0x490fe902544818e35a913c2a624d63540ad4dd4c2b7472f69cb825d6e7fa7f0",
+      "original_class_hash": "0x490fe902544818e35a913c2a624d63540ad4dd4c2b7472f69cb825d6e7fa7f0",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3366,7 +3366,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x220e1fe87d5d14373548d5c567b6b7c5d9474fed86c194b526aaf9089b9ab47",
+      "address": "0x316b661adea3cd0123397b345db940f78f023d48fb64dc653b99b9c6b5b065d",
       "class_hash": "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7",
       "original_class_hash": "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -5097,12 +5097,27 @@
         },
         {
           "name": "effect",
-          "type": "AttackEffect",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "damage",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "stun",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "critical",
+          "type": "bool",
           "key": false
         }
       ],
-      "class_hash": "0x6efeb827a1ed01c0c07368e82fdf587dcf0739e1825d327281cc2cb76738bb2",
-      "original_class_hash": "0x6efeb827a1ed01c0c07368e82fdf587dcf0739e1825d327281cc2cb76738bb2",
+      "class_hash": "0x5372afdc2683e01439cd954c22e00c68a15ecfa09de261d0807dc01fe4e36c0",
+      "original_class_hash": "0x5372afdc2683e01439cd954c22e00c68a15ecfa09de261d0807dc01fe4e36c0",
       "abi": [
         {
           "type": "impl",
@@ -5487,46 +5502,6 @@
         },
         {
           "type": "struct",
-          "name": "blob_arena::models::combat::AttackHit",
-          "members": [
-            {
-              "name": "damage",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "stun",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "critical",
-              "type": "core::bool"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "blob_arena::models::combat::AttackEffect",
-          "variants": [
-            {
-              "name": "Failed",
-              "type": "()"
-            },
-            {
-              "name": "Stunned",
-              "type": "()"
-            },
-            {
-              "name": "Miss",
-              "type": "()"
-            },
-            {
-              "name": "Hit",
-              "type": "blob_arena::models::combat::AttackHit"
-            }
-          ]
-        },
-        {
-          "type": "struct",
           "name": "blob_arena::models::combat::AttackResult",
           "members": [
             {
@@ -5547,7 +5522,19 @@
             },
             {
               "name": "effect",
-              "type": "blob_arena::models::combat::AttackEffect"
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "damage",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "stun",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "critical",
+              "type": "core::bool"
             }
           ]
         },

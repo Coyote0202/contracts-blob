@@ -135,9 +135,16 @@ impl CombatWorldImp of CombatWorldTraits {
         target: u128,
         effect: AttackEffect
     ) {
-        // Model::set(AttackResult { combatant_id, round, attack_id, target, effect }, self);
-        AttackResult { combatant_id, round, attack_id, target, effect }.set(self);
-        // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
+        let (effect, damage, stun, critical,) = match effect {
+            AttackEffect::Failed => (0, 0, 0, false),
+            AttackEffect::Stunned => (1, 0, 0, false),
+            AttackEffect::Miss => (2, 0, 0, false),
+            AttackEffect::Hit(affect) => (3, affect.damage, affect.stun, affect.critical),
+        };
+        AttackResult { combatant_id, round, attack_id, target, effect, damage, stun, critical, }
+            .set(self);
+        // AttackResult { combatant_id, round, attack_id, target, effect }.set(self);
+    // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
     }
 
     fn run_attack(

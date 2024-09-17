@@ -41,7 +41,10 @@ pub struct AttackResult {
     pub round: u32,
     pub attack_id: u128,
     pub target: u128,
-    pub effect: AttackEffect,
+    pub effect: u8,
+    pub damage: u8,
+    pub stun: u8,
+    pub critical: bool,
 }
 
 
