@@ -1,8 +1,8 @@
 use starknet::{ContractAddress, get_caller_address};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
-    core::TTupleSize5, utils::{value_to_uuid, HashStateTrait},
-    collections::{blobert::{external::TokenTrait}, arcade_blobert::blobert::ArcadeBlobert}
+    core::TTupleSize5, utils::{value_to_uuid, HashStateTrait}, world::WorldTrait,
+    collections::{blobert::{external::TokenTrait}, arcade_blobert::blobert::ArcadeBlobert},
 };
 
 #[dojo::model]
@@ -24,6 +24,7 @@ impl AMMABlobertImpl of AMMABlobertTrait {
         token_id
     }
     fn set_amma_blobert(self: IWorldDispatcher, fighter_id: u8, name: ByteArray, custom_id: u8) {
+        self.assert_caller_is_owner();
         AMMABlobert { fighter_id, name, custom_id }.set(self);
     }
 }

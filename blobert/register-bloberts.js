@@ -64,7 +64,7 @@ const makeAttacksStruct = (attacks) => {
 const makeItemCallData = (trait, n, item) => {
   return {
     blobert_trait: traitsEnum.indexOf(trait),
-    trait_id: n,
+    trait_id: Number(n),
     item_name: byteArray.byteArrayFromString(item.name),
     stats: item.stats,
     attacks: makeAttacksStruct(item.attacks),
@@ -107,13 +107,13 @@ for (const [n, traits] of Object.entries(custom_data)) {
 }
 
 for (const [n, fighter] of Object.entries(amma_data)) {
-  let custom_id = n + amma_offset;
+  let custom_id = Number(n) + amma_offset;
   calls.push([
     `fighter ${fighter.name}`,
     makeCall(arcadeBlobertAddress, "set_amma_fighter", {
       fighter_id: n,
-      custom_id: custom_id,
       name: byteArray.byteArrayFromString(fighter.name),
+      custom_id: custom_id,
     }),
   ]);
   for (const [trait, item] of Object.entries(fighter.traits)) {
