@@ -1,83 +1,551 @@
 {
   "1": {
-    "name": "Daniel Winter",
+    "name": "Brett Skinner",
     "traits": {
       "background": {
-        "name": "No idea",
+        "name": "USA",
         "stats": {
-          "attack": 5,
-          "defense": 10,
-          "speed": 15,
+          "attack": 11,
+          "defense": 9,
+          "speed": 10,
           "strength": 10
         },
         "attacks": []
       },
       "armour": {
-        "name": "Armour name",
+        "name": "Brigandine",
         "stats": {
-          "attack": 5,
-          "defense": 10,
-          "speed": 15,
+          "attack": 4,
+          "defense": 19,
+          "speed": 7,
           "strength": 10
         },
         "attacks": []
       },
       "jewelry": {
-        "name": "Shield",
+        "name": "Warrior's Pendant",
         "stats": {
-          "attack": 5,
-          "defense": 10,
-          "speed": 15,
-          "strength": 10
-        },
-        "attacks": [
-          {
-            "name": "Shield Bash",
-            "damage": 18,
-            "speed": 70,
-            "accuracy": 80,
-            "critical": 20,
-            "stun": 10,
-            "cooldown": 0
-          }
-        ]
-      },
-      "mask": {
-        "name": "Helmet name",
-        "stats": {
-          "attack": 5,
-          "defense": 10,
-          "speed": 15,
+          "attack": 9,
+          "defense": 7,
+          "speed": 6,
           "strength": 10
         },
         "attacks": []
       },
-      "weapon": {
-        "name": "Big Sword",
+      "mask": {
+        "name": "Barbute Helm",
         "stats": {
-          "attack": 5,
-          "defense": 10,
-          "speed": 15,
+          "attack": 6,
+          "defense": 11,
+          "speed": 9,
+          "strength": 5
+        },
+        "attacks": []
+      },
+      "weapon": {
+        "name": "Broadsword & Punch Shield",
+        "stats": {
+          "attack": 15,
+          "defense": 5,
+          "speed": 14,
           "strength": 10
         },
         "attacks": [
           {
-            "name": "Blade Swipe",
-            "damage": 18,
-            "speed": 90,
-            "accuracy": 95,
-            "critical": 25,
-            "stun": 5,
+            "name": "Sword Slash",
+            "damage": 30,
+            "speed": 7,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 0,
             "cooldown": 0
           },
           {
-            "name": "Swift Slice",
+            "name": "Shield Punch",
+            "damage": 20,
+            "speed": 6,
+            "accuracy": 80,
+            "critical": 20,
+            "stun": 20,
+            "cooldown": 1
+          },
+          {
+            "name": "Grapple",
+            "damage": 30,
+            "speed": 5,
+            "accuracy": 70,
+            "critical": 0,
+            "stun": 15,
+            "cooldown": 2
+          },
+          {
+            "name": "Osoto Gari",
+            "damage": 40,
+            "speed": 5,
+            "accuracy": 90,
+            "critical": 50,
+            "stun": 50,
+            "cooldown": 255
+          }
+        ]
+      }
+    }
+  },
+  "2": {
+    "name": "Daniel Winter",
+    "traits": {
+      "background": {
+        "name": "United Kingdom",
+        "stats": {
+          "attack": 12,
+          "defense": 10,
+          "speed": 9,
+          "strength": 11
+        },
+        "attacks": []
+      },
+      "armour": {
+        "name": "Surcoat & Mail",
+        "stats": {
+          "attack": 3,
+          "defense": 14,
+          "speed": 9,
+          "strength": 9
+        },
+        "attacks": []
+      },
+      "jewelry": {
+        "name": "Commander's Medallion",
+        "stats": {
+          "attack": 8,
+          "defense": 6,
+          "speed": 9,
+          "strength": 11
+        },
+        "attacks": []
+      },
+      "mask": {
+        "name": "Barred Great Helm",
+        "stats": {
+          "attack": 3,
+          "defense": 18,
+          "speed": 5,
+          "strength": 7
+        },
+        "attacks": []
+      },
+      "weapon": {
+        "name": "Falchion & Buckler",
+        "stats": {
+          "attack": 18,
+          "defense": 4,
+          "speed": 10,
+          "strength": 12
+        },
+        "attacks": [
+          {
+            "name": "Sword Slash",
+            "damage": 30,
+            "speed": 7,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 0
+          },
+          {
+            "name": "Grind",
+            "damage": 0,
+            "speed": 5,
+            "accuracy": 80,
+            "critical": 20,
+            "stun": 0,
+            "cooldown": 1
+          },
+          {
+            "name": "Ground and Pound",
+            "damage": 45,
+            "speed": 5,
+            "accuracy": 70,
+            "critical": 0,
+            "stun": 10,
+            "cooldown": 2
+          },
+          {
+            "name": "White Company",
+            "damage": 50,
+            "speed": 6,
+            "accuracy": 90,
+            "critical": 50,
+            "stun": 0,
+            "cooldown": 255
+          }
+        ]
+      }
+    }
+  },
+  "3": {
+    "name": "Andrzej Studencki",
+    "traits": {
+      "background": {
+        "name": "Poland",
+        "stats": {
+          "attack": 10,
+          "defense": 11,
+          "speed": 12,
+          "strength": 9
+        },
+        "attacks": []
+      },
+      "armour": {
+        "name": "Brigandine with Chainmail",
+        "stats": {
+          "attack": 5,
+          "defense": 13,
+          "speed": 10,
+          "strength": 11
+        },
+        "attacks": []
+      },
+      "jewelry": {
+        "name": "Victory Band",
+        "stats": {
+          "attack": 10,
+          "defense": 7,
+          "speed": 8,
+          "strength": 9
+        },
+        "attacks": []
+      },
+      "mask": {
+        "name": "Chainmail Coif",
+        "stats": {
+          "attack": 7,
+          "defense": 12,
+          "speed": 10,
+          "strength": 4
+        },
+        "attacks": []
+      },
+      "weapon": {
+        "name": "Saber & Buckler",
+        "stats": {
+          "attack": 14,
+          "defense": 6,
+          "speed": 16,
+          "strength": 14
+        },
+        "attacks": [
+          {
+            "name": "Sword Slash",
+            "damage": 30,
+            "speed": 8,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 0
+          },
+          {
+            "name": "Shield Block",
+            "damage": 0,
+            "speed": 7,
+            "accuracy": 80,
+            "critical": 20,
+            "stun": 0,
+            "cooldown": 1
+          },
+          {
+            "name": "Sword Dance",
             "damage": 35,
-            "speed": 60,
+            "speed": 7,
+            "accuracy": 70,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 2
+          },
+          {
+            "name": "Spin Attack",
+            "damage": 45,
+            "speed": 7,
             "accuracy": 90,
             "critical": 30,
-            "stun": 5,
+            "stun": 10,
+            "cooldown": 3
+          }
+        ]
+      }
+    }
+  },
+  "4": {
+    "name": "Taylor Jones",
+    "traits": {
+      "background": {
+        "name": "USA",
+        "stats": {
+          "attack": 11,
+          "defense": 9,
+          "speed": 10,
+          "strength": 10
+        },
+        "attacks": []
+      },
+      "armour": {
+        "name": "Crusader's Surcoat & Plate",
+        "stats": {
+          "attack": 3,
+          "defense": 18,
+          "speed": 5,
+          "strength": 8
+        },
+        "attacks": []
+      },
+      "jewelry": {
+        "name": "Lone Star Pendant",
+        "stats": {
+          "attack": 9,
+          "defense": 6,
+          "speed": 10,
+          "strength": 11
+        },
+        "attacks": []
+      },
+      "mask": {
+        "name": "Great Bascinet Helm",
+        "stats": {
+          "attack": 6,
+          "defense": 13,
+          "speed": 7,
+          "strength": 5
+        },
+        "attacks": []
+      },
+      "weapon": {
+        "name": "Arming Sword & Punch Shield",
+        "stats": {
+          "attack": 17,
+          "defense": 5,
+          "speed": 12,
+          "strength": 15
+        },
+        "attacks": [
+          {
+            "name": "Sword Slash",
+            "damage": 30,
+            "speed": 6,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 0
+          },
+          {
+            "name": "Low Kick",
+            "damage": 20,
+            "speed": 7,
+            "accuracy": 80,
+            "critical": 0,
+            "stun": 0,
             "cooldown": 1
+          },
+          {
+            "name": "Swag",
+            "damage": 0,
+            "speed": 7,
+            "accuracy": 70,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 2
+          },
+          {
+            "name": "Mega Shield Bash",
+            "damage": 50,
+            "speed": 5,
+            "accuracy": 90,
+            "critical": 30,
+            "stun": 30,
+            "cooldown": 3
+          }
+        ]
+      }
+    }
+  },
+  "5": {
+    "name": "Adam Harrigan",
+    "traits": {
+      "background": {
+        "name": "USA",
+        "stats": {
+          "attack": 11,
+          "defense": 9,
+          "speed": 10,
+          "strength": 10
+        },
+        "attacks": []
+      },
+      "armour": {
+        "name": "Gambeson & Steel Greaves",
+        "stats": {
+          "attack": 2,
+          "defense": 20,
+          "speed": 3,
+          "strength": 9
+        },
+        "attacks": []
+      },
+      "jewelry": {
+        "name": "Shield Amulet",
+        "stats": {
+          "attack": 7,
+          "defense": 8,
+          "speed": 7,
+          "strength": 12
+        },
+        "attacks": []
+      },
+      "mask": {
+        "name": "Great Helm",
+        "stats": {
+          "attack": 4,
+          "defense": 20,
+          "speed": 4,
+          "strength": 6
+        },
+        "attacks": []
+      },
+      "weapon": {
+        "name": "Battle Axe & Buckler",
+        "stats": {
+          "attack": 20,
+          "defense": 5,
+          "speed": 9,
+          "strength": 16
+        },
+        "attacks": [
+          {
+            "name": "Axe Attack",
+            "damage": 35,
+            "speed": 5,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 10,
+            "cooldown": 0
+          },
+          {
+            "name": "Shield Punch",
+            "damage": 20,
+            "speed": 6,
+            "accuracy": 80,
+            "critical": 20,
+            "stun": 20,
+            "cooldown": 1
+          },
+          {
+            "name": "Grind",
+            "damage": 40,
+            "speed": 5,
+            "accuracy": 70,
+            "critical": 0,
+            "stun": 10,
+            "cooldown": 2
+          },
+          {
+            "name": "Reverse Throw",
+            "damage": 0,
+            "speed": 5,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 3
+          }
+        ]
+      }
+    }
+  },
+  "6": {
+    "name": "Antonio Penedo",
+    "traits": {
+      "background": {
+        "name": "Mexico",
+        "stats": {
+          "attack": 11,
+          "defense": 10,
+          "speed": 14,
+          "strength": 9
+        },
+        "attacks": []
+      },
+      "armour": {
+        "name": "Brigandine with Steel Plates",
+        "stats": {
+          "attack": 5,
+          "defense": 15,
+          "speed": 9,
+          "strength": 10
+        },
+        "attacks": []
+      },
+      "jewelry": {
+        "name": "Speed Amulet",
+        "stats": {
+          "attack": 10,
+          "defense": 5,
+          "speed": 11,
+          "strength": 9
+        },
+        "attacks": []
+      },
+      "mask": {
+        "name": "Chainmail Coif",
+        "stats": {
+          "attack": 7,
+          "defense": 10,
+          "speed": 11,
+          "strength": 4
+        },
+        "attacks": []
+      },
+      "weapon": {
+        "name": "Rapier & Buckler",
+        "stats": {
+          "attack": 12,
+          "defense": 6,
+          "speed": 18,
+          "strength": 10
+        },
+        "attacks": [
+          {
+            "name": "Sword Slash",
+            "damage": 25,
+            "speed": 9,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 0
+          },
+          {
+            "name": "Swift Attack",
+            "damage": 15,
+            "speed": 10,
+            "accuracy": 80,
+            "critical": 20,
+            "stun": 0,
+            "cooldown": 1
+          },
+          {
+            "name": "Shield Punch",
+            "damage": 25,
+            "speed": 8,
+            "accuracy": 70,
+            "critical": 30,
+            "stun": 20,
+            "cooldown": 2
+          },
+          {
+            "name": "Comeback Kid",
+            "damage": 0,
+            "speed": 5,
+            "accuracy": 90,
+            "critical": 0,
+            "stun": 0,
+            "cooldown": 255
           }
         ]
       }

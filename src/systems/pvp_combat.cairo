@@ -31,7 +31,7 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
             self.get_combatant_stats(combatant_ids.a), self.get_combatant_stats(combatant_ids.b)
         );
         let attacks = ABTTrait::new(
-            self.get_attack(planned_attacks.a.attack), self.get_attack(planned_attacks.a.attack)
+            self.get_attack(planned_attacks.a.attack), self.get_attack(planned_attacks.b.attack)
         );
 
         let speed_a = attacks.a.speed + stats.a.speed;

@@ -33,6 +33,7 @@ trait IPvPChallengeActions {
 
 #[dojo::contract]
 mod pvp_actions {
+    use dojo::model::Model;
     use starknet::{ContractAddress, get_caller_address};
     use blob_arena::{
         components::{
@@ -152,10 +153,7 @@ mod pvp_actions {
             if hash == commitment {
                 world.append_salt(combat.id, salt);
                 let other_combatant = combatants.other(combatant_id);
-                let planned_attack = PlannedAttack {
-                    id: combatant_id, attack, target: other_combatant,
-                };
-                world.set_planned_attack(planned_attack);
+                PlannedAttack { id: combatant_id, attack, target: other_combatant, }.set(world);
             } else {
                 let winner_id = combatants.other(combatant_id);
                 world.end_combat(combat, winner_id);
