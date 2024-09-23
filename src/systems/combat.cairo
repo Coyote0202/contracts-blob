@@ -120,7 +120,7 @@ impl CombatWorldImp of CombatWorldTraits {
                 return true;
             }
             let last_used = attack_available.last_used;
-            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) >= round {
+            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) > round {
                 return false;
             };
             self.set_available_attack(combatant_id, attack.id, round);

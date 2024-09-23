@@ -1229,10 +1229,10 @@
         ]
       }
     ],
-    "address": "0x7df2c6983ed100ba42566bbe4c802ac652ebffb038570122915b2dfaf57a386",
-    "transaction_hash": "0xff6cd5f083a150b5301987bc5702f246c6cc5ee097a163aec8c2ed55fd93d",
+    "address": "0x5f9867afd8f1fd4bed55c551ce07b09cd7d33f81e3eea68fb9f9e10378a7e20",
+    "transaction_hash": "0x7bd89860e7ad77f23272c87f6da263921acab9e101e037eb1fd500b6b3bbdcd",
     "block_number": 189551,
-    "seed": "blob-arena-0.4-alpha.5-11",
+    "seed": "blob-arena-0.4-alpha.5-12",
     "metadata": {
       "profile_name": "sepolia",
       "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
@@ -1250,7 +1250,7 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x5401bc45075cb41d7a91ea7d4544162135d4d9f581798b87bc69ca75c34fb5b",
+      "address": "0x69f1bc4ee2aa9e2e18ed2503247050b9aa42df60dd1ecf8ed1102b8f5b012da",
       "class_hash": "0x62a7b8923e67b96b9470d91e7aa104de3cd4083443431c4b31f5efcf04db147",
       "original_class_hash": "0x62a7b8923e67b96b9470d91e7aa104de3cd4083443431c4b31f5efcf04db147",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -1776,7 +1776,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x50c949d4b235133d7050589a40d8aa6de1ba8dd7e08946d0618008bb89bda32",
+      "address": "0x95b9dd84bd724216f50d0f24ef2b6956d2a2ff9d8c4a4a98f1e9339db32ee",
       "class_hash": "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f",
       "original_class_hash": "0x1fd3f2753e3c15f121f7ae092b4b9f16274962f6b907623a020f6afc8d33c6f",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2047,7 +2047,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x33d31f220b56325608a66acd477ff228c5b3a5d3f13bede3b3639a619033c0b",
+      "address": "0xbdb3704292c8f077e48c6a6493e5016a7a91e68c4d46913b9861d84787dac9",
       "class_hash": "0x2c8cb7652be80b6b7b8bd0c8b87c8ab1d2a625999e68c23d3b1d06b6641aae9",
       "original_class_hash": "0x2c8cb7652be80b6b7b8bd0c8b87c8ab1d2a625999e68c23d3b1d06b6641aae9",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2570,7 +2570,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x48a91c3d8d670ede529acf1d6fe81a3c1fafb3519ca0cb03e1bfc3ad84a5153",
+      "address": "0x48304ba4cf26a35ef51b16b3f1b1e87c1d885888a4dc3934a3900062063e615",
       "class_hash": "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891",
       "original_class_hash": "0x5099d1473224dfcd72b268708458602a152091c4f134b1657ba8d8e4ce79891",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2903,9 +2903,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x7e826865455d47e8d24264ea676dc562a60c5b4313752a047826232a1b8bbce",
-      "class_hash": "0x15c0d727f7a5f0ef153db412c270ceccccb4b021ca4d9545328d96e277ee485",
-      "original_class_hash": "0x15c0d727f7a5f0ef153db412c270ceccccb4b021ca4d9545328d96e277ee485",
+      "address": "0x6d61217ac6f0c8dc2cc91dfc57512ac4dac8914e12c58cd22f092e05380a23a",
+      "class_hash": "0x48bcc86e4cf2d1215b4dc5818014f502db06decf0d90d02b88118e888eebf3a",
+      "original_class_hash": "0x48bcc86e4cf2d1215b4dc5818014f502db06decf0d90d02b88118e888eebf3a",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3366,7 +3366,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x2b0119f6b3507fa3e1ee4770c5791cc8535cada25385c7efd895ee657ea134",
+      "address": "0x79c389702f3abe9d9e3f37d43223cfabb12610ee7ba70ab3329bc17e8116bad",
       "class_hash": "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7",
       "original_class_hash": "0x20e19d4c5109f543321dcae64344f671c05058c15c3c382dfce8da1da7306b7",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",

@@ -113,7 +113,7 @@ mod pvp_actions {
         }
         fn reject_response(ref world: IWorldDispatcher, challenge_id: u128) {
             let mut challenge = world.get_open_challenge(challenge_id);
-            challenge.assert_caller_receiver();
+            challenge.assert_caller_sender();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
