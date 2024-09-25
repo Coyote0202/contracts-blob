@@ -1,5 +1,4 @@
 use core::{hash::HashStateTrait, poseidon::{PoseidonTrait, HashState},};
-use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{

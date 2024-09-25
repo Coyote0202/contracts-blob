@@ -25,6 +25,7 @@ const FIXED_255: u128 = 4703919738795935662080;
 const HUNDREDTH: felt252 = 184467440737095516;
 const THREE_TENTHS: felt252 = 5534023222112865484;
 const NZ_255: NonZero<u128> = 255;
+const NZ_100: NonZero<u128> = 100;
 
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
@@ -81,8 +82,9 @@ fn damage_calculation(attack: u8, damage: u8, critical: bool) -> u8 {
     calc_damage.try_into().unwrap()
 }
 
-fn did_hit(accuracy: u8, seed: u128) -> bool {
-    (seed % 100).try_into().unwrap() < accuracy
+fn did_hit(accuracy: u8, seed: u128) -> (u128, bool) {
+    let (seed, value) = u128_safe_divmod(seed, NZ_100);
+    (seed, value < accuracy.into())
 }
 
 #[generate_trait]
@@ -92,23 +94,27 @@ impl AttackerImpl of AttackerTrait {
         damage_calculation(self.attack, attack.damage, critical)
     }
 
-    fn did_hit(self: CombatantStats, attack: Attack, seed: u128) -> bool {
+    fn did_hit(self: CombatantStats, attack: Attack, seed: u128) -> (u128, bool) {
         did_hit(attack.accuracy, seed)
     }
 
-    fn did_critical(self: CombatantStats, attack: Attack, seed: u128) -> bool {
+    // random less than 255
+    fn did_critical(self: CombatantStats, attack: Attack, seed: u128) -> (u128, bool) {
         let critical: u8 = apply_strength_modifier(attack.critical, self.strength);
-        (seed % 255).try_into().unwrap() < critical
+        let (seed, value) = u128_safe_divmod(seed, NZ_255);
+        (seed, value < critical.into())
     }
 
-    fn is_stunned(self: CombatantState, seed: u128) -> bool {
-        (seed % 255).try_into().unwrap() < self.stun_chance
+
+    fn is_stunned(self: CombatantState, seed: u128) -> (u128, bool) {
+        let (seed, value) = u128_safe_divmod(seed, NZ_255);
+        (seed, value < self.stun_chance.into())
     }
 
-    fn run_stun(ref self: CombatantState, seed: u128) -> bool {
-        let stunned = self.is_stunned(seed);
+    fn run_stun(ref self: CombatantState, seed: u128) -> (u128, bool) {
+        let (seed, stunned) = self.is_stunned(seed);
         self.stun_chance = 0;
-        stunned
+        (seed, stunned)
     }
 }
 
@@ -162,15 +168,14 @@ impl CombatWorldImp of CombatWorldTraits {
         hash: HashState
     ) -> (CombatantState, CombatantState) {
         let seed = felt252_to_u128(hash.to_hash(attacker_stats.id));
-        let (seed, stun_h) = u128_safe_divmod(seed, NZ_255);
-        let (seed, attack_h) = u128_safe_divmod(seed, NZ_255);
+        let (seed, stunned) = attacker_state.run_stun(seed);
+        let (seed, hit) = attacker_stats.did_hit(attack, seed);
         let effect = if !self.run_attack_check(attacker_stats.id, attack, round) {
             AttackEffect::Failed
-        } else if attacker_state.run_stun(stun_h) {
+        } else if stunned {
             AttackEffect::Stunned
-        } else if attacker_stats.did_hit(attack, attack_h) {
-            let (seed, critical_h) = u128_safe_divmod(seed, NZ_255);
-            let critical = attacker_stats.did_critical(attack, critical_h);
+        } else if hit {
+            let (seed, critical) = attacker_stats.did_critical(attack, seed);
             let damage = attacker_stats.get_damage(attack, critical, seed);
 
             defender_state.health.subeq(damage);
