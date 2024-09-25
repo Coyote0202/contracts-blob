@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod test {
-    use blob_arena::{systems::combat::{damage_calculation, apply_strength_modifier}};
+    use blob_arena::{systems::combat::{damage_calculation, apply_strength_modifier}, models::AttackModel};
 
 
     #[test]
@@ -29,6 +29,38 @@ mod test {
                 value += 20;
             };
             strength += 20;
+        };
+    }
+
+    #[test]
+    #[available_gas(3000000000)]
+    fn test_hit() {
+        let mut accuracy = 0_u8;
+        let mut attack = AttackModel{
+            id: 12,
+            name: "Test Attack",
+            speed: 10,
+            damage: 10,
+            accuracy: 90,
+            critical: 10,
+            stun: 10,
+            cooldown: 0,
+        };
+        let stats = CombatantStats {
+            id: 12,
+            attack: 50,
+            defense: 50,
+            speed: 50,
+            strength: 50,
+        }
+        while accuracy <= 100 {
+            let mut seed = 0_u256;
+            while seed <= 100 {
+                let did_hit = AttackerImpl::did_hit(CombatantStats::new(), attack, seed);
+                println!("Accuracy: {}, Seed: {}, Did Hit: {}", accuracy, seed, did_hit);
+                seed += 20;
+            };
+            accuracy += 20;
         };
     }
 }
