@@ -130,7 +130,18 @@
                 "speed": 15,
                 "strength": 10
             },
-            "attacks": []
+            "attacks": [
+                {
+                    "name": "Heal",
+                    "damage": 0,
+                    "speed": 0,
+                    "accuracy": 0,
+                    "critical": 0,
+                    "stun": 0,
+                    "cooldown": 0,
+                    "heal": 0
+                }
+            ]
         },
         "1": {
             "name": "Kigurumi",
@@ -624,7 +635,18 @@
                     "accuracy": 70,
                     "critical": 15,
                     "stun": 5,
-                    "cooldown": 0
+                    "cooldown": 0,
+                    "heal_amount": 0
+                },
+                {
+                    "name": "Healing Light",
+                    "damage": 0,
+                    "speed": 0,
+                    "accuracy": 100,
+                    "critical": 0,
+                    "stun": 0,
+                    "cooldown": 5,
+                    "heal_amount": 100
                 },
                 {
                     "name": "Algorithm Assault",

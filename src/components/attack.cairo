@@ -15,6 +15,7 @@ struct Attack {
     critical: u8,
     stun: u8,
     cooldown: u8,
+    heal: u8,
 }
 
 #[derive(Drop, Serde)]
@@ -26,6 +27,7 @@ struct AttackInput {
     critical: u8,
     stun: u8,
     cooldown: u8,
+    heal: u8,
 }
 
 impl AttackIdImpl of IdTrait<Attack> {
@@ -43,14 +45,14 @@ impl AttackImpl of AttackTrait {
         get!((*self), id, AttackModel)
     }
     fn get_attack(self: @IWorldDispatcher, id: u128) -> Attack {
-        let AttackModel { id, name: _, damage, speed, accuracy, critical, stun, cooldown } = self
+        let AttackModel { id, name: _, damage, speed, accuracy, critical, stun, cooldown, heal } = self
             .get_attack_model(id);
-        Attack { id, damage, speed, accuracy, critical, stun, cooldown, }
+        Attack { id, damage, speed, accuracy, critical, stun, cooldown, heal }
     }
     fn create_new_attack(self: IWorldDispatcher, attack: AttackInput) -> u128 {
-        let AttackInput { name, damage, speed, accuracy, critical, stun, cooldown } = attack;
+        let AttackInput { name, damage, speed, accuracy, critical, stun, cooldown, heal } = attack;
         let id = uuid(self);
-        set!(self, AttackModel { id, name, damage, speed, accuracy, critical, stun, cooldown });
+        set!(self, AttackModel { id, name, damage, speed, accuracy, critical, stun, cooldown, heal });
         id
     }
 // fn get_available_attack(

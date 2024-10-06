@@ -152,6 +152,7 @@ impl CombatWorldImp of CombatWorldTraits {
         } else if attacker_state.run_stun(seed) {
             AttackEffect::Stunned
         } else if attacker_stats.did_hit(attack, seed) {
+            
             let critical = attacker_stats.did_critical(attack, seed);
             let damage = attacker_stats.get_damage(attack, critical, seed);
 
@@ -163,7 +164,7 @@ impl CombatWorldImp of CombatWorldTraits {
                             defender_state.stun_chance, attack.stun, attacker_stats.strength
                         );
             };
-            AttackEffect::Hit(AttackHit { damage, stun: attack.stun, critical })
+            AttackEffect::Hit(AttackHit { damage, stun: attack.stun, critical, heal: attack.heal })
         } else {
             AttackEffect::Miss
         };

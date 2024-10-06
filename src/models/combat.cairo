@@ -21,6 +21,7 @@ struct AttackHit {
     damage: u8,
     stun: u8,
     critical: bool,
+    heal: u8,
 }
 
 #[derive(Drop, Serde, Copy, Introspect)]
@@ -32,7 +33,7 @@ enum AttackEffect {
 }
 
 #[derive(Drop, Serde, Copy, Introspect)]
-// #[dojo::model]
+#[dojo::model]
 // #[dojo::event]
 pub struct AttackResult {
     #[key]
@@ -42,6 +43,7 @@ pub struct AttackResult {
     pub attack_id: u128,
     pub target: u128,
     pub effect: AttackEffect,
+    pub heal: u8,
 }
 
 

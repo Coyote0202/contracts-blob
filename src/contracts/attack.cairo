@@ -12,6 +12,7 @@ trait IAttackActions {
         critical: u8,
         stun: u8,
         cooldown: u8,
+        heal: u8 // New parameter
     ) -> u128;
 }
 
@@ -37,10 +38,11 @@ mod attack_actions {
             critical: u8,
             stun: u8,
             cooldown: u8,
+            heal: u8 // New parameter
         ) -> u128 {
             let id = uuid(world);
             let attack = AttackModel {
-                id, name, damage, speed, accuracy, critical, stun, cooldown,
+                id, name, damage, speed, accuracy, critical, stun, cooldown, heal
             };
             set!(world, (attack,));
             id

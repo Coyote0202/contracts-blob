@@ -1,6 +1,12 @@
 #[cfg(test)]
 mod test {
-    use blob_arena::{systems::combat::{damage_calculation, apply_strength_modifier}};
+    use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+    use blob_arena::{
+        components::{
+            combatant::{CombatantState, CombatantStats},
+            attack::{Attack}
+        },
+        systems::combat::{damage_calculation, apply_strength_modifier}};
 
 
     #[test]
@@ -30,5 +36,45 @@ mod test {
             };
             strength += 20;
         };
+    }
+
+    
+    #[test]
+    #[available_gas(3000000000)]
+    fn test_heal_move() {
+        let mut combatant_a_stats = CombatantStats {
+            id: 1,
+            attack: 10,
+            defense: 10,
+            speed: 10,
+            strength: 10,
+        };
+
+        let mut combatant_a_state = CombatantState {
+            id: 1,
+            health: 100,
+            stun_chance: 0,
+        };
+
+        let heal_move = Attack {
+            id: 1,
+            damage: 0,
+            speed: 150,
+            accuracy: 0,
+            critical: 0,
+            stun: 0,
+            cooldown: 0,
+            heal: 10,
+        };
+
+        let mut world_dispatcher = WorldDispatcher::default();
+        world_dispatcher.run_attack(
+            combatant_a_stats,
+            combatant_a_state,
+            combatant_a_state,
+            heal_move,
+            1, // Round number
+            HashState::default()
+        );
     }
 }

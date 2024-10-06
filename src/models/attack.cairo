@@ -10,6 +10,7 @@ struct Attack {
     critical: u8,
     stun: u8,
     cooldown: u8,
+    heal: u8,
 }
 
 #[dojo::model]
