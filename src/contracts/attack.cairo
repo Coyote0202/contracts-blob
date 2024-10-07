@@ -1,5 +1,5 @@
 use dojo::world::{IWorldDispatcher};
-
+use blob_arena::components::stats::Stats;
 
 #[dojo::interface]
 trait IAttackActions {
@@ -10,9 +10,11 @@ trait IAttackActions {
         speed: u8,
         accuracy: u8,
         critical: u8,
+        heal: u8, // New parameter
+        buff: Stats,
+        debuff: Stats,
         stun: u8,
         cooldown: u8,
-        heal: u8 // New parameter
     ) -> u128;
 }
 

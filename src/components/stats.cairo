@@ -1,65 +1,78 @@
 use core::option::OptionTrait;
 use core::fmt::{Display, Formatter, Error};
+use core::num::traits::{SaturatingAdd, SaturatingSub};
 
-#[derive(Copy, Drop, Serde, Introspect)]
-struct Stats {
-    attack: u8,
-    defense: u8,
-    speed: u8,
-    strength: u8,
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+struct TStats<T> {
+    attack: T,
+    defense: T,
+    speed: T,
+    strength: T,
 }
 
-trait StatsTrait<T> {
-    fn stats(self: T) -> Stats;
-    fn index(self: T) -> u8;
-}
+type Stats = TStats<u8>;
 
-impl StatIntoU8<T, +StatsTrait<T>> of Into<T, u8> {
-    fn into(self: T) -> u8 {
-        self.index()
+impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
+    fn into(self: T) -> TStats<T> {
+        TStats { attack: self, defense: self, speed: self, strength: self, }
     }
 }
 
-impl U8IntoStats of Into<u8, Stats> {
-    fn into(self: u8) -> Stats {
-        Stats { attack: self, defense: self, speed: self, strength: self, }
-    }
-}
-
-// impl TIntoStats<T, +TryInto<T, u8>> of Into<T, Stats> {
-//     fn into(self: T) -> Stats {
-//         U8IntoStats::into(self.try_into().unwrap())
-//     }
-// }
-
-impl DisplayImplT of Display<Stats> {
-    fn fmt(self: @Stats, ref f: Formatter) -> Result<(), Error> {
-        let str: ByteArray = format!(
-            "attack: {},\tdefense: {},\tspeed: {},\tstrength: {}",
-            self.attack,
-            self.defense,
-            self.speed,
-            self.strength
-        );
-        f.buffer.append(@str);
-        Result::Ok(())
-    }
-}
-
-impl StatsAdd of Add<Stats> {
-    fn add(lhs: Stats, rhs: Stats) -> Stats {
-        return Stats {
+impl TStatsAdd<T, +Add<T>, +Drop<T>> of Add<TStats<T>> {
+    fn add(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
+        TStats {
             attack: lhs.attack + rhs.attack,
             defense: lhs.defense + rhs.defense,
             speed: lhs.speed + rhs.speed,
             strength: lhs.strength + rhs.strength,
+        }
+    }
+}
+
+impl TStatsSubBounded<T, +SubBounded<T>, +Drop<T>> of SubBounded<TStats<T>> {
+    fn sub_bounded(self: TStats<T>, rhs: TStats<T>) -> TStats<T> {
+        return TStats {
+            attack: self.attack.sub_bounded(rhs.attack),
+            defense: self.defense.sub_bounded(rhs.defense),
+            speed: self.speed.sub_bounded(rhs.speed),
+            strength: self.strength.sub_bounded(rhs.strength),
+        };
+    }
+
+    fn subeq_bounded(ref self: TStats<T>, rhs: TStats<T>) {
+        self = self.sub_bounded(rhs)
+    }
+}
+
+impl TStatsAddBounded<T, +AddBounded<T>, +Drop<T>> of AddBounded<TStats<T>> {
+    fn add_bounded(self: TStats<T>, rhs: TStats<T>) -> TStats<T> {
+        return TStats {
+            attack: self.attack.add_bounded(rhs.attack),
+            defense: self.defense.add_bounded(rhs.defense),
+            speed: self.speed.add_bounded(rhs.speed),
+            strength: self.strength.add_bounded(rhs.strength),
+        };
+    }
+
+    fn addeq_bounded(ref self: TStats<T>, rhs: TStats<T>) {
+        self = self.add_bounded(rhs)
+    }
+}
+
+impl TStatsSub<T, +Sub<T>, +Drop<T>> of Sub<TStats<T>> {
+    fn sub(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
+        return TStats {
+            attack: lhs.attack - rhs.attack,
+            defense: lhs.defense - rhs.defense,
+            speed: lhs.speed - rhs.speed,
+            strength: lhs.strength - rhs.strength,
         };
     }
 }
 
-impl StatsMul of Mul<Stats> {
-    fn mul(lhs: Stats, rhs: Stats) -> Stats {
-        return Stats {
+impl TStatsMul<T, +Mul<T>, +Drop<T>> of Mul<TStats<T>> {
+    fn mul(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
+        return TStats {
             attack: lhs.attack * rhs.attack,
             defense: lhs.defense * rhs.defense,
             speed: lhs.speed * rhs.speed,
@@ -68,9 +81,9 @@ impl StatsMul of Mul<Stats> {
     }
 }
 
-impl StatsDiv of Div<Stats> {
-    fn div(lhs: Stats, rhs: Stats) -> Stats {
-        return Stats {
+impl TStatsDiv<T, +Div<T>, +Drop<T>> of Div<TStats<T>> {
+    fn div(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
+        return TStats {
             attack: lhs.attack / rhs.attack,
             defense: lhs.defense / rhs.defense,
             speed: lhs.speed / rhs.speed,

@@ -1,46 +1,7 @@
-use core::num::traits::Bounded;
+use core::num::traits::{Bounded, Zero};
 
 #[derive(Copy, Drop)]
 type TTupleSize5<T> = (T, T, T, T, T);
-
-
-trait LimitSub<T> {
-    fn sub(self: T, other: T) -> T;
-    fn subeq(ref self: T, other: T);
-}
-
-trait LimitAdd<T> {
-    fn add(self: T, other: T) -> T;
-    fn addeq(ref self: T, other: T);
-}
-
-impl TLimitSubImpl<T, +Bounded<T>, +Sub<T>, +PartialOrd<T>, +Copy<T>, +Drop<T>> of LimitSub<T> {
-    fn sub(self: T, other: T) -> T {
-        if other < self {
-            self - other
-        } else {
-            Bounded::MIN
-        }
-    }
-
-    fn subeq(ref self: T, other: T) {
-        self = self.sub(other)
-    }
-}
-
-impl TLimitAddImpl<T, +Bounded<T>, +Add<T>, +PartialOrd<T>, +Copy<T>, +Drop<T>> of LimitAdd<T> {
-    fn add(self: T, other: T) -> T {
-        if self + other < Bounded::MAX {
-            self + other
-        } else {
-            Bounded::MAX
-        }
-    }
-
-    fn addeq(ref self: T, other: T) {
-        self = self.add(other)
-    }
-}
 
 
 impl Felt252BitAnd of BitAnd<felt252> {

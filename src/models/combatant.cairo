@@ -30,7 +30,9 @@ struct CombatantState {
     #[key]
     id: u128,
     health: u8,
-    stun_chance: u8
+    stun_chance: u8,
+    buffs: Stats,
+    debuffs: Stats,
 }
 
 

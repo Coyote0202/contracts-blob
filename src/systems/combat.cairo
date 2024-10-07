@@ -10,13 +10,13 @@ use cubit::f128::types::fixed::{FixedTrait, Fixed, HALF};
 use core::integer::u128_safe_divmod;
 
 use blob_arena::{
-    core::{LimitSub, LimitAdd}, utils::{ToHash, felt252_to_u128},
+    core::{SubBounded, AddBounded}, utils::{ToHash, felt252_to_u128},
     components::{
         combat::{Phase, AttackEffect, AttackHit},
         combatant::{CombatantState, CombatantStats, CombatantInfo, CombatantTrait},
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
-    models::{AttackResult},
+    models::{AttackResult, Effect, Affect, Damage, Target, Direction, StatsEffect},
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
@@ -118,6 +118,23 @@ impl AttackerImpl of AttackerTrait {
     }
 }
 
+fn effect_health(ref self: CombatantState, stats: CombatantStats, health: u8) {}
+
+fn run_effect(
+    attacker_stats: CombatantStats,
+    defender_stats: CombatantStats,
+    ref attacker_state: CombatantState,
+    ref defender_state: CombatantState,
+    effect: Effect
+) {
+    match effect.affect {
+        Effect::Stats(stats_effect) => {},
+        Effect::Damage(damage) => {},
+        Effect::Stun(stun) => {},
+        Effect::Health(health) => {},
+    }
+}
+
 #[generate_trait]
 impl CombatWorldImp of CombatWorldTraits {
     fn run_attack_check(
@@ -157,6 +174,7 @@ impl CombatWorldImp of CombatWorldTraits {
         // AttackResult { combatant_id, round, attack_id, target, effect }.set(self);
     // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
     }
+
 
     fn run_attack(
         self: IWorldDispatcher,
