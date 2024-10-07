@@ -155,6 +155,9 @@ impl CombatWorldImp of CombatWorldTraits {
             
             let critical = attacker_stats.did_critical(attack, seed);
             let damage = attacker_stats.get_damage(attack, critical, seed);
+            if attack.heal > 0 {
+                defender_state.health.addeq(attack.heal);
+            };
 
             defender_state.health.subeq(damage);
             if attack.stun > 0 {
