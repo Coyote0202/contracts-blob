@@ -25,6 +25,9 @@ mod contracts {
     mod pvp;
     mod pvp_admin;
 }
+// mod debug;
+// use blob_arena::debug::DebugTrait;
+
 #[cfg(test)]
 mod tests {
     mod pvp_test;

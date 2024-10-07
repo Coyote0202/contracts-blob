@@ -33,6 +33,7 @@ trait IPvPChallengeActions {
 
 #[dojo::contract]
 mod pvp_actions {
+    use dojo::model::Model;
     use starknet::{ContractAddress, get_caller_address};
     use blob_arena::{
         components::{
@@ -112,7 +113,7 @@ mod pvp_actions {
         }
         fn reject_response(ref world: IWorldDispatcher, challenge_id: u128) {
             let mut challenge = world.get_open_challenge(challenge_id);
-            challenge.assert_caller_receiver();
+            challenge.assert_caller_sender();
             challenge.invite_open = false;
             world.set_challenge_invite(challenge);
         }
@@ -126,7 +127,7 @@ mod pvp_actions {
     #[abi(embed_v0)]
     impl PvPActionsImpl of IPvPCombatActions<ContractState> {
         fn commit_attack(ref world: IWorldDispatcher, combatant_id: u128, hash: felt252) {
-            let combatant = world.get_combatant_info(combatant_id);
+            let combatant = world.get_combatant_info_in_combat(combatant_id);
             let combat = world.get_combat_state(combatant.combat_id);
             assert(combat.phase == Phase::Commit, 'Not in commit phase');
 
@@ -136,7 +137,7 @@ mod pvp_actions {
         fn reveal_attack(
             ref world: IWorldDispatcher, combatant_id: u128, attack: u128, salt: felt252
         ) {
-            let combatant = world.get_combatant_info(combatant_id);
+            let combatant = world.get_combatant_info_in_combat(combatant_id);
             combatant.assert_player();
             let mut combat = world.get_combat_state(combatant.combat_id);
             let combatants = world.get_pvp_combatants(combat.id);
@@ -152,10 +153,7 @@ mod pvp_actions {
             if hash == commitment {
                 world.append_salt(combat.id, salt);
                 let other_combatant = combatants.other(combatant_id);
-                let planned_attack = PlannedAttack {
-                    id: combatant_id, attack, target: other_combatant,
-                };
-                world.set_planned_attack(planned_attack);
+                PlannedAttack { id: combatant_id, attack, target: other_combatant, }.set(world);
             } else {
                 let winner_id = combatants.other(combatant_id);
                 world.end_combat(combat, winner_id);
@@ -163,7 +161,7 @@ mod pvp_actions {
             }
         }
         fn run_round(ref world: IWorldDispatcher, combat_id: u128) {
-            let mut combat = world.get_combat_state(combat_id);
+            let mut combat = world.get_running_combat_state(combat_id);
             let combatants = world.get_pvp_combatants(combat_id);
             let combatants_span: Span<u128> = combatants.into();
             assert(combat.phase == Phase::Reveal, 'Not in reveal phase');
@@ -185,7 +183,7 @@ mod pvp_actions {
             }
         }
         fn forfeit(ref world: IWorldDispatcher, combatant_id: u128) {
-            let loser = world.get_combatant_info(combatant_id);
+            let loser = world.get_combatant_info_in_combat(combatant_id);
             loser.assert_player();
             let mut combat = world.get_running_combat_state(loser.combat_id);
             let combatants = world.get_pvp_combatants(combat.id);

@@ -1,5 +1,4 @@
 use core::{hash::HashStateTrait, poseidon::{PoseidonTrait, HashState},};
-use alexandria_math::BitShift;
 use blob_arena::{
     core::{LimitSub, LimitAdd},
     components::{
@@ -8,7 +7,7 @@ use blob_arena::{
     },
     systems::{combat::{AttackEffect, CombatWorldTraits}}, models::PlannedAttack,
 };
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
 
 // #[derive(Clone, Copy, Drop)]
@@ -26,12 +25,12 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         planned_attacks: ABT<PlannedAttack>,
         round: u32,
         hash: HashState
-    ) -> Span<CombatantState> {
+    ) -> Array<CombatantState> {
         let stats = ABTTrait::new(
             self.get_combatant_stats(combatant_ids.a), self.get_combatant_stats(combatant_ids.b)
         );
         let attacks = ABTTrait::new(
-            self.get_attack(planned_attacks.a.attack), self.get_attack(planned_attacks.a.attack)
+            self.get_attack(planned_attacks.a.attack), self.get_attack(planned_attacks.b.attack)
         );
 
         let speed_a = attacks.a.speed + stats.a.speed;
@@ -47,11 +46,15 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
 
         let stats_1 = self.get_combatant_stats(combatant_ids.get(first));
         let stats_2 = self.get_combatant_stats(combatant_ids.get(!first));
-        let mut state_1 = self.get_combatant_state(combatant_ids.get(first));
-        let mut state_2 = self.get_combatant_state(combatant_ids.get(!first));
-        self.run_attack(stats_1, ref state_1, ref state_2, attacks.get(first), round, hash);
-        self.run_attack(stats_2, ref state_2, ref state_1, attacks.get(!first), round, hash);
-        set!(self, (state_1, state_2));
-        array![state_1, state_2].span()
+        let state_1 = self.get_combatant_state(combatant_ids.get(first));
+        let state_2 = self.get_combatant_state(combatant_ids.get(!first));
+
+        let (state_1, state_2) = self
+            .run_attack(stats_1, state_1, state_2, attacks.get(first), round, hash);
+        let (state_2, state_1) = self
+            .run_attack(stats_2, state_2, state_1, attacks.get(!first), round, hash);
+        state_1.set(self);
+        state_2.set(self);
+        array![state_1, state_2]
     }
 }

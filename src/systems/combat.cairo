@@ -7,9 +7,10 @@ use core::{
 // use alexandria_data_structures::array_ext::ArrayTraitExt;
 use cubit::f128::types::fixed::{FixedTrait, Fixed, HALF};
 
-use alexandria_math::BitShift;
+use core::integer::u128_safe_divmod;
+
 use blob_arena::{
-    core::{LimitSub, LimitAdd},
+    core::{LimitSub, LimitAdd}, utils::{ToHash, felt252_to_u128},
     components::{
         combat::{Phase, AttackEffect, AttackHit},
         combatant::{CombatantState, CombatantStats, CombatantInfo, CombatantTrait},
@@ -17,13 +18,14 @@ use blob_arena::{
     },
     models::{AttackResult},
 };
-use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
+use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
 const HUNDRED: felt252 = 1844674407370955161600;
 const FIXED_255: u128 = 4703919738795935662080;
 const HUNDREDTH: felt252 = 184467440737095516;
 const THREE_TENTHS: felt252 = 5534023222112865484;
-
+const NZ_255: NonZero<u128> = 255;
+const NZ_100: NonZero<u128> = 100;
 
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
@@ -80,30 +82,39 @@ fn damage_calculation(attack: u8, damage: u8, critical: bool) -> u8 {
     calc_damage.try_into().unwrap()
 }
 
+fn did_hit(accuracy: u8, seed: u128) -> (u128, bool) {
+    let (seed, value) = u128_safe_divmod(seed, NZ_100);
+    (seed, value < accuracy.into())
+}
+
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
-    fn get_damage(self: CombatantStats, attack: Attack, critical: bool, seed: u256) -> u8 {
+    fn get_damage(self: CombatantStats, attack: Attack, critical: bool, seed: u128) -> u8 {
         //TODO: Implement damage calculation
         damage_calculation(self.attack, attack.damage, critical)
     }
 
-    fn did_hit(self: CombatantStats, attack: Attack, seed: u256) -> bool {
-        (BitShift::shr(seed, 8) % 100).try_into().unwrap() < attack.accuracy
+    fn did_hit(self: CombatantStats, attack: Attack, seed: u128) -> (u128, bool) {
+        did_hit(attack.accuracy, seed)
     }
 
-    fn did_critical(self: CombatantStats, attack: Attack, seed: u256) -> bool {
+    // random less than 255
+    fn did_critical(self: CombatantStats, attack: Attack, seed: u128) -> (u128, bool) {
         let critical: u8 = apply_strength_modifier(attack.critical, self.strength);
-        (BitShift::shr(seed, 16) % 255).try_into().unwrap() < critical
+        let (seed, value) = u128_safe_divmod(seed, NZ_255);
+        (seed, value < critical.into())
     }
 
-    fn is_stunned(self: CombatantState, seed: u256) -> bool {
-        (BitShift::shr(seed, 24) % 255).try_into().unwrap() < self.stun_chance
+
+    fn is_stunned(self: CombatantState, seed: u128) -> (u128, bool) {
+        let (seed, value) = u128_safe_divmod(seed, NZ_255);
+        (seed, value < self.stun_chance.into())
     }
 
-    fn run_stun(ref self: CombatantState, seed: u256) -> bool {
-        let stunned = self.is_stunned(seed);
+    fn run_stun(ref self: CombatantState, seed: u128) -> (u128, bool) {
+        let (seed, stunned) = self.is_stunned(seed);
         self.stun_chance = 0;
-        stunned
+        (seed, stunned)
     }
 }
 
@@ -134,26 +145,37 @@ impl CombatWorldImp of CombatWorldTraits {
         attack_id: u128,
         target: u128,
         effect: AttackEffect
-    ) { // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
+    ) {
+        let (effect, damage, stun, critical,) = match effect {
+            AttackEffect::Failed => (0, 0, 0, false),
+            AttackEffect::Stunned => (1, 0, 0, false),
+            AttackEffect::Miss => (2, 0, 0, false),
+            AttackEffect::Hit(affect) => (3, affect.damage, affect.stun, affect.critical),
+        };
+        AttackResult { combatant_id, round, attack_id, target, effect, damage, stun, critical, }
+            .set(self);
+        // AttackResult { combatant_id, round, attack_id, target, effect }.set(self);
+    // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
     }
 
     fn run_attack(
         self: IWorldDispatcher,
         attacker_stats: CombatantStats,
-        ref attacker_state: CombatantState,
-        ref defender_state: CombatantState,
+        mut attacker_state: CombatantState,
+        mut defender_state: CombatantState,
         attack: Attack,
         round: u32,
         hash: HashState
-    ) {
-        let seed: u256 = hash.update(attacker_stats.id.into()).finalize().into();
+    ) -> (CombatantState, CombatantState) {
+        let seed = felt252_to_u128(hash.to_hash(attacker_stats.id));
+        let (seed, stunned) = attacker_state.run_stun(seed);
+        let (seed, hit) = attacker_stats.did_hit(attack, seed);
         let effect = if !self.run_attack_check(attacker_stats.id, attack, round) {
             AttackEffect::Failed
-        } else if attacker_state.run_stun(seed) {
+        } else if stunned {
             AttackEffect::Stunned
-        } else if attacker_stats.did_hit(attack, seed) {
-            
-            let critical = attacker_stats.did_critical(attack, seed);
+        } else if hit {
+            let (seed, critical) = attacker_stats.did_critical(attack, seed);
             let damage = attacker_stats.get_damage(attack, critical, seed);
             if attack.heal > 0 {
                 defender_state.health.addeq(attack.heal);
@@ -172,6 +194,8 @@ impl CombatWorldImp of CombatWorldTraits {
             AttackEffect::Miss
         };
         self.emit_attack_event(attacker_stats.id, round, attack.id, defender_state.id, effect);
+
+        (attacker_state, defender_state)
     }
 }
 

@@ -1,5 +1,4 @@
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
-use alexandria_math::BitShift;
 
 use blob_arena::{
     utils::uuid, models::{AttackModel, AvailableAttack},
@@ -55,7 +54,7 @@ impl AttackImpl of AttackTrait {
         set!(self, AttackModel { id, name, damage, speed, accuracy, critical, stun, cooldown, heal });
         id
     }
-// fn get_available_attack(
+    // fn get_available_attack(
 //     self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,
 // ) -> AvailableAttack {
 //     get!(self, (combat_id, combatant, attack), AvailableAttack)
@@ -63,6 +62,7 @@ impl AttackImpl of AttackTrait {
 // fn set_available_attack(
 //     self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128, last_used: u32
 // ) {
-//     set!(self, (AvailableAttack { combat_id, combatant, attack, available: true, last_used }));
+//     set!(self, (AvailableAttack { combat_id, combatant, attack, available: true, last_used
+//     }));
 // }
 }

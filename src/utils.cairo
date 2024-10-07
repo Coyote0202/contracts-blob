@@ -46,3 +46,20 @@ impl RandomnessImpl of RandomnessTrait {
         value
     }
 }
+
+trait ToHash<T> {
+    fn to_hash(self: @HashState, value: T) -> felt252;
+}
+
+fn felt252_to_u128(value: felt252) -> u128 {
+    Into::<felt252, u256>::into(value).low
+}
+
+impl TToHashImpl<T, +Hash<T, HashState>, +Drop<T>> of ToHash<T> {
+    fn to_hash(self: @HashState, value: T) -> felt252 {
+        (*self).update_with(value).finalize()
+    }
+}
+
+
+

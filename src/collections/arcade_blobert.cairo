@@ -1,5 +1,6 @@
 mod blobert;
 mod mint;
+mod amma;
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher};
 use blob_arena::collections::blobert::external::TokenTrait;
@@ -13,20 +14,29 @@ trait IArcadeBlobert<TContractState> {
     fn traits(world: @IWorldDispatcher, token_id: u256) -> TokenTrait;
 }
 
+#[dojo::interface]
+trait IAMMABlobert<TContractState> {
+    fn mint_amma(ref world: IWorldDispatcher, fighter: u8) -> u128;
+    fn set_amma_fighter(
+        ref world: IWorldDispatcher, fighter_id: u8, name: ByteArray, custom_id: u8
+    );
+}
+
 #[dojo::contract]
 mod arcade_blobert_actions {
-    use starknet::ContractAddress;
+    use starknet::{ContractAddress, get_caller_address};
     use blob_arena::{
         collections::{
             interface::ICollection,
             blobert::{items::{BlobertItemsTrait, BlobertStatsTrait}, external::TokenTrait},
             arcade_blobert::{
-                blobert::{ArcadeBlobert, ArcadeBlobertTrait}, mint::ArcadeBlobertMintTrait
+                blobert::{ArcadeBlobert, ArcadeBlobertTrait}, mint::ArcadeBlobertMintTrait,
+                amma::AMMABlobertTrait
             },
         },
         components::{stats::Stats}
     };
-    use super::IArcadeBlobert;
+    use super::{IArcadeBlobert, IAMMABlobert};
 
 
     #[abi(embed_v0)]
@@ -66,6 +76,19 @@ mod arcade_blobert_actions {
         }
         fn traits(world: @IWorldDispatcher, token_id: u256) -> TokenTrait {
             world.get_arcade_blobert_traits(token_id)
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl IAMMABlobertImpl of IAMMABlobert<ContractState> {
+        fn mint_amma(ref world: IWorldDispatcher, fighter: u8) -> u128 {
+            let caller = get_caller_address();
+            world.mint_amma_blobert(caller, fighter)
+        }
+        fn set_amma_fighter(
+            ref world: IWorldDispatcher, fighter_id: u8, name: ByteArray, custom_id: u8
+        ) {
+            world.set_amma_blobert(fighter_id, name, custom_id);
         }
     }
 }

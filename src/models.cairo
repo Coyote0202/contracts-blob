@@ -7,12 +7,20 @@ mod combat;
 // mod tournament;
 
 use blob_arena::models::{
-    attack::{Attack as AttackModel, AvailableAttack},
-    combatant::{CombatantInfo, CombatantStats, CombatantState, PlannedAttack},
-    item::{Item as ItemModel, HasAttack}, commitment::Commitment as CommitmentModel,
+    attack::{AttackStore, Attack as AttackModel, AvailableAttackStore, AvailableAttack},
+    combatant::{
+        CombatantInfoStore, CombatantInfo, CombatantStatsStore, CombatantStats, CombatantStateStore,
+        CombatantState, PlannedAttackStore, PlannedAttack
+    },
+    item::{ItemStore, Item as ItemModel, HasAttack},
+    commitment::{CommitmentStore, Commitment as CommitmentModel},
     pvp::{
-        PvPCombatants as PvPCombatantsModel, PvPChallengeInvite, PvPChallengeResponse,
+        PvPCombatantsStore, PvPCombatants as PvPCombatantsModel, PvPChallengeInviteStore,
+        PvPChallengeInvite, PvPChallengeResponseStore, PvPChallengeResponse, PvPChallengeScoreStore,
         PvPChallengeScore as PvPChallengeScoreModel
     },
-    combat::{CombatState, Salts as SaltsModel, AttackResult, AttackEffect, AttackHit, Phase},
+    combat::{
+        CombatStateStore, CombatState, SaltsStore, Salts as SaltsModel, AttackResult, AttackEffect,
+        AttackHit, Phase
+    },
 };
