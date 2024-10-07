@@ -1,3 +1,4 @@
+use SaturatingAdd;
 use core::option::OptionTrait;
 use core::fmt::{Display, Formatter, Error};
 use core::num::traits::{SaturatingAdd, SaturatingSub};
@@ -10,6 +11,7 @@ struct TStats<T> {
     strength: T,
 }
 
+
 type Stats = TStats<u8>;
 
 impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
@@ -20,6 +22,10 @@ impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
 
 impl TStatsAdd<T, +Add<T>, +Drop<T>> of Add<TStats<T>> {
     fn add(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
+        let a: i8 = 127;
+        let b: i8 = -127;
+
+        let c = a.saturating_sub(b);
         TStats {
             attack: lhs.attack + rhs.attack,
             defense: lhs.defense + rhs.defense,
