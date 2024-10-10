@@ -1,0 +1,1 @@
+const STARTING_HEALTH: u8 = 100;

@@ -1,6 +1,7 @@
-mod models;
 mod core;
+mod models;
 mod collections;
+mod consts;
 mod utils;
 mod world;
 mod components {
@@ -25,11 +26,10 @@ mod contracts {
     mod pvp;
     mod pvp_admin;
 }
-// mod debug;
-// use blob_arena::debug::DebugTrait;
 
 #[cfg(test)]
 mod tests {
-    mod pvp_test;
+    // mod pvp_test;
+    mod core_test;
 }
 

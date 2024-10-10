@@ -7,13 +7,16 @@ use core::{
 // use alexandria_data_structures::array_ext::ArrayTraitExt;
 use cubit::f128::types::fixed::{FixedTrait, Fixed, HALF};
 
-use core::integer::u128_safe_divmod;
+use core::{integer::u128_safe_divmod, cmp::min};
 
 use blob_arena::{
-    core::{SubBounded, AddBounded}, utils::{ToHash, felt252_to_u128},
+    core::{SaturatingInto, SaturatingSub}, utils::{ToHash, felt252_to_u128},
     components::{
         combat::{Phase, AttackEffect, AttackHit},
-        combatant::{CombatantState, CombatantStats, CombatantInfo, CombatantTrait},
+        combatant::{
+            CombatantState, CombatantStats, CombatantInfo, CombatantTrait, CombatantStatsTrait,
+            CombatantStateTrait
+        },
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
     models::{AttackResult, Effect, Affect, Damage, Target, Direction, StatsEffect},
@@ -87,10 +90,15 @@ fn did_hit(accuracy: u8, seed: u128) -> (u128, bool) {
     (seed, value < accuracy.into())
 }
 
+fn did_critical(chance: u8, strength: u8, seed: u128) -> (u128, bool) {
+    let critical: u8 = apply_strength_modifier(chance, strength);
+    let (seed, value) = u128_safe_divmod(seed, NZ_255);
+    (seed, value < critical.into())
+}
+
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
     fn get_damage(self: CombatantStats, attack: Attack, critical: bool, seed: u128) -> u8 {
-        //TODO: Implement damage calculation
         damage_calculation(self.attack, attack.damage, critical)
     }
 
@@ -118,20 +126,68 @@ impl AttackerImpl of AttackerTrait {
     }
 }
 
-fn effect_health(ref self: CombatantState, stats: CombatantStats, health: u8) {}
+fn effect_health(ref self: CombatantState, stats: CombatantStats, health: i16) {
+    let max_health = stats.get_max_health(self).into();
+    let mut new_health = self.health.into() + health;
+    if new_health > max_health {
+        new_health = max_health
+    }
+    self.health = new_health.saturating_into();
+}
+
+fn apply_stun(ref self: CombatantState, strength: u8, stun: u8) {
+    self.stun_chance = get_new_stun_chance(self.stun_chance, stun, strength)
+}
+
 
 fn run_effect(
     attacker_stats: CombatantStats,
     defender_stats: CombatantStats,
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
-    effect: Effect
+    effect: Effect,
+    mut seed: u128,
 ) {
     match effect.affect {
-        Effect::Stats(stats_effect) => {},
-        Effect::Damage(damage) => {},
-        Effect::Stun(stun) => {},
-        Effect::Health(health) => {},
+        Affect::Stats(stats_effect) => {
+            match effect.target {
+                Target::Player => { attacker_state.apply_buff(attacker_stats, stats_effect) },
+                Target::Opponent => { defender_state.apply_buff(defender_stats, stats_effect) },
+            }
+        },
+        Affect::Damage(damage) => {
+            let (_seed, critical) = did_critical(
+                damage.critical, attacker_stats.get_strength(attacker_state), seed
+            );
+            seed = _seed;
+            let damage = damage_calculation(
+                attacker_stats.get_attack(attacker_state), damage.power, critical
+            );
+            match effect.target {
+                Target::Player => { attacker_state.health -= min(attacker_state.health, damage) },
+                Target::Opponent => { defender_state.health -= min(defender_state.health, damage) },
+            };
+        },
+        Affect::Stun(stun) => {
+            match effect.target {
+                Target::Player => {
+                    apply_stun(
+                        ref attacker_state, attacker_stats.get_strength(attacker_state), stun
+                    )
+                },
+                Target::Opponent => {
+                    apply_stun(
+                        ref attacker_state, attacker_stats.get_strength(attacker_state), stun
+                    )
+                },
+            };
+        },
+        Affect::Health(health) => {
+            match effect.target {
+                Target::Player => { attacker_state.modify_health(attacker_stats, health) },
+                Target::Opponent => { defender_state.modify_health(defender_stats, health) },
+            }
+        },
     }
 }
 

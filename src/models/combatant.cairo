@@ -1,5 +1,5 @@
 use starknet::ContractAddress;
-use blob_arena::{components::{stats::Stats}};
+use blob_arena::{components::{stats::TStats}};
 
 
 #[dojo::model]
@@ -31,8 +31,7 @@ struct CombatantState {
     id: u128,
     health: u8,
     stun_chance: u8,
-    buffs: Stats,
-    debuffs: Stats,
+    buffs: TStats<i8>,
 }
 
 

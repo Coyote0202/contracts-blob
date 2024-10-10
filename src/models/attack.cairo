@@ -1,14 +1,41 @@
-use blob_arena::components::stats::TStats;
-use integer::I8Serde;
+use blob_arena::components::stats::{TStats, StatTypes};
 
 type Stats = TStats<i8>;
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 enum Affect {
     Stats: Stats,
+    Stat: Stat,
     Damage: Damage,
     Stun: u8,
     Health: i16,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum Stat {
+    stat: StatTypes,
+    amount: i8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum AffectResult {
+    Stats: Stats,
+    Damage: DamageResult,
+    Stun: u8,
+    Health: u8,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct EffectResult {
+    target: Target,
+    affect: AffectResult,
+}
+
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct DamageResult {
+    damage: u8,
+    critical: bool,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
@@ -20,19 +47,13 @@ struct Effect {
 #[derive(Drop, Serde, Copy, PartialEq)]
 struct Damage {
     critical: u8,
-    damage: i16,
+    power: u8,
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 enum Target {
     Player,
     Opponent,
-}
-
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-enum Direction {
-    Increase,
-    Decrease,
 }
 
 
