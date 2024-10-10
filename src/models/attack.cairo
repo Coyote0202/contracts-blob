@@ -12,7 +12,7 @@ enum Affect {
 }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-enum Stat {
+struct Stat {
     stat: StatTypes,
     amount: i8,
 }
@@ -31,7 +31,6 @@ struct EffectResult {
     affect: AffectResult,
 }
 
-
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 struct DamageResult {
     damage: u8,
@@ -44,7 +43,7 @@ struct Effect {
     affect: Affect,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq)]
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 struct Damage {
     critical: u8,
     power: u8,

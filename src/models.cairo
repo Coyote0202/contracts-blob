@@ -9,11 +9,11 @@ mod combat;
 use blob_arena::models::{
     attack::{
         AttackStore, Attack as AttackModel, AvailableAttackStore, AvailableAttack, Effect, Damage,
-        Target, Direction, Affect,
+        Target, Affect,
     },
     combatant::{
         CombatantInfoStore, CombatantInfo, CombatantStatsStore, CombatantStats, CombatantStateStore,
-        CombatantState, PlannedAttackStore, PlannedAttack, Modifier
+        CombatantState, PlannedAttackStore, PlannedAttack
     },
     item::{ItemStore, Item as ItemModel, HasAttack},
     commitment::{CommitmentStore, Commitment as CommitmentModel},
