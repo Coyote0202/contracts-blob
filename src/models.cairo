@@ -9,7 +9,7 @@ mod combat;
 use blob_arena::models::{
     attack::{
         AttackStore, Attack as AttackModel, AvailableAttackStore, AvailableAttack, Effect, Damage,
-        Target, Affect,
+        Target, Affect, Stat
     },
     combatant::{
         CombatantInfoStore, CombatantInfo, CombatantStatsStore, CombatantStats, CombatantStateStore,

@@ -9,10 +9,8 @@ use blob_arena::{
 #[derive(Drop, Serde, Copy)]
 struct Attack {
     id: u128,
-    damage: u8,
     speed: u8,
     accuracy: u8,
-    critical: u8,
     stun: u8,
     cooldown: u8,
     heal: u8,

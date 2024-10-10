@@ -6,13 +6,8 @@ trait IAttackActions {
     fn new_attack(
         ref world: IWorldDispatcher,
         name: ByteArray,
-        damage: u8,
         speed: u8,
         accuracy: u8,
-        critical: u8,
-        heal: u8, // New parameter
-        buff: Stats,
-        debuff: Stats,
         stun: u8,
         cooldown: u8,
     ) -> u128;
