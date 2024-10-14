@@ -2,7 +2,7 @@ use core::option::OptionTrait;
 use core::fmt::{Display, Formatter, Error};
 use blob_arena::core::{SaturatingAdd, SaturatingSub};
 
-#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
 struct TStats<T> {
     attack: T,
     defense: T,
@@ -51,10 +51,6 @@ impl TStatsImpl<T, +Drop<T>, +Copy<T>> of TStatsTrait<T> {
 
 impl TStatsAdd<T, +Add<T>, +Drop<T>> of Add<TStats<T>> {
     fn add(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
-        let a: i8 = 127;
-        let b: i8 = -127;
-
-        let c = a.saturating_sub(b);
         TStats {
             attack: lhs.attack + rhs.attack,
             defense: lhs.defense + rhs.defense,

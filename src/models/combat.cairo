@@ -29,7 +29,7 @@ enum AttackEffect {
     Failed,
     Stunned,
     Miss,
-    Hit: AttackHit,
+    Hit,
 }
 
 #[derive(Drop, Serde, Copy, Introspect)]

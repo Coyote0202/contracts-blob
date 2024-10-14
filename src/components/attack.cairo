@@ -1,40 +1,63 @@
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
 use blob_arena::{
-    utils::uuid, models::{AttackModel, AvailableAttack},
+    utils::uuid, models::{AttackModel, AvailableAttack, Effect, AttackStore},
     components::{utils::{IdTrait, IdsTrait, TIdsImpl}, stats::Stats},
 };
 
 
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct Attack {
     id: u128,
     speed: u8,
     accuracy: u8,
-    stun: u8,
     cooldown: u8,
-    heal: u8,
-    buff: Stats,
-    debuff: Stats,
+    hit: Array<Effect>,
+    miss: Array<Effect>,
 }
 
 #[derive(Drop, Serde)]
 struct AttackInput {
     name: ByteArray,
-    damage: u8,
     speed: u8,
     accuracy: u8,
-    critical: u8,
-    stun: u8,
     cooldown: u8,
-    heal: u8,
-    buff: Stats,
-    debuff: Stats,
+    hit: Array<Effect>,
+    miss: Array<Effect>,
+}
+
+#[generate_trait]
+impl AttackInputImpl of AttackInputTrait {
+    fn to_model(self: @AttackInput, id: u128) -> AttackModel {
+        AttackModel {
+            id,
+            name: self.name.clone(),
+            speed: *(self.speed),
+            accuracy: *(self.accuracy),
+            cooldown: *(self.cooldown),
+            hit: self.hit.clone(),
+            miss: self.miss.clone(),
+        }
+    }
+}
+
+#[generate_trait]
+impl AttackModelImpl of AttackModelTrait {
+    fn to_attack(self: @AttackModel) -> Attack {
+        Attack {
+            id: *(self.id),
+            speed: *(self.speed),
+            accuracy: *(self.accuracy),
+            cooldown: *(self.cooldown),
+            hit: self.hit.clone(),
+            miss: self.miss.clone(),
+        }
+    }
 }
 
 impl AttackIdImpl of IdTrait<Attack> {
-    fn id(self: Attack) -> u128 {
-        self.id
+    fn id(self: @Attack) -> u128 {
+        *(self.id)
     }
 }
 
@@ -47,29 +70,15 @@ impl AttackImpl of AttackTrait {
         get!((*self), id, AttackModel)
     }
     fn get_attack(self: @IWorldDispatcher, id: u128) -> Attack {
-        let AttackModel { id, name: _, damage, speed, accuracy, critical, stun, cooldown, heal } =
-            self
-            .get_attack_model(id);
-        Attack { id, damage, speed, accuracy, critical, stun, cooldown, heal }
+        self.get_attack_model(id).to_attack()
     }
     fn create_new_attack(self: IWorldDispatcher, attack: AttackInput) -> u128 {
-        let AttackInput { name,
-        damage,
-        speed,
-        accuracy,
-        critical,
-        stun,
-        cooldown,
-        heal,
-        buff,
-        debuff } =
-            attack;
         let id = uuid(self);
-        AttackModel {
-            id, name, damage, speed, accuracy, critical, stun, cooldown, heal, buff, debuff
-        }
-            .set(self);
+        attack.to_model(id).set(self);
         id
+    }
+    fn get_attack_speed(self: @IWorldDispatcher, id: u128) -> u8 {
+        AttackStore::get_speed(*self, id)
     }
     // fn get_available_attack(
 //     self: IWorldDispatcher, combat_id: u128, combatant: u128, attack: u128,

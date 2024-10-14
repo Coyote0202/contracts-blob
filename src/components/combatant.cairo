@@ -88,7 +88,9 @@ impl CombatantImpl of CombatantTrait {
             id: combatant_id, combat_id, player, collection_address, token_id,
         };
         let stats = CombatantStats { id: combatant_id, attack, defense, speed, strength };
-        let state = CombatantState { id: combatant_id, health, stun_chance: 0 };
+        let state = CombatantState {
+            id: combatant_id, health, stun_chance: 0, buffs: Default::default()
+        };
         set!(self, (info, stats, state));
         info
     }
@@ -154,7 +156,8 @@ impl CombatantStateImpl of CombatantStateTrait {
             .set_stat(
                 stat,
                 make_stat_in_range(
-                    stats.get_stat(stat), self.buffs.get_stat(stat).try_into().unwrap() + amount
+                    stats.get_stat(stat),
+                    self.buffs.get_stat(stat).try_into().unwrap().saturating_add(amount)
                 )
             );
     }
