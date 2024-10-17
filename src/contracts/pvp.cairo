@@ -39,7 +39,7 @@ mod pvp_actions {
         components::{
             combat::{
                 SaltsTrait, Phase, CombatStateTrait, CombatStatesTrait, PlannedAttack,
-                PlannedAttackTrait
+                PlannedAttackTrait, PlannedAttackStore,
             },
             combatant::{CombatantInfo, CombatantTrait,}, commitment::{Commitment,},
             pvp_combat::{PvPCombatTrait},
