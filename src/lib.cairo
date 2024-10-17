@@ -31,5 +31,6 @@ mod contracts {
 mod tests {
     // mod pvp_test;
     mod core_test;
+    mod combat_test;
 }
 
