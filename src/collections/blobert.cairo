@@ -1,20 +1,22 @@
 mod external;
 mod items;
 use dojo::world::{IWorldDispatcher};
-use blob_arena::components::{stats::Stats, item::AttackInput};
+use blob_arena::{
+    components::{stats::Stats, item::AttackInput}, collections::blobert::items::BlobertTrait
+};
 
 
 #[dojo::interface]
 trait IBlobertItems {
     fn set_seed_item_id(
-        ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
+        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
     );
     fn set_custom_item_id(
-        ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
+        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
     );
     fn new_seed_item_with_attacks(
         ref world: IWorldDispatcher,
-        blobert_trait: u8,
+        blobert_trait: BlobertTrait,
         trait_id: u8,
         item_name: ByteArray,
         stats: Stats,
@@ -22,7 +24,7 @@ trait IBlobertItems {
     );
     fn new_custom_item_with_attacks(
         ref world: IWorldDispatcher,
-        blobert_trait: u8,
+        blobert_trait: BlobertTrait,
         trait_id: u8,
         item_name: ByteArray,
         stats: Stats,
@@ -87,20 +89,20 @@ mod blobert_actions {
     #[abi(embed_v0)]
     impl IBlobertItemsImpl of IBlobertItems<ContractState> {
         fn set_seed_item_id(
-            ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
+            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
         ) {
             world.assert_caller_is_owner();
-            world.set_item_id(SEED_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(SEED_TRAIT_TYPE, blobert_trait, trait_id, item_id);
         }
         fn set_custom_item_id(
-            ref world: IWorldDispatcher, blobert_trait: u8, trait_id: u8, item_id: u128
+            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
         ) {
             world.assert_caller_is_owner();
-            world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait, trait_id, item_id);
         }
         fn new_seed_item_with_attacks(
             ref world: IWorldDispatcher,
-            blobert_trait: u8,
+            blobert_trait: BlobertTrait,
             trait_id: u8,
             item_name: ByteArray,
             stats: Stats,
@@ -109,11 +111,11 @@ mod blobert_actions {
             world.assert_caller_is_owner();
             let item_id = world.create_new_item(item_name, stats);
             world.create_and_set_new_attacks(item_id, attacks);
-            world.set_item_id(SEED_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(SEED_TRAIT_TYPE, blobert_trait, trait_id, item_id);
         }
         fn new_custom_item_with_attacks(
             ref world: IWorldDispatcher,
-            blobert_trait: u8,
+            blobert_trait: BlobertTrait,
             trait_id: u8,
             item_name: ByteArray,
             stats: Stats,
@@ -122,7 +124,7 @@ mod blobert_actions {
             world.assert_caller_is_owner();
             let item_id = world.create_new_item(item_name, stats);
             world.create_and_set_new_attacks(item_id, attacks);
-            world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait.into(), trait_id, item_id);
+            world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait, trait_id, item_id);
         }
     }
 }

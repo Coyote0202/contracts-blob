@@ -17,6 +17,7 @@ struct Stat {
     amount: i8,
 }
 
+
 // #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 // enum AffectResult {
 //     Stats: Stats,
