@@ -1,9 +1,16 @@
-import { RpcProvider, Account, CallData, byteArray } from "starknet";
+import {
+  RpcProvider,
+  Account,
+  CallData,
+  byteArray,
+  CairoCustomEnum,
+} from "starknet";
 
 import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { match } from "assert";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -34,7 +41,6 @@ const arcadeBlobertTag = "blob_arena-arcade_blobert_actions";
 const seedEntrypoint = "new_seed_item_with_attacks";
 const customEntrypoint = "new_custom_item_with_attacks";
 
-const traitsEnum = ["background", "armour", "jewelry", "mask", "weapon"];
 const amma_offset = 50;
 
 const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
@@ -45,25 +51,69 @@ const account = new Account(provider, account1Address, privateKey1);
 const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
 const arcadeBlobertAddress = getContractAddress(manifest, arcadeBlobertTag);
 
+const TRAITS_ENUM = ["Background", "Armour", "Jewelry", "Mask", "Weapon"];
+const TARGET_ENUM = ["Player", "Opponent"];
+const STAT_TYPES_ENUM = ["Attack", "Defense", "Speed", "Strength"];
+const AFFECTS_ENUM = ["Stats", "Stat", "Damage", "Stun", "Health"];
+
+const makeCairoEnum = (enumArray, option) => {
+  let struct = {};
+  enumArray.forEach((x) => {
+    struct[x] = undefined;
+  });
+  let [key, value] = parseEnumObject(option);
+  assert(enumArray.includes(key));
+  struct[key] = value;
+  return new CairoCustomEnum(struct);
+};
+
+const parseEnumObject = (obj) => {
+  if (typeof obj == "string") {
+    return [obj, {}];
+  } else {
+    for (const o in obj) break;
+    return [o, obj[o]];
+  }
+};
+
+const makeEffectStruct = (target, effect) => {
+  let [key, affect] = parseEnumObject(effect.affect);
+  if (key == "Stat") {
+    value.stats = makeCairoEnum(STAT_TYPES_ENUM, value.stats);
+  }
+  return {
+    target: makeCairoEnum(TARGET_ENUM, effect.target),
+    affect: makeCairoEnum(AFFECTS_ENUM, affect),
+  };
+};
+
+const makeEffectsArray = (effects) => {
+  let effectsArray = [];
+  effect.forEach((effect) => {
+    effectsStructs.push(makeEffectStruct(effect.target, effect.affect));
+  });
+  return effectsArray;
+};
+
 const makeAttacksStruct = (attacks) => {
   let attacksStructs = [];
   for (const attack of attacks) {
     attacksStructs.push({
       name: byteArray.byteArrayFromString(attack.name),
-      damage: attack.damage,
       speed: attack.speed,
       accuracy: attack.accuracy,
-      critical: attack.critical,
-      stun: attack.stun,
       cooldown: attack.cooldown,
+      hit: makeEffectsArray(attack.hit),
+      miss: makeEffectsArray(attack.miss),
     });
   }
   return attacksStructs;
 };
 
 const makeItemCallData = (trait, n, item) => {
+  const trait = trait.charAt(0).toUpperCase() + trait.slice(1);
   return {
-    blobert_trait: traitsEnum.indexOf(trait),
+    blobert_trait: makeCairoEnum(TRAITS_ENUM, trait),
     trait_id: Number(n),
     item_name: byteArray.byteArrayFromString(item.name),
     stats: item.stats,

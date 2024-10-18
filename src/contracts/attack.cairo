@@ -1,5 +1,5 @@
 use dojo::world::{IWorldDispatcher};
-use blob_arena::components::stats::Stats;
+use blob_arena::models::Effect;
 
 #[dojo::interface]
 trait IAttackActions {
@@ -8,8 +8,9 @@ trait IAttackActions {
         name: ByteArray,
         speed: u8,
         accuracy: u8,
-        stun: u8,
         cooldown: u8,
+        hit: Array<Effect>,
+        miss: Array<Effect>,
     ) -> u128;
 }
 
@@ -19,7 +20,8 @@ mod attack_actions {
     use starknet::{ContractAddress, get_caller_address};
 
     use blob_arena::{
-        components::{stats::Stats,}, models::AttackModel, utils::uuid, world::{WorldTrait, Contract}
+        components::{stats::Stats,}, models::{AttackModel, Effect}, utils::uuid,
+        world::{WorldTrait, Contract}
     };
 
     use super::IAttackActions;
@@ -29,18 +31,14 @@ mod attack_actions {
         fn new_attack(
             ref world: IWorldDispatcher,
             name: ByteArray,
-            damage: u8,
             speed: u8,
             accuracy: u8,
-            critical: u8,
-            stun: u8,
             cooldown: u8,
-            heal: u8 // New parameter
+            hit: Array<Effect>,
+            miss: Array<Effect>,
         ) -> u128 {
             let id = uuid(world);
-            let attack = AttackModel {
-                id, name, damage, speed, accuracy, critical, stun, cooldown, heal
-            };
+            let attack = AttackModel { id, name, speed, accuracy, cooldown, hit, miss, };
             set!(world, (attack,));
             id
         }

@@ -1,11 +1,12 @@
 use core::{hash::HashStateTrait, poseidon::{PoseidonTrait, HashState},};
 use blob_arena::{
-    core::{LimitSub, LimitAdd},
+    core::{SaturatingAdd, SaturatingSub},
     components::{
         combatant::{CombatantStats, CombatantState, CombatantTrait}, attack::{Attack, AttackTrait},
         utils::{AB, ABT, ABTTrait}
     },
-    systems::{combat::{AttackEffect, CombatWorldTraits}}, models::PlannedAttack,
+    models::CombatantStateStore, systems::{combat::{AttackEffect, CombatWorldTraits}},
+    models::PlannedAttack,
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
@@ -29,12 +30,9 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         let stats = ABTTrait::new(
             self.get_combatant_stats(combatant_ids.a), self.get_combatant_stats(combatant_ids.b)
         );
-        let attacks = ABTTrait::new(
-            self.get_attack(planned_attacks.a.attack), self.get_attack(planned_attacks.b.attack)
-        );
 
-        let speed_a = attacks.a.speed + stats.a.speed;
-        let speed_b = attacks.b.speed + stats.b.speed;
+        let speed_a = stats.a.speed + self.get_attack_speed(planned_attacks.a.attack);
+        let speed_b = stats.b.speed + self.get_attack_speed(planned_attacks.b.attack);
 
         let first = if speed_a > speed_b {
             AB::A
@@ -46,13 +44,15 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
 
         let stats_1 = self.get_combatant_stats(combatant_ids.get(first));
         let stats_2 = self.get_combatant_stats(combatant_ids.get(!first));
-        let state_1 = self.get_combatant_state(combatant_ids.get(first));
-        let state_2 = self.get_combatant_state(combatant_ids.get(!first));
+        let mut state_1 = self.get_combatant_state(combatant_ids.get(first));
+        let mut state_2 = self.get_combatant_state(combatant_ids.get(!first));
+        let attack_1 = self.get_attack(planned_attacks.get(first).attack);
+        let attack_2 = self.get_attack(planned_attacks.get(!first).attack);
 
-        let (state_1, state_2) = self
-            .run_attack(stats_1, state_1, state_2, attacks.get(first), round, hash);
-        let (state_2, state_1) = self
-            .run_attack(stats_2, state_2, state_1, attacks.get(!first), round, hash);
+        self.run_attack(stats_1, stats_2, ref state_1, ref state_2, attack_1, round, hash);
+        if state_1.health > 0 && state_2.health > 0 {
+            self.run_attack(stats_2, stats_1, ref state_2, ref state_1, attack_2, round, hash);
+        }
         state_1.set(self);
         state_2.set(self);
         array![state_1, state_2]

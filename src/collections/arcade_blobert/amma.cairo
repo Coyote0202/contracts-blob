@@ -2,7 +2,10 @@ use starknet::{ContractAddress, get_caller_address};
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use blob_arena::{
     core::TTupleSize5, utils::{value_to_uuid, HashStateTrait}, world::WorldTrait,
-    collections::{blobert::{external::TokenTrait}, arcade_blobert::blobert::ArcadeBlobert},
+    collections::{
+        blobert::{external::TokenTrait},
+        arcade_blobert::blobert::{ArcadeBlobert, ArcadeBlobertStore}
+    },
 };
 
 #[dojo::model]

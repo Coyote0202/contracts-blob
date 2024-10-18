@@ -17,25 +17,27 @@ struct Stat {
     amount: i8,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-enum AffectResult {
-    Stats: Stats,
-    Damage: DamageResult,
-    Stun: u8,
-    Health: u8,
-}
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-struct EffectResult {
-    target: Target,
-    affect: AffectResult,
-}
+// #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+// enum AffectResult {
+//     Stats: Stats,
+//     Stat: Stat,
+//     Damage: DamageResult,
+//     Stun: u8,
+//     Health: u8,
+// }
 
-#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
-struct DamageResult {
-    damage: u8,
-    critical: bool,
-}
+// #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+// struct EffectResult {
+//     target: Target,
+//     affect: AffectResult,
+// }
+
+// #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+// struct DamageResult {
+//     damage: u8,
+//     critical: bool,
+// }
 
 #[derive(Drop, Serde, Copy, PartialEq, Introspect)]
 struct Effect {

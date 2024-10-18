@@ -19,7 +19,7 @@ use blob_arena::{
         },
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
-    models::{AttackResult, Effect, Affect, Damage, Target, Direction, StatsEffect},
+    models::{AttackResult, Effect, Affect, Damage, Target, Stat},
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
@@ -30,7 +30,7 @@ const THREE_TENTHS: felt252 = 5534023222112865484;
 const NZ_255: NonZero<u128> = 255;
 const NZ_100: NonZero<u128> = 100;
 
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde)]
 struct PlannedAttack {
     combatant: u128,
     attack: Attack,
@@ -96,31 +96,15 @@ fn did_critical(chance: u8, strength: u8, seed: u128) -> (u128, bool) {
     (seed, value < critical.into())
 }
 
+fn is_stunned(stun_chance: u8, seed: u128) -> (u128, bool) {
+    let (seed, value) = u128_safe_divmod(seed, NZ_255);
+    (seed, value < stun_chance.into())
+}
+
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
-    fn get_damage(self: CombatantStats, attack: Attack, critical: bool, seed: u128) -> u8 {
-        damage_calculation(self.attack, attack.damage, critical)
-    }
-
-    fn did_hit(self: CombatantStats, attack: Attack, seed: u128) -> (u128, bool) {
-        did_hit(attack.accuracy, seed)
-    }
-
-    // random less than 255
-    fn did_critical(self: CombatantStats, attack: Attack, seed: u128) -> (u128, bool) {
-        let critical: u8 = apply_strength_modifier(attack.critical, self.strength);
-        let (seed, value) = u128_safe_divmod(seed, NZ_255);
-        (seed, value < critical.into())
-    }
-
-
-    fn is_stunned(self: CombatantState, seed: u128) -> (u128, bool) {
-        let (seed, value) = u128_safe_divmod(seed, NZ_255);
-        (seed, value < self.stun_chance.into())
-    }
-
     fn run_stun(ref self: CombatantState, seed: u128) -> (u128, bool) {
-        let (seed, stunned) = self.is_stunned(seed);
+        let (seed, stunned) = is_stunned(self.stun_chance, seed);
         self.stun_chance = 0;
         (seed, stunned)
     }
@@ -151,8 +135,15 @@ fn run_effect(
     match effect.affect {
         Affect::Stats(stats_effect) => {
             match effect.target {
-                Target::Player => { attacker_state.apply_buff(attacker_stats, stats_effect) },
-                Target::Opponent => { defender_state.apply_buff(defender_stats, stats_effect) },
+                Target::Player => { attacker_state.apply_buffs(attacker_stats, stats_effect) },
+                Target::Opponent => { defender_state.apply_buffs(defender_stats, stats_effect) },
+            }
+        },
+        Affect::Stat(Stat { stat,
+        amount }) => {
+            match effect.target {
+                Target::Player => { attacker_state.apply_buff(attacker_stats, stat, amount) },
+                Target::Opponent => { defender_state.apply_buff(defender_stats, stat, amount) },
             }
         },
         Affect::Damage(damage) => {
@@ -191,85 +182,109 @@ fn run_effect(
     }
 }
 
+fn run_effects(
+    attacker_stats: CombatantStats,
+    defender_stats: CombatantStats,
+    ref attacker_state: CombatantState,
+    ref defender_state: CombatantState,
+    mut effects: Array<Effect>,
+    mut seed: u128
+) {
+    loop {
+        match effects.pop_front() {
+            Option::Some(effect) => {
+                run_effect(
+                    attacker_stats,
+                    defender_stats,
+                    ref attacker_state,
+                    ref defender_state,
+                    effect,
+                    seed
+                );
+            },
+            Option::None => { break; },
+        }
+    }
+}
+
 #[generate_trait]
 impl CombatWorldImp of CombatWorldTraits {
     fn run_attack_check(
-        self: IWorldDispatcher, combatant_id: u128, attack: Attack, round: u32
+        self: IWorldDispatcher, combatant_id: u128, attack_id: u128, cooldown: u8, round: u32
     ) -> bool {
-        let attack_available = self.get_available_attack(combatant_id, attack.id);
+        let attack_available = self.get_available_attack(combatant_id, attack_id);
         if !attack_available.available {
             false
         } else {
-            if attack.cooldown == 0 {
+            if cooldown == 0 {
                 return true;
             }
             let last_used = attack_available.last_used;
-            if last_used.is_non_zero() && (attack.cooldown.into() + last_used) > round {
+            if last_used.is_non_zero() && (cooldown.into() + last_used) > round {
                 return false;
             };
-            self.set_available_attack(combatant_id, attack.id, round);
+            self.set_available_attack(combatant_id, attack_id, round);
             true
         }
     }
-    fn emit_attack_event(
-        self: IWorldDispatcher,
-        combatant_id: u128,
-        round: u32,
-        attack_id: u128,
-        target: u128,
-        effect: AttackEffect
-    ) {
-        let (effect, damage, stun, critical,) = match effect {
-            AttackEffect::Failed => (0, 0, 0, false),
-            AttackEffect::Stunned => (1, 0, 0, false),
-            AttackEffect::Miss => (2, 0, 0, false),
-            AttackEffect::Hit(affect) => (3, affect.damage, affect.stun, affect.critical),
-        };
-        AttackResult { combatant_id, round, attack_id, target, effect, damage, stun, critical, }
-            .set(self);
-        // AttackResult { combatant_id, round, attack_id, target, effect }.set(self);
-    // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
-    }
-
+    // fn emit_attack_event(
+    //     self: IWorldDispatcher,
+    //     combatant_id: u128,
+    //     round: u32,
+    //     attack_id: u128,
+    //     target: u128,
+    //     effect: AttackEffect
+    // ) {
+    //     let (effect, damage, stun, critical,) = match effect {
+    //         AttackEffect::Failed => (0, 0, 0, false),
+    //         AttackEffect::Stunned => (1, 0, 0, false),
+    //         AttackEffect::Miss => (2, 0, 0, false),
+    //         AttackEffect::Hit(affect) => (3, affect.damage, affect.stun, affect.critical),
+    //     };
+    //     AttackResult { combatant_id, round, attack_id, target, effect, damage, stun, critical, }
+    //         .set(self);
+    //     // AttackResult { combatant_id, round, attack_id, target, effect }.set(self);
+    // // emit!(self, AttackResult { combatant_id, round, attack_id, target, effect });
+    // }
 
     fn run_attack(
         self: IWorldDispatcher,
         attacker_stats: CombatantStats,
-        mut attacker_state: CombatantState,
-        mut defender_state: CombatantState,
+        defender_stats: CombatantStats,
+        ref attacker_state: CombatantState,
+        ref defender_state: CombatantState,
         attack: Attack,
         round: u32,
         hash: HashState
-    ) -> (CombatantState, CombatantState) {
+    ) -> AttackEffect {
         let seed = felt252_to_u128(hash.to_hash(attacker_stats.id));
         let (seed, stunned) = attacker_state.run_stun(seed);
-        let (seed, hit) = attacker_stats.did_hit(attack, seed);
-        let effect = if !self.run_attack_check(attacker_stats.id, attack, round) {
+        let (seed, hit) = did_hit(attack.accuracy, seed);
+        if !self.run_attack_check(attacker_stats.id, attack.id, attack.cooldown, round) {
             AttackEffect::Failed
         } else if stunned {
             AttackEffect::Stunned
         } else if hit {
-            let (seed, critical) = attacker_stats.did_critical(attack, seed);
-            let damage = attacker_stats.get_damage(attack, critical, seed);
-            if attack.heal > 0 {
-                defender_state.health.addeq(attack.heal);
-            };
-
-            defender_state.health.subeq(damage);
-            if attack.stun > 0 {
-                defender_state
-                    .stun_chance =
-                        get_new_stun_chance(
-                            defender_state.stun_chance, attack.stun, attacker_stats.strength
-                        );
-            };
-            AttackEffect::Hit(AttackHit { damage, stun: attack.stun, critical, heal: attack.heal })
+            run_effects(
+                attacker_stats,
+                defender_stats,
+                ref attacker_state,
+                ref defender_state,
+                attack.hit,
+                seed
+            );
+            AttackEffect::Hit
         } else {
+            run_effects(
+                attacker_stats,
+                defender_stats,
+                ref attacker_state,
+                ref defender_state,
+                attack.miss,
+                seed
+            );
             AttackEffect::Miss
-        };
-        self.emit_attack_event(attacker_stats.id, round, attack.id, defender_state.id, effect);
-
-        (attacker_state, defender_state)
+        }
     }
 }
 

@@ -21,8 +21,8 @@ struct Item {
 // impl ItemCopyImpl of Copy<Item>;
 
 impl ItemIdImpl of IdTrait<Item> {
-    fn id(self: Item) -> u128 {
-        self.id
+    fn id(self: @Item) -> u128 {
+        *self.id
     }
 }
 
