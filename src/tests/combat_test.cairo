@@ -3,7 +3,7 @@ use blob_arena::{
         combatant:: {
             CombatantState,
             CombatantInfo,
-            CombatantStats 
+            CombatantStats,
         },
         attack::{
             Attack,
@@ -15,7 +15,13 @@ use blob_arena::{
     },
     components::{
         stats::{
-            TStats
+            TStats,
+            StatTypes,
+        },
+        combatant::{
+            CombatantStatsTrait,
+            CombatantTrait,
+            CombatantStateTrait,
         },
     },
     systems::combat::{
@@ -24,7 +30,7 @@ use blob_arena::{
 };
 
 #[test]
-fn test_combat() {
+fn test_attack() {
     let mut fighter1 = CombatantState {
         id: 1,
         health: 100,
@@ -63,16 +69,6 @@ fn test_combat() {
             }),
     });
 
-    let fighter1_attack = Attack {
-        id: 1,
-        speed: 100,
-        name: "test attack 1",
-        accuracy: 100,
-        cooldown: 0,
-        hit: fighter1_attack_hit,
-        miss: fighter1_attack_miss,
-    };
-
     let mut fighter1_effect = Effect {
         target: Target::Opponent,
         affect: Affect::Damage(Damage {
@@ -100,11 +96,68 @@ fn test_combat() {
         speed: 0,
         strength: 0,
     };
-    
+
+    // expected results for the action, if calculation changes, update here
+    let fighter2_assertionResult = CombatantState {
+        id: 2,
+        health: 78,
+        stun_chance: 0,
+        buffs: TStats {
+            attack: 20,
+            defense: 50,
+            speed: 0,
+            strength: 0,
+        }
+    };
+
+    let fighter1_assertionResult = CombatantStats {
+        id: 1,
+        attack: 10,
+        defense: 5,
+        speed: 0,
+        strength: 0,
+    };
+
+    let fighter1_attack = fighter1_stats.get_stat(StatTypes::Attack);
+    let fighter1_defense = fighter1_stats.get_stat(StatTypes::Defense);
+    let fighter1_speed = fighter1_stats.get_stat(StatTypes::Speed);
+    let fighter1_strength = fighter1_stats.get_stat(StatTypes::Strength);
+
     run_effect(fighter1_stats, fighter2_stats, ref fighter1, ref fighter2, fighter1_effect, 0);
-    println!("defender health: {}", fighter2.health);
-    println!("defender attack: {}", fighter2.buffs.attack);
-    println!("defender defense: {}", fighter2.buffs.defense);
-    println!("defender speed: {}", fighter2.buffs.speed);
-    println!("defender strength: {}", fighter2.buffs.strength);
+    assert_eq!(fighter2.health, fighter2_assertionResult.health);
+    assert_eq!(fighter1_attack, fighter1_assertionResult.attack);
+    assert_eq!(fighter1_defense, fighter1_assertionResult.defense);
+    assert_eq!(fighter1_speed, fighter1_assertionResult.speed);
+    assert_eq!(fighter1_strength, fighter1_assertionResult.strength);
+}
+
+#[test]
+fn test_single_buff() {
+    let mut fighter1 = CombatantState {
+        id: 1,
+        health: 100,
+        stun_chance: 0,
+        buffs: TStats {
+            attack: 10,
+            defense: 5,
+            speed: 0,
+            strength: 0,
+        }
+    };
+
+    let fighter1_stats = CombatantStats {
+        id: 1,
+        attack: 10,
+        defense: 5,
+        speed: 0,
+        strength: 0,
+    };
+
+    let fighter1_attackAddition = 50;
+
+    // expected results for the action, if calculation changes, update here
+    let fighter1_attackValue = 60;
+
+    fighter1.apply_buff(fighter1_stats, StatTypes::Attack, fighter1_attackAddition);
+    assert_eq!(fighter1.buffs.attack, fighter1_attackValue);
 }
