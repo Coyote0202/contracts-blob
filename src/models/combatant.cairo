@@ -18,7 +18,7 @@ struct CombatantInfo {
 struct CombatantStats {
     #[key]
     id: u128,
-    attack: u8,
+    strength: u8,
     vitality: u8,
     dexterity: u8,
     luck: u8,

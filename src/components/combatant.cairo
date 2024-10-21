@@ -78,7 +78,7 @@ impl CombatantImpl of CombatantTrait {
         player: ContractAddress,
         attacks: Span<(u128, u128)>
     ) -> CombatantInfo {
-        let Stats { attack, vitality, dexterity, luck } = collection.get_stats(token_id);
+        let Stats { strength, vitality, dexterity, luck } = collection.get_stats(token_id);
         let health = collection.get_health(token_id);
         let collection_address = collection.contract_address;
         let combatant_id = get_combatant_id(collection_address, token_id, combat_id);
@@ -87,7 +87,7 @@ impl CombatantImpl of CombatantTrait {
         let info = CombatantInfo {
             id: combatant_id, combat_id, player, collection_address, token_id,
         };
-        let stats = CombatantStats { id: combatant_id, attack, vitality, dexterity, luck };
+        let stats = CombatantStats { id: combatant_id, strength, vitality, dexterity, luck };
         let state = CombatantState {
             id: combatant_id, health, stun_chance: 0, buffs: Default::default()
         };
@@ -132,7 +132,7 @@ impl CombatantStateImpl of CombatantStateTrait {
         self
             .buffs =
                 TStats {
-                    attack: make_stat_in_range(stats.attack, self.buffs.attack),
+                    strength: make_stat_in_range(stats.strength, self.buffs.strength),
                     vitality: make_stat_in_range(stats.vitality, self.buffs.vitality),
                     dexterity: make_stat_in_range(stats.dexterity, self.buffs.dexterity),
                     luck: make_stat_in_range(stats.luck, self.buffs.luck),
@@ -178,7 +178,7 @@ impl CombatantStatsImpl of CombatantStatsTrait {
 
     fn get_stat(self: @CombatantStats, stat: StatTypes) -> u8 {
         match stat {
-            StatTypes::Attack => *self.attack,
+            StatTypes::Strength => *self.strength,
             StatTypes::Vitality => *self.vitality,
             StatTypes::Dexterity => *self.dexterity,
             StatTypes::Luck => *self.luck,
@@ -193,8 +193,8 @@ impl CombatantStatsImpl of CombatantStatsTrait {
     fn get_luck(self: @CombatantStats, state: CombatantState) -> u8 {
         ((*self.luck).try_into().unwrap() + state.buffs.luck).saturating_into()
     }
-    fn get_attack(self: @CombatantStats, state: CombatantState) -> u8 {
-        ((*self.attack).try_into().unwrap() + state.buffs.attack).saturating_into()
+    fn get_strength(self: @CombatantStats, state: CombatantState) -> u8 {
+        ((*self.strength).try_into().unwrap() + state.buffs.strength).saturating_into()
     }
     fn get_vitality(self: @CombatantStats, state: CombatantState) -> u8 {
         ((*self.vitality).try_into().unwrap() + state.buffs.vitality).saturating_into()
