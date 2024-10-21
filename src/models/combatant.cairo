@@ -19,9 +19,9 @@ struct CombatantStats {
     #[key]
     id: u128,
     attack: u8,
-    defense: u8,
-    speed: u8,
+    vitality: u8,
     dexterity: u8,
+    luck: u8,
 }
 
 #[dojo::model]

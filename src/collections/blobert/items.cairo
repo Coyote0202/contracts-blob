@@ -121,10 +121,10 @@ impl BlobertStatsImpl of BlobertStatsTrait {
     }
     fn get_blobert_health(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> u8 {
         let stats = self.get_blobert_stats(blobert_trait);
-        if stats.defense > 155 {
+        if stats.vitality > 155 {
             255
         } else {
-            100 + stats.defense
+            100 + stats.vitality
         }
     }
     fn blobert_has_attack(

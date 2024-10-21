@@ -2,11 +2,9 @@
 mod test {
     use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
     use blob_arena::{
-        components::{
-            combatant::{CombatantState, CombatantStats},
-            attack::{Attack}
-        },
-        systems::combat::{damage_calculation, apply_dexterity_modifier}};
+        components::{combatant::{CombatantState, CombatantStats}, attack::{Attack}},
+        systems::combat::{damage_calculation, apply_luck_modifier}
+    };
 
 
     #[test]
@@ -25,9 +23,9 @@ mod test {
         // let stats = CombatantStats {
         //     id: 12,
         //     attack: 50,
-        //     defense: 50,
+        //     vitality: 50,
         //     speed: 50,
-        //     dexterity: 50,
+        //     luck: 50,
         // }
         let mut accuracy = 0_u8;
         while accuracy <= 100 {
@@ -44,43 +42,29 @@ mod test {
         };
     }
 
-    
+
     #[test]
     #[available_gas(3000000000)]
     fn test_heal_move() {
         let mut combatant_a_stats = CombatantStats {
-            id: 1,
-            attack: 10,
-            defense: 10,
-            speed: 10,
-            dexterity: 10,
+            id: 1, attack: 10, vitality: 10, speed: 10, luck: 10,
         };
 
-        let mut combatant_a_state = CombatantState {
-            id: 1,
-            health: 100,
-            stun_chance: 0,
-        };
+        let mut combatant_a_state = CombatantState { id: 1, health: 100, stun_chance: 0, };
 
         let heal_move = Attack {
-            id: 1,
-            damage: 0,
-            speed: 150,
-            accuracy: 0,
-            critical: 0,
-            stun: 0,
-            cooldown: 0,
-            heal: 10,
+            id: 1, damage: 0, speed: 150, accuracy: 0, critical: 0, stun: 0, cooldown: 0, heal: 10,
         };
 
         let mut world_dispatcher = WorldDispatcher::default();
-        world_dispatcher.run_attack(
-            combatant_a_stats,
-            combatant_a_state,
-            combatant_a_state,
-            heal_move,
-            1, // Round number
-            HashState::default()
-        );
+        world_dispatcher
+            .run_attack(
+                combatant_a_stats,
+                combatant_a_state,
+                combatant_a_state,
+                heal_move,
+                1, // Round number
+                HashState::default()
+            );
     }
 }
