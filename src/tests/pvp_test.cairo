@@ -6,7 +6,7 @@ mod test {
             combatant::{CombatantState, CombatantStats},
             attack::{Attack}
         },
-        systems::combat::{damage_calculation, apply_strength_modifier}};
+        systems::combat::{damage_calculation, apply_dexterity_modifier}};
 
 
     #[test]
@@ -27,7 +27,7 @@ mod test {
         //     attack: 50,
         //     defense: 50,
         //     speed: 50,
-        //     strength: 50,
+        //     dexterity: 50,
         // }
         let mut accuracy = 0_u8;
         while accuracy <= 100 {
@@ -53,7 +53,7 @@ mod test {
             attack: 10,
             defense: 10,
             speed: 10,
-            strength: 10,
+            dexterity: 10,
         };
 
         let mut combatant_a_state = CombatantState {

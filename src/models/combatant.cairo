@@ -21,7 +21,7 @@ struct CombatantStats {
     attack: u8,
     defense: u8,
     speed: u8,
-    strength: u8,
+    dexterity: u8,
 }
 
 #[dojo::model]

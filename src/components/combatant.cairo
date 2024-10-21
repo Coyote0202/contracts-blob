@@ -78,7 +78,7 @@ impl CombatantImpl of CombatantTrait {
         player: ContractAddress,
         attacks: Span<(u128, u128)>
     ) -> CombatantInfo {
-        let Stats { attack, defense, speed, strength } = collection.get_stats(token_id);
+        let Stats { attack, defense, speed, dexterity } = collection.get_stats(token_id);
         let health = collection.get_health(token_id);
         let collection_address = collection.contract_address;
         let combatant_id = get_combatant_id(collection_address, token_id, combat_id);
@@ -87,7 +87,7 @@ impl CombatantImpl of CombatantTrait {
         let info = CombatantInfo {
             id: combatant_id, combat_id, player, collection_address, token_id,
         };
-        let stats = CombatantStats { id: combatant_id, attack, defense, speed, strength };
+        let stats = CombatantStats { id: combatant_id, attack, defense, speed, dexterity };
         let state = CombatantState {
             id: combatant_id, health, stun_chance: 0, buffs: Default::default()
         };
@@ -135,7 +135,7 @@ impl CombatantStateImpl of CombatantStateTrait {
                     attack: make_stat_in_range(stats.attack, self.buffs.attack),
                     defense: make_stat_in_range(stats.defense, self.buffs.defense),
                     speed: make_stat_in_range(stats.speed, self.buffs.speed),
-                    strength: make_stat_in_range(stats.strength, self.buffs.strength),
+                    dexterity: make_stat_in_range(stats.dexterity, self.buffs.dexterity),
                 }
     }
 
@@ -172,7 +172,7 @@ impl CombatantStatsImpl of CombatantStatsTrait {
             attack: self.get_attack(state),
             defense: self.get_defense(state),
             speed: self.get_speed(state),
-            strength: self.get_strength(state),
+            dexterity: self.get_dexterity(state),
         }
     }
 
@@ -181,7 +181,7 @@ impl CombatantStatsImpl of CombatantStatsTrait {
             StatTypes::Attack => *self.attack,
             StatTypes::Defense => *self.defense,
             StatTypes::Speed => *self.speed,
-            StatTypes::Strength => *self.strength,
+            StatTypes::Dexterity => *self.dexterity,
         }
     }
 
@@ -190,8 +190,8 @@ impl CombatantStatsImpl of CombatantStatsTrait {
             .saturating_into()
     }
 
-    fn get_strength(self: @CombatantStats, state: CombatantState) -> u8 {
-        ((*self.strength).try_into().unwrap() + state.buffs.strength).saturating_into()
+    fn get_dexterity(self: @CombatantStats, state: CombatantState) -> u8 {
+        ((*self.dexterity).try_into().unwrap() + state.buffs.dexterity).saturating_into()
     }
     fn get_attack(self: @CombatantStats, state: CombatantState) -> u8 {
         ((*self.attack).try_into().unwrap() + state.buffs.attack).saturating_into()

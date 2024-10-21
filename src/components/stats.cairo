@@ -7,7 +7,7 @@ struct TStats<T> {
     attack: T,
     defense: T,
     speed: T,
-    strength: T,
+    dexterity: T,
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
@@ -15,7 +15,7 @@ enum StatTypes {
     Attack,
     Defense,
     Speed,
-    Strength,
+    Dexterity,
 }
 
 
@@ -23,7 +23,7 @@ type Stats = TStats<u8>;
 
 impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
     fn into(self: T) -> TStats<T> {
-        TStats { attack: self, defense: self, speed: self, strength: self, }
+        TStats { attack: self, defense: self, speed: self, dexterity: self, }
     }
 }
 
@@ -35,7 +35,7 @@ impl TStatsImpl<T, +Drop<T>, +Copy<T>> of TStatsTrait<T> {
             StatTypes::Attack => *self.attack,
             StatTypes::Defense => *self.defense,
             StatTypes::Speed => *self.speed,
-            StatTypes::Strength => *self.strength,
+            StatTypes::Dexterity => *self.dexterity,
         }
     }
 
@@ -44,7 +44,7 @@ impl TStatsImpl<T, +Drop<T>, +Copy<T>> of TStatsTrait<T> {
             StatTypes::Attack => { self.attack = value },
             StatTypes::Defense => { self.defense = value },
             StatTypes::Speed => { self.speed = value },
-            StatTypes::Strength => { self.strength = value },
+            StatTypes::Dexterity => { self.dexterity = value },
         }
     }
 }
@@ -55,7 +55,7 @@ impl TStatsAdd<T, +Add<T>, +Drop<T>> of Add<TStats<T>> {
             attack: lhs.attack + rhs.attack,
             defense: lhs.defense + rhs.defense,
             speed: lhs.speed + rhs.speed,
-            strength: lhs.strength + rhs.strength,
+            dexterity: lhs.dexterity + rhs.dexterity,
         }
     }
 }
@@ -67,7 +67,7 @@ impl TStatsSaturatingSub<T, +SaturatingSub<T>, +Drop<T>> of SaturatingSub<TStats
             attack: self.attack.saturating_sub(other.attack),
             defense: self.defense.saturating_sub(other.defense),
             speed: self.speed.saturating_sub(other.speed),
-            strength: self.strength.saturating_sub(other.strength),
+            dexterity: self.dexterity.saturating_sub(other.dexterity),
         }
     }
 }
@@ -78,7 +78,7 @@ impl TSaturatingAdd<T, +SaturatingAdd<T>, +Drop<T>> of SaturatingAdd<TStats<T>> 
             attack: self.attack.saturating_add(other.attack),
             defense: self.defense.saturating_add(other.defense),
             speed: self.speed.saturating_add(other.speed),
-            strength: self.strength.saturating_add(other.strength),
+            dexterity: self.dexterity.saturating_add(other.dexterity),
         }
     }
 }
@@ -90,7 +90,7 @@ impl TStatsSub<T, +Sub<T>, +Drop<T>> of Sub<TStats<T>> {
             attack: lhs.attack - rhs.attack,
             defense: lhs.defense - rhs.defense,
             speed: lhs.speed - rhs.speed,
-            strength: lhs.strength - rhs.strength,
+            dexterity: lhs.dexterity - rhs.dexterity,
         };
     }
 }
@@ -101,7 +101,7 @@ impl TStatsMul<T, +Mul<T>, +Drop<T>> of Mul<TStats<T>> {
             attack: lhs.attack * rhs.attack,
             defense: lhs.defense * rhs.defense,
             speed: lhs.speed * rhs.speed,
-            strength: lhs.strength * rhs.strength,
+            dexterity: lhs.dexterity * rhs.dexterity,
         };
     }
 }
@@ -112,7 +112,7 @@ impl TStatsDiv<T, +Div<T>, +Drop<T>> of Div<TStats<T>> {
             attack: lhs.attack / rhs.attack,
             defense: lhs.defense / rhs.defense,
             speed: lhs.speed / rhs.speed,
-            strength: lhs.strength / rhs.strength,
+            dexterity: lhs.dexterity / rhs.dexterity,
         };
     }
 }
