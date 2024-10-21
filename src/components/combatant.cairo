@@ -169,7 +169,7 @@ impl CombatantStatsImpl of CombatantStatsTrait {
         TStats::<
             u8
         > {
-            attack: self.get_attack(state),
+            strength: self.get_strength(state),
             vitality: self.get_vitality(state),
             dexterity: self.get_dexterity(state),
             luck: self.get_luck(state),
@@ -180,8 +180,8 @@ impl CombatantStatsImpl of CombatantStatsTrait {
         match stat {
             StatTypes::Attack => *self.attack,
             StatTypes::Vitality => *self.vitality,
-            StatTypes::Speed => *self.dexterity,
-            StatTypes::Dexterity => *self.luck,
+            StatTypes::Dexterity => *self.dexterity,
+            StatTypes::Luck => *self.luck,
         }
     }
 

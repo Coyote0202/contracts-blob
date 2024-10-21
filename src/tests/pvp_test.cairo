@@ -47,7 +47,7 @@ mod test {
     #[available_gas(3000000000)]
     fn test_heal_move() {
         let mut combatant_a_stats = CombatantStats {
-            id: 1, attack: 10, vitality: 10, speed: 10, luck: 10,
+            id: 1, attack: 10, vitality: 10, dexterity: 10, luck: 10,
         };
 
         let mut combatant_a_state = CombatantState { id: 1, health: 100, stun_chance: 0, };
