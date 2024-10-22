@@ -146,7 +146,7 @@ fn run_effect(
             );
             seed = _seed;
             let damage = damage_calculation(
-                attacker_stats.get_strength(attacker_state), damage.power, critical
+                damage.power, attacker_stats.get_strength(attacker_state), critical
             );
             match effect.target {
                 Target::Player => { attacker_state.health -= min(attacker_state.health, damage) },
