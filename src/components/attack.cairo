@@ -1,8 +1,9 @@
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
 use blob_arena::{
-    utils::uuid, models::{AttackModel, AvailableAttack, Effect, AttackStore},
-    components::{utils::{IdTrait, IdsTrait, TIdsImpl}, stats::Stats},
+    core::Signed, utils::uuid,
+    models::{AttackModel, AvailableAttack, Effect, Affect, AttackStore, Target, Damage, Stat},
+    components::{utils::{IdTrait, IdsTrait, TIdsImpl}, stats::{Stats, TStats, StatTypes},},
 };
 
 
@@ -22,8 +23,62 @@ struct AttackInput {
     speed: u8,
     accuracy: u8,
     cooldown: u8,
-    hit: Array<Effect>,
-    miss: Array<Effect>,
+    hit: Array<EffectInput>,
+    miss: Array<EffectInput>,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct StatInput {
+    stat: StatTypes,
+    amount: Signed<u8>,
+}
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+struct EffectInput {
+    target: Target,
+    affect: AffectInput,
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+enum AffectInput {
+    Stats: TStats<Signed<u8>>,
+    Stat: StatInput,
+    Damage: Damage,
+    Stun: u8,
+    Health: Signed<u8>,
+}
+
+
+impl InputIntoAffect of Into<AffectInput, Affect> {
+    fn into(self: AffectInput) -> Affect {
+        match self {
+            AffectInput::Stats(stats) => Affect::Stats(stats.into()),
+            AffectInput::Stat(stat) => Affect::Stat(
+                Stat { stat: stat.stat, amount: stat.amount.into() }
+            ),
+            AffectInput::Damage(damage) => Affect::Damage(damage),
+            AffectInput::Stun(stun) => Affect::Stun(stun),
+            AffectInput::Health(health) => Affect::Health(health.into()),
+        }
+    }
+}
+
+impl InputIntoEffect of Into<EffectInput, Effect> {
+    fn into(self: EffectInput) -> Effect {
+        Effect { target: self.target, affect: self.affect.into() }
+    }
+}
+
+impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
+    fn into(mut self: Array<EffectInput>) -> Array<Effect> {
+        let mut effects = array![];
+        loop {
+            match self.pop_front() {
+                Option::Some(effect) => { effects.append(effect.into()); },
+                Option::None => { break; },
+            };
+        };
+        effects
+    }
 }
 
 #[generate_trait]
@@ -35,8 +90,8 @@ impl AttackInputImpl of AttackInputTrait {
             speed: *(self.speed),
             accuracy: *(self.accuracy),
             cooldown: *(self.cooldown),
-            hit: self.hit.clone(),
-            miss: self.miss.clone(),
+            hit: self.hit.clone().into(),
+            miss: self.miss.clone().into(),
         }
     }
 }

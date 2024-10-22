@@ -1,4 +1,4 @@
-use blob_arena::components::stats::{TStats, StatTypes};
+use blob_arena::{core::Signed, components::stats::{TStats, StatTypes}};
 
 type Stats = TStats<i8>;
 

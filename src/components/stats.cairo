@@ -116,3 +116,16 @@ impl TStatsDiv<T, +Div<T>, +Drop<T>> of Div<TStats<T>> {
         };
     }
 }
+
+impl TStatsIntoTStata<
+    T, S, +Into<T, S>, +Copy<T>, +Drop<S>, +Drop<T>
+> of Into<TStats<T>, TStats<S>> {
+    fn into(self: TStats<T>) -> TStats<S> {
+        TStats {
+            strength: self.strength.into(),
+            vitality: self.vitality.into(),
+            dexterity: self.dexterity.into(),
+            luck: self.luck.into(),
+        }
+    }
+}

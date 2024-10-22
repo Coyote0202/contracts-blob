@@ -1,5 +1,6 @@
 use core::{
-    num::traits::{Bounded, Zero, OverflowingSub, OverflowingAdd, OverflowingMul}, cmp::{min, max}
+    traits::Neg, num::traits::{Bounded, Zero, One, OverflowingSub, OverflowingAdd, OverflowingMul},
+    cmp::{min, max}
 };
 
 #[derive(Copy, Drop)]
@@ -119,6 +120,33 @@ impl Felt252BitAnd of BitAnd<felt252> {
 
 fn in_range<T, +PartialOrd<T>, +Drop<T>, +Copy<T>>(min: T, max: T, value: T) -> T {
     max(min, min(max, value))
+}
+
+#[derive(Copy, Drop, Serde, PartialEq, Introspect)]
+struct Signed<T> {
+    value: T,
+    sign: bool,
+}
+
+impl SignedIntoI<T, S, +TryInto<T, S>, +Neg<S>> of Into<Signed<T>, S> {
+    fn into(self: Signed<T>) -> S {
+        if self.sign {
+            Neg::<S>::neg(self.value.try_into().unwrap())
+        } else {
+            self.value.try_into().unwrap()
+        }
+    }
+}
+
+impl SignedTryIntoI<T, S, +TryInto<T, S>, +Neg<S>> of TryInto<Signed<T>, S> {
+    fn try_into(self: Signed<T>) -> Option<S> {
+        let value: S = self.value.try_into().unwrap();
+        Option::Some(if self.sign {
+            Neg::<S>::neg(value)
+        } else {
+            value
+        })
+    }
 }
 // impl U8ArrayCopyImpl of Copy<Array<u8>>;
 // impl U128ArrayCopyImpl of Copy<Array<u128>>;
