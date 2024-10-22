@@ -23,10 +23,15 @@ use blob_arena::{
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
-const HUNDRED: felt252 = 1844674407370955161600;
-const FIXED_255: u128 = 4703919738795935662080;
-const HUNDREDTH: felt252 = 184467440737095516;
-const THREE_TENTHS: felt252 = 5534023222112865484;
+// const HUNDRED: felt252 = 1844674407370955161600;
+// const FIXED_255: u128 = 4703919738795935662080;
+// const HUNDREDTH: felt252 = 184467440737095516;
+// const THREE_TENTHS: felt252 = 5534023222112865484;
+
+const THREE_TENTHS_FIXED: Fixed = Fixed { mag: 5534023222112865484, sign: false };
+const HUNDRED_FIXED: Fixed = Fixed { mag: 1844674407370955161600, sign: false };
+const FIXED_255: Fixed = Fixed { mag: 4703919738795935662080, sign: false };
+const HUNDREDTH_FIXED: Fixed = Fixed { mag: 184467440737095516, sign: false };
 const NZ_255: NonZero<u128> = 255;
 const NZ_100: NonZero<u128> = 100;
 
@@ -44,9 +49,9 @@ fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
         return Zeroable::zero();
     };
     let luck_ratio: Fixed = (300_u16 - luck.into()).into() / (200_u16 + luck.into()).into();
-    let value_float: Fixed = value.into() / FixedTrait::from_felt(HUNDRED);
-    let new_value = (value_float.pow(luck_ratio) * Fixed { mag: FIXED_255, sign: false });
-    if new_value.mag > FIXED_255 {
+    let value_float = value.into() / HUNDRED_FIXED;
+    let new_value = (value_float.pow(luck_ratio) * FIXED_255);
+    if new_value > FIXED_255 {
         255_u8.into()
     } else {
         new_value.try_into().unwrap()
@@ -64,51 +69,14 @@ fn get_new_stun_chance(current_stun: u8, attack_stun: u8, luck: u8) -> u8 {
     new_stun.try_into().unwrap()
 }
 
-fn damage_calculation(attack: u8, damage: u8, critical: bool) -> u8 {
-    if damage == 0 {
-        return 0;
-    };
-    let mut calc_damage: u32 = ((damage.into() / FixedTrait::from_felt(HUNDRED))
-        .pow(FixedTrait::from_felt(THREE_TENTHS))
-        * (200_u8.into() + attack.into()))
-        .try_into()
-        .unwrap(); // max value 300
-    calc_damage /= if critical {
-        6
+// power * (1 + 0.004 * strength)
+fn damage_calculation(move_power: u8, strength: u8, critical: bool) -> u8 {
+    (move_power.into() * (100 + strength.into()) / if critical {
+        125_u128
     } else {
-        12
-    };
-    if calc_damage > 255 {
-        calc_damage = 255;
-    };
-    calc_damage.try_into().unwrap()
-}
-
-fn new_damage_calculation(move_power: u8, strength: u8, vitality: u8, critical: bool) -> u8 {
-    if move_power == 0 {
-        return 0;
-    };
-    let attack_multiplier: felt252 = 1.try_into().unwrap() + HUNDREDTH * strength.try_into().unwrap();
-    let vitality_multiplier: felt252 = 1.try_into().unwrap() - (HUNDREDTH * 2) * vitality.try_into().unwrap();
-    let mut calc_damage: felt252 = move_power.try_into().unwrap()
-        * attack_multiplier.try_into().unwrap()
-        * vitality_multiplier.try_into().unwrap();
-    if critical {
-        let critical_divisor: felt252 = 6.try_into().unwrap();
-        calc_damage = calc_damage / critical_divisor;
-    } else {
-        let normal_divisor: felt252 = 12.try_into().unwrap();
-        calc_damage = calc_damage / normal_divisor;
-    };
-
-    let mut calc_damage_u8: u8 = calc_damage.try_into().unwrap();
-
-    let max_damage: u8 = 255;
-    if calc_damage_u8 > max_damage {
-        calc_damage_u8 = max_damage;
-    };
-
-    calc_damage_u8
+        250_u128
+    })
+        .saturating_into()
 }
 
 fn did_hit(accuracy: u8, seed: u128) -> (u128, bool) {
