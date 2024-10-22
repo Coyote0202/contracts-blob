@@ -4,18 +4,18 @@ use blob_arena::core::{SaturatingAdd, SaturatingSub};
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
 struct TStats<T> {
-    attack: T,
-    defense: T,
-    speed: T,
     strength: T,
+    vitality: T,
+    dexterity: T,
+    luck: T,
 }
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum StatTypes {
-    Attack,
-    Defense,
-    Speed,
     Strength,
+    Vitality,
+    Dexterity,
+    Luck,
 }
 
 
@@ -23,7 +23,7 @@ type Stats = TStats<u8>;
 
 impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
     fn into(self: T) -> TStats<T> {
-        TStats { attack: self, defense: self, speed: self, strength: self, }
+        TStats { strength: self, vitality: self, dexterity: self, luck: self, }
     }
 }
 
@@ -32,19 +32,19 @@ impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
 impl TStatsImpl<T, +Drop<T>, +Copy<T>> of TStatsTrait<T> {
     fn get_stat(self: @TStats<T>, stat: StatTypes) -> T {
         match stat {
-            StatTypes::Attack => *self.attack,
-            StatTypes::Defense => *self.defense,
-            StatTypes::Speed => *self.speed,
             StatTypes::Strength => *self.strength,
+            StatTypes::Vitality => *self.vitality,
+            StatTypes::Dexterity => *self.dexterity,
+            StatTypes::Luck => *self.luck,
         }
     }
 
     fn set_stat(ref self: TStats<T>, stat: StatTypes, value: T) {
         match stat {
-            StatTypes::Attack => { self.attack = value },
-            StatTypes::Defense => { self.defense = value },
-            StatTypes::Speed => { self.speed = value },
             StatTypes::Strength => { self.strength = value },
+            StatTypes::Vitality => { self.vitality = value },
+            StatTypes::Dexterity => { self.dexterity = value },
+            StatTypes::Luck => { self.luck = value },
         }
     }
 }
@@ -52,10 +52,10 @@ impl TStatsImpl<T, +Drop<T>, +Copy<T>> of TStatsTrait<T> {
 impl TStatsAdd<T, +Add<T>, +Drop<T>> of Add<TStats<T>> {
     fn add(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
         TStats {
-            attack: lhs.attack + rhs.attack,
-            defense: lhs.defense + rhs.defense,
-            speed: lhs.speed + rhs.speed,
             strength: lhs.strength + rhs.strength,
+            vitality: lhs.vitality + rhs.vitality,
+            dexterity: lhs.dexterity + rhs.dexterity,
+            luck: lhs.luck + rhs.luck,
         }
     }
 }
@@ -64,10 +64,10 @@ impl TStatsAdd<T, +Add<T>, +Drop<T>> of Add<TStats<T>> {
 impl TStatsSaturatingSub<T, +SaturatingSub<T>, +Drop<T>> of SaturatingSub<TStats<T>> {
     fn saturating_sub(self: TStats<T>, other: TStats<T>) -> TStats<T> {
         TStats {
-            attack: self.attack.saturating_sub(other.attack),
-            defense: self.defense.saturating_sub(other.defense),
-            speed: self.speed.saturating_sub(other.speed),
             strength: self.strength.saturating_sub(other.strength),
+            vitality: self.vitality.saturating_sub(other.vitality),
+            dexterity: self.dexterity.saturating_sub(other.dexterity),
+            luck: self.luck.saturating_sub(other.luck),
         }
     }
 }
@@ -75,10 +75,10 @@ impl TStatsSaturatingSub<T, +SaturatingSub<T>, +Drop<T>> of SaturatingSub<TStats
 impl TSaturatingAdd<T, +SaturatingAdd<T>, +Drop<T>> of SaturatingAdd<TStats<T>> {
     fn saturating_add(self: TStats<T>, other: TStats<T>) -> TStats<T> {
         TStats {
-            attack: self.attack.saturating_add(other.attack),
-            defense: self.defense.saturating_add(other.defense),
-            speed: self.speed.saturating_add(other.speed),
             strength: self.strength.saturating_add(other.strength),
+            vitality: self.vitality.saturating_add(other.vitality),
+            dexterity: self.dexterity.saturating_add(other.dexterity),
+            luck: self.luck.saturating_add(other.luck),
         }
     }
 }
@@ -87,10 +87,10 @@ impl TSaturatingAdd<T, +SaturatingAdd<T>, +Drop<T>> of SaturatingAdd<TStats<T>> 
 impl TStatsSub<T, +Sub<T>, +Drop<T>> of Sub<TStats<T>> {
     fn sub(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
         return TStats {
-            attack: lhs.attack - rhs.attack,
-            defense: lhs.defense - rhs.defense,
-            speed: lhs.speed - rhs.speed,
             strength: lhs.strength - rhs.strength,
+            vitality: lhs.vitality - rhs.vitality,
+            dexterity: lhs.dexterity - rhs.dexterity,
+            luck: lhs.luck - rhs.luck,
         };
     }
 }
@@ -98,10 +98,10 @@ impl TStatsSub<T, +Sub<T>, +Drop<T>> of Sub<TStats<T>> {
 impl TStatsMul<T, +Mul<T>, +Drop<T>> of Mul<TStats<T>> {
     fn mul(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
         return TStats {
-            attack: lhs.attack * rhs.attack,
-            defense: lhs.defense * rhs.defense,
-            speed: lhs.speed * rhs.speed,
             strength: lhs.strength * rhs.strength,
+            vitality: lhs.vitality * rhs.vitality,
+            dexterity: lhs.dexterity * rhs.dexterity,
+            luck: lhs.luck * rhs.luck,
         };
     }
 }
@@ -109,10 +109,10 @@ impl TStatsMul<T, +Mul<T>, +Drop<T>> of Mul<TStats<T>> {
 impl TStatsDiv<T, +Div<T>, +Drop<T>> of Div<TStats<T>> {
     fn div(lhs: TStats<T>, rhs: TStats<T>) -> TStats<T> {
         return TStats {
-            attack: lhs.attack / rhs.attack,
-            defense: lhs.defense / rhs.defense,
-            speed: lhs.speed / rhs.speed,
             strength: lhs.strength / rhs.strength,
+            vitality: lhs.vitality / rhs.vitality,
+            dexterity: lhs.dexterity / rhs.dexterity,
+            luck: lhs.luck / rhs.luck,
         };
     }
 }

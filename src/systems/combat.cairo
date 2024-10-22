@@ -37,16 +37,15 @@ struct PlannedAttack {
     target: u128,
 }
 
-fn apply_strength_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
-    value: u8, strength: u8
+fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
+    value: u8, luck: u8
 ) -> T {
     if value == 0 {
         return Zeroable::zero();
     };
-    let strength_ratio: Fixed = (300_u16 - strength.into()).into()
-        / (200_u16 + strength.into()).into();
+    let luck_ratio: Fixed = (300_u16 - luck.into()).into() / (200_u16 + luck.into()).into();
     let value_float: Fixed = value.into() / FixedTrait::from_felt(HUNDRED);
-    let new_value = (value_float.pow(strength_ratio) * Fixed { mag: FIXED_255, sign: false });
+    let new_value = (value_float.pow(luck_ratio) * Fixed { mag: FIXED_255, sign: false });
     if new_value.mag > FIXED_255 {
         255_u8.into()
     } else {
@@ -54,8 +53,8 @@ fn apply_strength_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
     }
 }
 
-fn get_new_stun_chance(current_stun: u8, attack_stun: u8, strength: u8) -> u8 {
-    let stun_chance = apply_strength_modifier(attack_stun, strength);
+fn get_new_stun_chance(current_stun: u8, attack_stun: u8, luck: u8) -> u8 {
+    let stun_chance = apply_luck_modifier(attack_stun, luck);
     let mut new_stun = current_stun.into()
         + stun_chance
         - (current_stun.into() * stun_chance / 255_u16);
@@ -90,8 +89,8 @@ fn did_hit(accuracy: u8, seed: u128) -> (u128, bool) {
     (seed, value < accuracy.into())
 }
 
-fn did_critical(chance: u8, strength: u8, seed: u128) -> (u128, bool) {
-    let critical: u8 = apply_strength_modifier(chance, strength);
+fn did_critical(chance: u8, luck: u8, seed: u128) -> (u128, bool) {
+    let critical: u8 = apply_luck_modifier(chance, luck);
     let (seed, value) = u128_safe_divmod(seed, NZ_255);
     (seed, value < critical.into())
 }
@@ -119,8 +118,8 @@ fn effect_health(ref self: CombatantState, stats: CombatantStats, health: i16) {
     self.health = new_health.saturating_into();
 }
 
-fn apply_stun(ref self: CombatantState, strength: u8, stun: u8) {
-    self.stun_chance = get_new_stun_chance(self.stun_chance, stun, strength)
+fn apply_stun(ref self: CombatantState, luck: u8, stun: u8) {
+    self.stun_chance = get_new_stun_chance(self.stun_chance, stun, luck)
 }
 
 
@@ -148,11 +147,11 @@ fn run_effect(
         },
         Affect::Damage(damage) => {
             let (_seed, critical) = did_critical(
-                damage.critical, attacker_stats.get_strength(attacker_state), seed
+                damage.critical, attacker_stats.get_luck(attacker_state), seed
             );
             seed = _seed;
             let damage = damage_calculation(
-                attacker_stats.get_attack(attacker_state), damage.power, critical
+                attacker_stats.get_strength(attacker_state), damage.power, critical
             );
             match effect.target {
                 Target::Player => { attacker_state.health -= min(attacker_state.health, damage) },
@@ -162,14 +161,10 @@ fn run_effect(
         Affect::Stun(stun) => {
             match effect.target {
                 Target::Player => {
-                    apply_stun(
-                        ref attacker_state, attacker_stats.get_strength(attacker_state), stun
-                    )
+                    apply_stun(ref attacker_state, attacker_stats.get_luck(attacker_state), stun)
                 },
                 Target::Opponent => {
-                    apply_stun(
-                        ref attacker_state, attacker_stats.get_strength(attacker_state), stun
-                    )
+                    apply_stun(ref attacker_state, attacker_stats.get_luck(attacker_state), stun)
                 },
             };
         },
