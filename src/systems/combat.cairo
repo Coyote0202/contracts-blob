@@ -84,6 +84,33 @@ fn damage_calculation(attack: u8, damage: u8, critical: bool) -> u8 {
     calc_damage.try_into().unwrap()
 }
 
+fn new_damage_calculation(move_power: u8, strength: u8, vitality: u8, critical: bool) -> u8 {
+    if move_power == 0 {
+        return 0;
+    };
+    let attack_multiplier: felt252 = 1.try_into().unwrap() + HUNDREDTH * strength.try_into().unwrap();
+    let vitality_multiplier: felt252 = 1.try_into().unwrap() - (HUNDREDTH * 2) * vitality.try_into().unwrap();
+    let mut calc_damage: felt252 = move_power.try_into().unwrap()
+        * attack_multiplier.try_into().unwrap()
+        * vitality_multiplier.try_into().unwrap();
+    if critical {
+        let critical_divisor: felt252 = 6.try_into().unwrap();
+        calc_damage = calc_damage / critical_divisor;
+    } else {
+        let normal_divisor: felt252 = 12.try_into().unwrap();
+        calc_damage = calc_damage / normal_divisor;
+    };
+
+    let mut calc_damage_u8: u8 = calc_damage.try_into().unwrap();
+
+    let max_damage: u8 = 255;
+    if calc_damage_u8 > max_damage {
+        calc_damage_u8 = max_damage;
+    };
+
+    calc_damage_u8
+}
+
 fn did_hit(accuracy: u8, seed: u128) -> (u128, bool) {
     let (seed, value) = u128_safe_divmod(seed, NZ_100);
     (seed, value < accuracy.into())
