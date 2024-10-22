@@ -1,2 +1,7 @@
 tag = "blob_arena-blobert_actions"
-writes = ["ItemMap", "Item", "Attack", "HasAttack"]
+writes = [
+    "blob_arena-ItemMap",
+    "blob_arena-Item",
+    "blob_arena-Attack",
+    "blob_arena-HasAttack",
+]

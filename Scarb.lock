@@ -70,4 +70,4 @@ source = "git+https://github.com/dojoengine/cubit?branch=cairo_2.7#53020b6320a10
 [[package]]
 name = "dojo"
 version = "1.0.0-alpha.4"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.0.0-alpha.16#3b3a78cd8239ca2ee524c49c83f36db4d79cb4bc"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.0.0-alpha.17#e6bab2d0066c3cf1acfc5ee41a27294b5b23697d"

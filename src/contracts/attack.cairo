@@ -1,5 +1,5 @@
 use dojo::world::{IWorldDispatcher};
-use blob_arena::models::Effect;
+use blob_arena::{components::attack::EffectInput};
 
 #[dojo::interface]
 trait IAttackActions {
@@ -9,8 +9,8 @@ trait IAttackActions {
         speed: u8,
         accuracy: u8,
         cooldown: u8,
-        hit: Array<Effect>,
-        miss: Array<Effect>,
+        hit: Array<EffectInput>,
+        miss: Array<EffectInput>,
     ) -> u128;
 }
 
@@ -20,8 +20,8 @@ mod attack_actions {
     use starknet::{ContractAddress, get_caller_address};
 
     use blob_arena::{
-        components::{stats::Stats,}, models::{AttackModel, Effect}, utils::uuid,
-        world::{WorldTrait, Contract}
+        components::{stats::Stats, attack::{EffectInput, InputIntoEffectArray}},
+        models::{AttackModel, Effect}, utils::uuid, world::{WorldTrait, Contract}
     };
 
     use super::IAttackActions;
@@ -34,11 +34,13 @@ mod attack_actions {
             speed: u8,
             accuracy: u8,
             cooldown: u8,
-            hit: Array<Effect>,
-            miss: Array<Effect>,
+            hit: Array<EffectInput>,
+            miss: Array<EffectInput>,
         ) -> u128 {
             let id = uuid(world);
-            let attack = AttackModel { id, name, speed, accuracy, cooldown, hit, miss, };
+            let attack = AttackModel {
+                id, name, speed, accuracy, cooldown, hit: hit.into(), miss: miss.into(),
+            };
             set!(world, (attack,));
             id
         }

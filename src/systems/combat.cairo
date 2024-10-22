@@ -19,7 +19,7 @@ use blob_arena::{
         },
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
-    models::{AttackResult, Effect, Affect, Damage, Target, Stat},
+    models::{Effect, Affect, Damage, Target, Stat},
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
