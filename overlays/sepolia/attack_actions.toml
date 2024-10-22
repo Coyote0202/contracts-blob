@@ -1,2 +1,2 @@
 tag = "blob_arena-attack_actions"
-writes = ["Attack"]
+writes = ["blob_arena-Attack"]

@@ -1,2 +1,9 @@
 tag = "blob_arena-pvp_admin_actions"
-writes = ["AvailableAttack", "CombatState", "CombatantInfo", "CombatantState", "CombatantStats", "PvPCombatants"]
+writes = [
+    "blob_arena-AvailableAttack",
+    "blob_arena-CombatState",
+    "blob_arena-CombatantInfo",
+    "blob_arena-CombatantState",
+    "blob_arena-CombatantStats",
+    "blob_arena-PvPCombatants",
+]

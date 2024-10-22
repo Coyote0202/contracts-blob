@@ -3,9 +3,9 @@ kind = "WorldContract"
 class_hash = "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce"
 original_class_hash = "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce"
 abi = "manifests/sepolia/deployment/abis/dojo-world.json"
-address = "0x5754f90e537aab86bd279cb37dfcb149015132bc75272da9f8636a1ef848976"
-transaction_hash = "0x15eef232a5410572fc27fad3d553384655fb9a153304502ef3b19827d17869c"
-seed = "blob-arena-0.4-alpha.16-3"
+address = "0x408be4e854df5a9f419e68a3e2b24e94960fddb08080193d075cf3b75cd5916"
+transaction_hash = "0x19951612880eba1b72784fed446bfcbf234d90082da14891212a81b848cd08e"
+seed = "blob-arena-0.4-alpha.17-1"
 manifest_name = "dojo-world"
 
 [world.metadata]
@@ -22,16 +22,16 @@ manifest_name = "dojo-base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x79eb5e9ad8117c9478a699d1cb936ea8d5fb5e1dbee919908db18d556988a43"
+address = "0x1c0fa7e89c80f45324bca526d94e986696f5ec84d3e5611cc2a799c985b55f9"
 class_hash = "0x7130811dfc73ce419f4f06c4b601aa12a67c05786c68920217e4bcf98e181a4"
 original_class_hash = "0x7130811dfc73ce419f4f06c4b601aa12a67c05786c68920217e4bcf98e181a4"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-arcade_blobert_actions-64e66191.json"
 reads = []
 writes = [
-    "ArcadeBlobert",
-    "LastMint",
-    "AMMABlobert",
+    "blob_arena-ArcadeBlobert",
+    "blob_arena-LastMint",
+    "blob_arena-AMMABlobert",
 ]
 init_calldata = []
 tag = "blob_arena-arcade_blobert_actions"
@@ -40,13 +40,13 @@ manifest_name = "blob_arena-arcade_blobert_actions-64e66191"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x78ac6fd431ea8c4a581ded5365c6be34fc31f4c162cb799f2116fc25c9ffb1d"
+address = "0xbfa11da7e39050d84798ddc595e94face7fec1ca33ad17c41883ac3ab2328e"
 class_hash = "0x13e753fe7c4aec7ed7e6b9aea6440e82379a407bac5fe7a01675366a58cb28d"
 original_class_hash = "0x13e753fe7c4aec7ed7e6b9aea6440e82379a407bac5fe7a01675366a58cb28d"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-attack_actions-1aec710d.json"
 reads = []
-writes = ["Attack"]
+writes = ["blob_arena-Attack"]
 init_calldata = []
 tag = "blob_arena-attack_actions"
 systems = []
@@ -54,17 +54,17 @@ manifest_name = "blob_arena-attack_actions-1aec710d"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x3780b7d5ecb5ac46bebe73e2bc534c8a80f70d91321e05de0c2f74578763c7"
+address = "0x379a2c32efc48a8456f3b5420ca6978f7ee6e426d7626b72b245c71f35307e1"
 class_hash = "0x34bc6b72fd0b5f4235c1fc1f42ce80bcc127f3335b5b7e8b4e51773eece5eb5"
 original_class_hash = "0x34bc6b72fd0b5f4235c1fc1f42ce80bcc127f3335b5b7e8b4e51773eece5eb5"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-blobert_actions-6e38837a.json"
 reads = []
 writes = [
-    "ItemMap",
-    "Item",
-    "Attack",
-    "HasAttack",
+    "blob_arena-ItemMap",
+    "blob_arena-Item",
+    "blob_arena-Attack",
+    "blob_arena-HasAttack",
 ]
 init_calldata = []
 tag = "blob_arena-blobert_actions"
@@ -78,16 +78,16 @@ manifest_name = "blob_arena-blobert_actions-6e38837a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x3a651ea0751daeb44b617161cde0f5cdc9e9c42f17fd178ff4016a112bb155"
+address = "0x6fc503aa39636611b0554c4390bbad5e3aa422a797b732f7f368781868491cb"
 class_hash = "0x3d36d100e27474a4e42f9b3f79e46b4434b0a7892c47606fbbd7fb46f4977e2"
 original_class_hash = "0x3d36d100e27474a4e42f9b3f79e46b4434b0a7892c47606fbbd7fb46f4977e2"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-item_actions-7087862a.json"
 reads = []
 writes = [
-    "Item",
-    "Attack",
-    "HasAttack",
+    "blob_arena-Item",
+    "blob_arena-Attack",
+    "blob_arena-HasAttack",
 ]
 init_calldata = []
 tag = "blob_arena-item_actions"
@@ -96,27 +96,27 @@ manifest_name = "blob_arena-item_actions-7087862a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0xf2fb67497e5a9ac6d9cf25f7dffc95b34df1baffb655f99e097cf5fc17c56f"
+address = "0xbfa625bdff42f2cd7f7ee1e4e3b410b5492dd856efbee4bd61c217941a6e6f"
 class_hash = "0x5f94aea4f75e1bbcab952f17f294967829d70fd0aa252834ec3d17e9b790ad4"
 original_class_hash = "0x5f94aea4f75e1bbcab952f17f294967829d70fd0aa252834ec3d17e9b790ad4"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-pvp_actions-2371c4eb.json"
 reads = []
 writes = [
-    "AvailableAttack",
-    "CombatState",
-    "Salts",
-    "CombatantInfo",
-    "CombatantState",
-    "CombatantStats",
-    "PlannedAttack",
-    "Commitment",
-    "Item",
-    "PvPChallengeInvite",
-    "PvPChallengeResponse",
-    "PvPChallengeScore",
-    "PvPCombatants",
-    "AttackResult",
+    "blob_arena-AvailableAttack",
+    "blob_arena-CombatState",
+    "blob_arena-Salts",
+    "blob_arena-CombatantInfo",
+    "blob_arena-CombatantState",
+    "blob_arena-CombatantStats",
+    "blob_arena-PlannedAttack",
+    "blob_arena-Commitment",
+    "blob_arena-Item",
+    "blob_arena-PvPChallengeInvite",
+    "blob_arena-PvPChallengeResponse",
+    "blob_arena-PvPChallengeScore",
+    "blob_arena-PvPCombatants",
+    "blob_arena-AttackResult",
 ]
 init_calldata = []
 tag = "blob_arena-pvp_actions"
@@ -137,19 +137,19 @@ manifest_name = "blob_arena-pvp_actions-2371c4eb"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x359d223edd6bff242e8802dbaeef866097c6678e6a5d50bb5ff25c7f5331dc6"
+address = "0x4f813d151d264b534a827865941e93388d793fbcfda690c0f5a51fc66da1a52"
 class_hash = "0x5c60fbd4712b3d7c68c9ef157054769833a6187541c9fff645b73762b9a866b"
 original_class_hash = "0x5c60fbd4712b3d7c68c9ef157054769833a6187541c9fff645b73762b9a866b"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-pvp_admin_actions-2959c1bc.json"
 reads = []
 writes = [
-    "AvailableAttack",
-    "CombatState",
-    "CombatantInfo",
-    "CombatantState",
-    "CombatantStats",
-    "PvPCombatants",
+    "blob_arena-AvailableAttack",
+    "blob_arena-CombatState",
+    "blob_arena-CombatantInfo",
+    "blob_arena-CombatantState",
+    "blob_arena-CombatantStats",
+    "blob_arena-PvPCombatants",
 ]
 init_calldata = []
 tag = "blob_arena-pvp_admin_actions"
