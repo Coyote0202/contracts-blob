@@ -162,19 +162,19 @@ const makeCall = (address, entrypoint, calldata) => {
 };
 
 let calls = [];
-for (const [trait, traits] of Object.entries(seed_data)) {
-  for (const [n, item] of Object.entries(traits)) {
-    console.log(`seed: ${item.name}`);
-    calls.push([
-      `seed: ${item.name}`,
-      makeCall(
-        blobertContractAddress,
-        seedEntrypoint,
-        makeItemCallData(trait, n, item)
-      ),
-    ]);
-  }
-}
+// for (const [trait, traits] of Object.entries(seed_data)) {
+//   for (const [n, item] of Object.entries(traits)) {
+//     console.log(`seed: ${item.name}`);
+//     calls.push([
+//       `seed: ${item.name}`,
+//       makeCall(
+//         blobertContractAddress,
+//         seedEntrypoint,
+//         makeItemCallData(trait, n, item)
+//       ),
+//     ]);
+//   }
+// }
 
 // for (const [n, traits] of Object.entries(custom_data)) {
 //   for (const [trait, item] of Object.entries(traits)) {
@@ -189,27 +189,27 @@ for (const [trait, traits] of Object.entries(seed_data)) {
 //   }
 // }
 
-// for (const [n, fighter] of Object.entries(amma_data)) {
-//   let custom_id = Number(n) + amma_offset;
-//   calls.push([
-//     `fighter ${fighter.name}`,
-//     makeCall(arcadeBlobertAddress, "set_amma_fighter", {
-//       fighter_id: n,
-//       name: byteArray.byteArrayFromString(fighter.name),
-//       custom_id: custom_id,
-//     }),
-//   ]);
-//   for (const [trait, item] of Object.entries(fighter.traits)) {
-//     calls.push([
-//       `custom: ${item.name}`,
-//       makeCall(
-//         blobertContractAddress,
-//         customEntrypoint,
-//         makeItemCallData(trait, custom_id, item)
-//       ),
-//     ]);
-//   }
-// }
+for (const [n, fighter] of Object.entries(amma_data)) {
+  let custom_id = Number(n) + amma_offset;
+  calls.push([
+    `fighter ${fighter.name}`,
+    makeCall(arcadeBlobertAddress, "set_amma_fighter", {
+      fighter_id: n,
+      name: byteArray.byteArrayFromString(fighter.name),
+      custom_id: custom_id,
+    }),
+  ]);
+  for (const [trait, item] of Object.entries(fighter.traits)) {
+    calls.push([
+      `custom: ${item.name}`,
+      makeCall(
+        blobertContractAddress,
+        customEntrypoint,
+        makeItemCallData(trait, custom_id, item)
+      ),
+    ]);
+  }
+}
 
 const multiCallSize = 20;
 for (let i = 0, x = 0; i < calls.length; i += multiCallSize, x += 1) {
