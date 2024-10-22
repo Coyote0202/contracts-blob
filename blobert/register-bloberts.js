@@ -21,7 +21,6 @@ const loadJson = (rpath) => {
 
 const getContractAddress = (mainfest, contractName) => {
   for (const contract of mainfest.contracts) {
-    console.log(contract.tag);
     if (contract.tag === contractName) {
       return contract.address;
     }
@@ -64,7 +63,7 @@ const toSigned = (x) => {
   if (x >= 0) {
     return { sign: false, value: x };
   } else {
-    return { sign: true, value: x };
+    return { sign: true, value: -x };
   }
 };
 
@@ -154,7 +153,6 @@ const makeItemCallData = (trait, n, item) => {
 };
 
 const makeCall = (address, entrypoint, calldata) => {
-  console.log(calldata);
   return blobertContract.populate(entrypoint, calldata);
   // return {
   //   contractAddress: address,
@@ -166,6 +164,7 @@ const makeCall = (address, entrypoint, calldata) => {
 let calls = [];
 for (const [trait, traits] of Object.entries(seed_data)) {
   for (const [n, item] of Object.entries(traits)) {
+    console.log(`seed: ${item.name}`);
     calls.push([
       `seed: ${item.name}`,
       makeCall(

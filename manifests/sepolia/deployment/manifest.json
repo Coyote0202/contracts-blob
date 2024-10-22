@@ -3835,8 +3835,7 @@
         "blob_arena-PvPChallengeInvite",
         "blob_arena-PvPChallengeResponse",
         "blob_arena-PvPChallengeScore",
-        "blob_arena-PvPCombatants",
-        "blob_arena-AttackResult"
+        "blob_arena-PvPCombatants"
       ],
       "init_calldata": [],
       "tag": "blob_arena-pvp_actions",

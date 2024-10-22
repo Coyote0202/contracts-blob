@@ -36,14 +36,14 @@ def get_models(data):
     return {get_model_name(m): m["name"] for m in data["models"]}
 
 
-def run_cmd(cmd, cwd):
+def run_cmd(cmd):
     # os.environ["SYSTEMD_COLORS"] = "1"
     print(cmd)
-    if type(cmd) is str:
-        cmd = cmd.split(" ")
-    process = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, encoding="utf-8")
-    for c in iter(lambda: process.stdout.read(1), ""):
-        sys.stdout.write(c)
+    # if type(cmd) is str:
+    #     cmd = cmd.split(" ")
+    # process = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, encoding="utf-8")
+    # for c in iter(lambda: process.stdout.read(1), ""):
+    #     sys.stdout.write(c)
 
 
 def make_authorisations_string(data: dict[str, list[str]], contract_addresses):
@@ -54,24 +54,18 @@ def make_authorisations_string(data: dict[str, list[str]], contract_addresses):
             for m in models
         ]
     )
-
+def parse_manifest(data):
+    return " ".join([f"model:{w.split('-')[1]},{c['address']}" for c in data["contracts"] for w in c['writes']])
+        
 
 def main():
-    # run_cmd("sozo migrate apply", CONTRACT_PATH)
-    manifest_path = CONTRACT_PATH / f"manifests/dev/manifest.json"
-    autorisations_path = CONTRACT_PATH / "authorisations.json"
-    print(f"Manifest path: {manifest_path}")
-    authorisations = json.load(autorisations_path.open())
+    manifest_path = CONTRACT_PATH / f"manifests/sepolia/deployment/manifest.json"
     manifest = json.load(manifest_path.open())
 
     world_address = get_world(manifest)
-    contract_addresses = get_contracts_addresses(manifest)
-
-    auth_string = make_authorisations_string(
-        authorisations["writer"], contract_addresses
-    )
+    
     run_cmd(
-        f"sozo auth grant writer --world {world_address} {auth_string}", CONTRACT_PATH
+        f"sozo --profile sepolia auth grant writer --world {world_address} --private-key {os.environ['DOJO_PRIVATE_KEY']} {parse_manifest(manifest)}"
     )
 
 
