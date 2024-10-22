@@ -28,6 +28,12 @@ const getContractAddress = (mainfest, contractName) => {
   return null;
 };
 
+const getContract = async (provider, contractAddress) => {
+  console.log(contractAddress);
+  const { abi: abi } = await provider.getClassAt(contractAddress);
+  return new Contract(abi, contractAddress, provider);
+};
+
 const seed_data = loadJson("./seed-attributes.json");
 const custom_data = loadJson("./custom-attributes.json");
 const amma_data = loadJson("./amma-attributes.json");
@@ -47,11 +53,14 @@ const account1Address = process.env.DOJO_ACCOUNT_ADDRESS;
 const privateKey1 = process.env.DOJO_PRIVATE_KEY;
 const account = new Account(provider, account1Address, privateKey1);
 
-const blobertContractAddress = getContractAddress(manifest, blobertContractTag);
-const arcadeBlobertAddress = getContractAddress(manifest, arcadeBlobertTag);
-
-const { abi: abi } = await provider.getClassAt(blobertContractAddress);
-const blobertContract = new Contract(abi, blobertContractAddress, provider);
+const blobertContract = await getContract(
+  provider,
+  getContractAddress(manifest, blobertContractTag)
+);
+const arcadeBlobertContract = await getContract(
+  provider,
+  getContractAddress(manifest, arcadeBlobertTag)
+);
 
 const TRAITS_ENUM = ["Background", "Armour", "Jewelry", "Mask", "Weapon"];
 const TARGET_ENUM = ["Player", "Opponent"];
@@ -78,14 +87,9 @@ function parseNestedSignedStruct(obj) {
   return obj;
 }
 
-const makeCairoEnum = (enumArray, option) => {
-  let struct = {};
-  enumArray.forEach((x) => {
-    struct[x] = undefined;
-  });
+const makeCairoEnum = (option) => {
   let [key, value] = parseEnumObject(option);
-  struct[key] = value;
-  return new CairoCustomEnum(struct);
+  return new CairoCustomEnum({ [key]: value });
 };
 
 const parseEnumObject = (obj) => {
@@ -102,17 +106,15 @@ const makeEffectStruct = (effect) => {
   let [key, affect] = parseEnumObject(effect.affect);
 
   if (key == "Stat") {
-    effect.affect.Stat = parseNestedSignedStruct(
-      makeCairoEnum([], value.stats)
-    );
+    effect.affect.Stat = parseNestedSignedStruct(makeCairoEnum(value.stats));
   } else if (["Health", "Stats"].includes(key)) {
     effect.affect = parseNestedSignedStruct(effect.affect);
   } else if (key == "Stats") {
     effect.affect = parseNestedSignedStruct(effect.affect);
   }
   return {
-    target: makeCairoEnum([], effect.target),
-    affect: makeCairoEnum([], effect.affect),
+    target: makeCairoEnum(effect.target),
+    affect: makeCairoEnum(effect.affect),
   };
 };
 
@@ -143,7 +145,7 @@ const makeAttacksStruct = (attacks) => {
 const makeItemCallData = (trait, n, item) => {
   const trait_str = trait.charAt(0).toUpperCase() + trait.slice(1);
   return {
-    blobert_trait: makeCairoEnum([], trait_str),
+    blobert_trait: makeCairoEnum(trait_str),
     trait_id: Number(n),
     // item_name: byteArray.byteArrayFromString(item.name),
     item_name: item.name,
@@ -152,50 +154,45 @@ const makeItemCallData = (trait, n, item) => {
   };
 };
 
-const makeCall = (address, entrypoint, calldata) => {
-  return blobertContract.populate(entrypoint, calldata);
-  // return {
-  //   contractAddress: address,
-  //   entrypoint: ,
-  //   calldata: CallData.compile(calldata),
-  // };
+const makeCall = (contract, entrypoint, calldata) => {
+  return contract.populate(entrypoint, calldata);
 };
 
 let calls = [];
-// for (const [trait, traits] of Object.entries(seed_data)) {
-//   for (const [n, item] of Object.entries(traits)) {
-//     console.log(`seed: ${item.name}`);
-//     calls.push([
-//       `seed: ${item.name}`,
-//       makeCall(
-//         blobertContractAddress,
-//         seedEntrypoint,
-//         makeItemCallData(trait, n, item)
-//       ),
-//     ]);
-//   }
-// }
+for (const [trait, traits] of Object.entries(seed_data)) {
+  for (const [n, item] of Object.entries(traits)) {
+    console.log(`seed: ${item.name}`);
+    calls.push([
+      `seed: ${item.name}`,
+      makeCall(
+        blobertContract,
+        seedEntrypoint,
+        makeItemCallData(trait, n, item)
+      ),
+    ]);
+  }
+}
 
-// for (const [n, traits] of Object.entries(custom_data)) {
-//   for (const [trait, item] of Object.entries(traits)) {
-//     calls.push([
-//       `custom: ${item.name}`,
-//       makeCall(
-//         blobertContractAddress,
-//         customEntrypoint,
-//         makeItemCallData(trait, n, item)
-//       ),
-//     ]);
-//   }
-// }
+for (const [n, traits] of Object.entries(custom_data)) {
+  for (const [trait, item] of Object.entries(traits)) {
+    calls.push([
+      `custom: ${item.name}`,
+      makeCall(
+        blobertContractAddress,
+        customEntrypoint,
+        makeItemCallData(trait, n, item)
+      ),
+    ]);
+  }
+}
 
 for (const [n, fighter] of Object.entries(amma_data)) {
   let custom_id = Number(n) + amma_offset;
   calls.push([
     `fighter ${fighter.name}`,
-    makeCall(arcadeBlobertAddress, "set_amma_fighter", {
+    makeCall(arcadeBlobertContract, "set_amma_fighter", {
       fighter_id: n,
-      name: byteArray.byteArrayFromString(fighter.name),
+      name: fighter.name,
       custom_id: custom_id,
     }),
   ]);
@@ -203,7 +200,7 @@ for (const [n, fighter] of Object.entries(amma_data)) {
     calls.push([
       `custom: ${item.name}`,
       makeCall(
-        blobertContractAddress,
+        blobertContract,
         customEntrypoint,
         makeItemCallData(trait, custom_id, item)
       ),
