@@ -1,3 +1,5 @@
+use blob_arena::models::Target;
+
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]
 enum Phase {
     Setup,
@@ -16,38 +18,43 @@ struct CombatState {
     block_number: u64,
 }
 
-#[derive(Drop, Serde, Copy, Introspect)]
-struct AttackHit {
-    damage: u8,
-    stun: u8,
-    critical: bool,
-    heal: u8,
+#[dojo::model]
+#[dojo::event]
+#[derive(Drop, Serde)]
+struct AttackResult {
+    #[key]
+    combatant_id: u128,
+    #[key]
+    round: u32,
+    target: u128,
+    result: AttackOutcomes,
 }
 
-#[derive(Drop, Serde, Copy, Introspect)]
-enum AttackEffect {
+#[derive(Drop, Serde, Introspect)]
+enum AttackOutcomes {
     Failed,
     Stunned,
-    Miss,
-    Hit,
+    Miss: Array<EffectResult>,
+    Hit: Array<EffectResult>,
 }
 
-// #[derive(Drop, Serde, Copy, Introspect)]
-// #[dojo::model]
-// // #[dojo::event]
-// pub struct AttackResult {
-//     #[key]
-//     pub combatant_id: u128,
-//     #[key]
-//     pub round: u32,
-//     pub attack_id: u128,
-//     pub target: u128,
-//     pub effect: u8,
-//     pub damage: u8,
-//     pub stun: u8,
-//     pub critical: bool,
-//     pub heal: u8,
-// }
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+enum AffectResult {
+    Success,
+    Damage: DamageResult,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct EffectResult {
+    target: Target,
+    affect: AffectResult,
+}
+
+#[derive(Drop, Serde, Copy, PartialEq, Introspect)]
+struct DamageResult {
+    damage: u8,
+    critical: bool,
+}
 
 #[dojo::model]
 #[derive(Drop, Serde)]

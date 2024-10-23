@@ -7,7 +7,7 @@ use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 use blob_arena::{
     components::{utils::{ABT, Status, Winner}, commitment::Commitment},
     models::{
-        SaltsModel, Phase, AttackHit, AttackEffect, CombatState, CombatStateStore, PlannedAttack,
+        SaltsModel, Phase, CombatState, CombatStateStore, PlannedAttack,
         PlannedAttackStore, CombatantState
     },
     utils::ArrayHash
@@ -43,7 +43,7 @@ impl SaltsImpl of SaltsTrait {
     }
 
     fn get_salts_hash_state(self: IWorldDispatcher, id: u128) -> HashState {
-        PoseidonTrait::new().update_state(self.get_salts(id))
+        PoseidonTrait::new().update_with(self.get_salts(id))
     }
 }
 

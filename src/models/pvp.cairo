@@ -1,4 +1,4 @@
-use blob_arena::components::{combat::{Phase, AttackEffect}, utils::{AB, ABT}};
+use blob_arena::components::{combat::{Phase}, utils::{AB, ABT}};
 use starknet::{ContractAddress};
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect)]

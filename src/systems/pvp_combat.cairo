@@ -5,8 +5,7 @@ use blob_arena::{
         combatant::{CombatantStats, CombatantState, CombatantTrait}, attack::{Attack, AttackTrait},
         utils::{AB, ABT, ABTTrait}
     },
-    models::CombatantStateStore, systems::{combat::{AttackEffect, CombatWorldTraits}},
-    models::PlannedAttack,
+    models::CombatantStateStore, systems::{combat::{CombatWorldTraits}}, models::PlannedAttack,
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 

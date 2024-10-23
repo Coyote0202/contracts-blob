@@ -147,7 +147,6 @@ use blob_arena::{
 fn test_damage_calculation() {
     let move_power: u8 = 20;
     let strength: u8 = 30;
-    let vitality: u8 = 50;
     let critical: bool = false;
 
     let damage: u8 = damage_calculation(move_power, strength, critical);
