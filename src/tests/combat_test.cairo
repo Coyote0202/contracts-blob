@@ -144,18 +144,13 @@ use blob_arena::{
 // }
 
 #[test]
-fn test_new_damage_calculation() {
+fn test_damage_calculation() {
     let move_power: u8 = 20;
     let strength: u8 = 30;
     let vitality: u8 = 50;
     let critical: bool = false;
 
-    println!("move_power: {}", move_power);
-    println!("strength: {}", strength);
-    println!("vitality: {}", vitality);
-    println!("critical: {}", critical);
-
     let damage: u8 = damage_calculation(move_power, strength, critical);
-    println!("damage: {}", damage);
+
     assert_eq!(damage, 10);
 }
