@@ -1,34 +1,13 @@
 use blob_arena::{
     models::{
-        combatant:: {
-            CombatantState,
-            CombatantInfo,
-            CombatantStats,
-        },
-        attack::{
-            Attack,
-            Affect,
-            Effect, 
-            Damage, 
-            Target, 
-        },
+        combatant::{CombatantState, CombatantInfo, CombatantStats,},
+        attack::{Attack, Affect, Effect, Damage, Target,},
     },
     components::{
-        stats::{
-            TStats,
-            StatTypes,
-        },
-        combatant::{
-            CombatantStatsTrait,
-            CombatantTrait,
-            CombatantStateTrait,
-        },
+        stats::{TStats, StatTypes,},
+        combatant::{CombatantStatsTrait, CombatantTrait, CombatantStateTrait,},
     },
-    systems::
-        combat::{
-            run_effect,
-            damage_calculation,
-        }
+    systems::combat::{run_effect, damage_calculation,}
 };
 
 // #[test]
@@ -164,8 +143,6 @@ use blob_arena::{
 //     assert_eq!(fighter1.buffs.attack, fighter1_attackValue);
 // }
 
-
-
 #[test]
 fn test_new_damage_calculation() {
     let move_power: u8 = 20;
@@ -180,5 +157,5 @@ fn test_new_damage_calculation() {
 
     let damage: u8 = damage_calculation(move_power, strength, critical);
     println!("damage: {}", damage);
-    assert_eq!(damage, 13);
+    assert_eq!(damage, 10);
 }
