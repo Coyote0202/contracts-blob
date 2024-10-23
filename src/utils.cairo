@@ -27,6 +27,19 @@ fn uuid(world: IWorldDispatcher) -> u128 {
     felt252_to_uuid(PoseidonTrait::new().update_with(values).finalize())
 }
 
+impl ArrayHash<
+    T, S, +HashStateTrait<S>, +Hash<T, S>, +Drop<Array<T>>, +Drop<S>
+> of Hash<Array<T>, S> {
+    fn update_state(mut state: S, mut value: Array<T>) -> S {
+        loop {
+            match value.pop_front() {
+                Option::Some(v) => { state = state.update_with(v); },
+                Option::None => { break; },
+            }
+        };
+        state
+    }
+}
 
 #[dojo::model]
 #[derive(Drop, Serde)]
@@ -60,6 +73,4 @@ impl TToHashImpl<T, +Hash<T, HashState>, +Drop<T>> of ToHash<T> {
         (*self).update_with(value).finalize()
     }
 }
-
-
 

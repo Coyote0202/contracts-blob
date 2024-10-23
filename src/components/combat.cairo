@@ -9,7 +9,8 @@ use blob_arena::{
     models::{
         SaltsModel, Phase, AttackHit, AttackEffect, CombatState, CombatStateStore, PlannedAttack,
         PlannedAttackStore, CombatantState
-    }
+    },
+    utils::ArrayHash
 };
 type Salts = Array<felt252>;
 
@@ -42,21 +43,7 @@ impl SaltsImpl of SaltsTrait {
     }
 
     fn get_salts_hash_state(self: IWorldDispatcher, id: u128) -> HashState {
-        let mut salts = self.get_salts(id);
-        let mut hash_state = PoseidonTrait::new();
-        loop {
-            match salts.pop_front() {
-                Option::Some(salt) => { hash_state.update(salt); },
-                Option::None => { break; },
-            }
-        };
-        // let (mut n, len) = (0, salts.len());
-
-        // while n < len {
-        //     hash_state.update(*salts.at(n));
-        //     n += 1;
-        // };
-        hash_state
+        PoseidonTrait::new().update_state(self.get_salts(id))
     }
 }
 
