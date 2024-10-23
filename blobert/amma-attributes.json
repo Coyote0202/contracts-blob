@@ -1,6 +1,6 @@
 {
   "1": {
-    "name": "Brett Skinner",
+    "name": "AMMA 1",
     "traits": {
       "background": {
         "name": "USA",
@@ -168,7 +168,7 @@
     }
   },
   "2": {
-    "name": "Daniel Winter",
+    "name": "AMMA 2",
     "traits": {
       "background": {
         "name": "United Kingdom",
@@ -298,7 +298,7 @@
     }
   },
   "3": {
-    "name": "Andrzej Studencki",
+    "name": "AMMA 3",
     "traits": {
       "background": {
         "name": "Poland",
@@ -376,14 +376,17 @@
               {
                 "target": "Player",
                 "affect": {
-                  "Healing": 30
+                  "Health": 30
                 }
               },
               {
                 "target": "Player",
                 "affect": {
                   "Stats": {
-                    "vitality": 30
+                    "strength": 0,
+                    "vitality": 30,
+                    "dexterity": 0,
+                    "luck": 0
                   }
                 }
               }
@@ -408,10 +411,12 @@
               {
                 "target": "Player",
                 "affect": {
-                  "strength": 20,
-                  "vitality": 0,
-                  "dexterity": 0,
-                  "luck": 0
+                  "Stats": {
+                    "strength": 20,
+                    "vitality": 0,
+                    "dexterity": 0,
+                    "luck": 0
+                  }
                 }
               }
             ],
@@ -440,7 +445,7 @@
     }
   },
   "4": {
-    "name": "Taylor Jones",
+    "name": "AMMA 4",
     "traits": {
       "background": {
         "name": "USA",
@@ -587,7 +592,7 @@
     }
   },
   "5": {
-    "name": "Adam Harrigan",
+    "name": "AMMA 5",
     "traits": {
       "background": {
         "name": "USA",
@@ -749,7 +754,7 @@
     }
   },
   "6": {
-    "name": "Antonio Penedo",
+    "name": "AMMA 6",
     "traits": {
       "background": {
         "name": "Mexico",
@@ -869,7 +874,7 @@
               {
                 "target": "Player",
                 "affect": {
-                  "Healing": 80
+                  "Health": 80
                 }
               }
             ],
