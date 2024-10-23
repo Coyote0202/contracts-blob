@@ -33,12 +33,16 @@ impl ArrayHash<
     fn update_state(mut state: S, mut value: Array<T>) -> S {
         loop {
             match value.pop_front() {
-                Option::Some(v) => { state = state.update_with(v); },
+                Option::Some(v) => { state = Hash::update_state(state, v); },
                 Option::None => { break; },
             }
         };
         state
     }
+}
+
+fn array_to_hash_state<T, +Hash<T, HashState>, +Drop<Array<T>>,>(arr: Array<T>) -> HashState {
+    Hash::update_state(PoseidonTrait::new(), arr)
 }
 
 #[dojo::model]
@@ -71,6 +75,20 @@ fn felt252_to_u128(value: felt252) -> u128 {
 impl TToHashImpl<T, +Hash<T, HashState>, +Drop<T>> of ToHash<T> {
     fn to_hash(self: @HashState, value: T) -> felt252 {
         (*self).update_with(value).finalize()
+    }
+}
+
+trait UpdateHashToU128 {
+    fn to_u128(self: HashState) -> u128;
+    fn update_to_u128<T, +Hash<T, HashState>>(self: HashState, value: T) -> u128;
+}
+
+impl HashToU128Impl of UpdateHashToU128 {
+    fn to_u128(self: HashState) -> u128 {
+        felt252_to_u128(self.finalize())
+    }
+    fn update_to_u128<T, +Hash<T, HashState>>(self: HashState, value: T) -> u128 {
+        Self::to_u128(Hash::update_state(self, value))
     }
 }
 
