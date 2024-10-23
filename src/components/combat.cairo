@@ -20,7 +20,7 @@ impl SaltsImpl of SaltsTrait {
     }
 
     fn set_salts(self: IWorldDispatcher, id: u128, salts: Salts) {
-        set!(self, (SaltsModel { id, salts: Option::Some(salts) },));
+        set!(self, (SaltsModel { id, salts: salts },));
     }
 
     fn append_salt(self: IWorldDispatcher, id: u128, salt: felt252) {
@@ -30,13 +30,10 @@ impl SaltsImpl of SaltsTrait {
     }
 
     fn reset_salts(self: IWorldDispatcher, id: u128) {
-        set!(self, (SaltsModel { id, salts: Option::None(()) }));
+        set!(self, (SaltsModel { id, salts: array![] }));
     }
     fn get_salts(self: IWorldDispatcher, id: u128) -> Salts {
-        match self.get_salts_model(id).salts {
-            Option::Some(salts) => salts,
-            Option::None => ArrayTrait::new()
-        }
+        self.get_salts_model(id).salts
     }
 
 

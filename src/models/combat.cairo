@@ -54,6 +54,6 @@ enum AttackEffect {
 struct Salts {
     #[key]
     id: u128,
-    salts: Option<Array<felt252>>
+    salts: Array<felt252>
 }
 
