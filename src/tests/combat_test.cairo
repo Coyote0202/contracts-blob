@@ -27,7 +27,7 @@ use blob_arena::{
     systems::
         combat::{
             run_effect,
-            new_damage_calculation,
+            damage_calculation,
         }
 };
 
@@ -178,7 +178,7 @@ fn test_new_damage_calculation() {
     println!("vitality: {}", vitality);
     println!("critical: {}", critical);
 
-    let damage: u8 = new_damage_calculation(move_power, strength, vitality, critical);
+    let damage: u8 = damage_calculation(move_power, strength, critical);
     println!("damage: {}", damage);
     assert_eq!(damage, 13);
 }
