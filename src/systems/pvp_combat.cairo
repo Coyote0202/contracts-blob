@@ -5,17 +5,11 @@ use blob_arena::{
         combatant::{CombatantStats, CombatantState, CombatantTrait}, attack::{Attack, AttackTrait},
         utils::{AB, ABT, ABTTrait}
     },
-    models::CombatantStateStore, systems::{combat::{CombatWorldTraits}}, models::PlannedAttack,
+    utils::UpdateHashToU128, models::CombatantStateStore, systems::{combat::{CombatWorldTraits}},
+    models::PlannedAttack,
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 
-
-// #[derive(Clone, Copy, Drop)]
-// struct PlannedAttack {
-//     combatant: u128,
-//     attack: Attack,
-//     target: u128,
-// }
 
 #[generate_trait]
 impl PvPCombatSystemImpl of PvPCombatSystemTrait {
@@ -38,7 +32,7 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         } else if speed_a < speed_b {
             AB::B
         } else {
-            (hash.finalize().try_into().unwrap() % 2_u128).into()
+            (hash.to_u128() % 2_u128).into()
         };
 
         let stats_1 = self.get_combatant_stats(combatant_ids.get(first));

@@ -42,9 +42,6 @@ struct ABT<T> {
     b: T,
 }
 
-// impl ABTDropImpl<T, +Drop<T>, -Drop<ABT<T>>> of Drop<ABT<T>>;
-// impl ABTCopyImpl<T, +Copy<T>> of Copy<ABT<T>>;
-
 impl SpanTryIntoABT<T, +Drop<T>, +Copy<T>> of TryInto<Span<T>, ABT<T>> {
     fn try_into(self: Span<T>) -> Option<ABT<T>> {
         if self.len() == 2 {
@@ -73,20 +70,6 @@ impl ABTIntoSpan<T, +Drop<T>> of Into<ABT<T>, Span<T>> {
         array![self.a, self.b].span()
     }
 }
-
-// impl ABTSerdeImpl<T, +Serde<T>, +Drop<T>> of Serde<ABT<T>> {
-//     fn serialize(self: @ABT<T>, ref output: Array<felt252>) {
-//         self.a.serialize(ref output);
-//         self.b.serialize(ref output);
-//     }
-//     fn deserialize(ref serialized: Span<felt252>) -> Option<ABT<T>> {
-//         Option::Some(
-//             ABTTrait::<
-//                 T
-//             >::new(Serde::deserialize(ref serialized)?, Serde::deserialize(ref serialized)?)
-//         )
-//     }
-// }
 
 #[generate_trait]
 impl ABTImpl<T, +Drop<T>> of ABTTrait<T> {

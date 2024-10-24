@@ -23,7 +23,7 @@ use blob_arena::models::{
         PvPChallengeScore as PvPChallengeScoreModel
     },
     combat::{
-        CombatStateStore, CombatState, SaltsStore, Salts as SaltsModel, Phase, AttackResult, AttackOutcomes,
-        EffectResult, DamageResult, AffectResult
+        CombatStateStore, CombatState, SaltsStore, Salts as SaltsModel, Phase, AttackResult,
+        AttackOutcomes, EffectResult, DamageResult, AffectResult
     },
 };
