@@ -49,10 +49,12 @@ trait IERC721 {
 #[dojo::interface]
 trait ICollection {
     fn get_owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress;
-    fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<u128>;
+    fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<felt252>;
     fn get_health(world: @IWorldDispatcher, token_id: u256) -> u8;
     fn get_stats(world: @IWorldDispatcher, token_id: u256) -> Stats;
-    fn has_attack(world: @IWorldDispatcher, token_id: u256, item_id: u128, attack_id: u128) -> bool;
+    fn has_attack(
+        world: @IWorldDispatcher, token_id: u256, item_id: felt252, attack_id: felt252
+    ) -> bool;
 }
 fn get_collection_dispatcher(contract_address: ContractAddress) -> ICollectionDispatcher {
     ICollectionDispatcher { contract_address }

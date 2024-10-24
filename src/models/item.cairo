@@ -5,7 +5,7 @@ use blob_arena::components::stats::Stats;
 #[derive(Drop, Serde)]
 struct Item {
     #[key]
-    id: u128,
+    id: felt252,
     name: ByteArray,
     stats: Stats,
 }
@@ -14,8 +14,8 @@ struct Item {
 #[derive(Drop, Serde, Copy)]
 struct HasAttack {
     #[key]
-    item_id: u128,
+    item_id: felt252,
     #[key]
-    attack_id: u128,
+    attack_id: felt252,
     has: bool,
 }

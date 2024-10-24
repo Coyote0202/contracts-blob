@@ -33,8 +33,8 @@ impl ABIntoPvPWinner of Into<AB, PvPWinner> {
 #[derive(Drop, Serde, Copy)]
 struct PvPCombatants {
     #[key]
-    id: u128,
-    combatants: (u128, u128),
+    id: felt252,
+    combatants: (felt252, felt252),
 }
 
 
@@ -59,11 +59,11 @@ struct PvPChallengeScore {
 #[derive(Copy, Drop, Serde)]
 struct PvPChallengeInvite {
     #[key]
-    id: u128,
+    id: felt252,
     sender: ContractAddress,
     receiver: ContractAddress,
     collection_address: ContractAddress,
-    combatant: u128,
+    combatant: felt252,
     phase_time: u64,
     open: bool,
 }
@@ -72,7 +72,7 @@ struct PvPChallengeInvite {
 #[derive(Copy, Drop, Serde)]
 struct PvPChallengeResponse {
     #[key]
-    id: u128,
-    combatant: u128,
+    id: felt252,
+    combatant: felt252,
     open: bool,
 }

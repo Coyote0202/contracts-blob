@@ -9,7 +9,7 @@ use blob_arena::{
 
 #[derive(Drop, Serde)]
 struct Attack {
-    id: u128,
+    id: felt252,
     speed: u8,
     accuracy: u8,
     cooldown: u8,
@@ -83,7 +83,7 @@ impl InputIntoEffectArray of Into<Array<EffectInput>, Array<Effect>> {
 
 #[generate_trait]
 impl AttackInputImpl of AttackInputTrait {
-    fn to_model(self: @AttackInput, id: u128) -> AttackModel {
+    fn to_model(self: @AttackInput, id: felt252) -> AttackModel {
         AttackModel {
             id,
             name: self.name.clone(),
@@ -111,7 +111,7 @@ impl AttackModelImpl of AttackModelTrait {
 }
 
 impl AttackIdImpl of IdTrait<Attack> {
-    fn id(self: @Attack) -> u128 {
+    fn id(self: @Attack) -> felt252 {
         *(self.id)
     }
 }
@@ -121,18 +121,18 @@ impl AttackIdsImpl = TIdsImpl<Attack>;
 
 #[generate_trait]
 impl AttackImpl of AttackTrait {
-    fn get_attack_model(self: @IWorldDispatcher, id: u128) -> AttackModel {
+    fn get_attack_model(self: @IWorldDispatcher, id: felt252) -> AttackModel {
         get!((*self), id, AttackModel)
     }
-    fn get_attack(self: @IWorldDispatcher, id: u128) -> Attack {
+    fn get_attack(self: @IWorldDispatcher, id: felt252) -> Attack {
         self.get_attack_model(id).to_attack()
     }
-    fn create_new_attack(self: IWorldDispatcher, attack: AttackInput) -> u128 {
+    fn create_new_attack(self: IWorldDispatcher, attack: AttackInput) -> felt252 {
         let id = uuid(self);
         attack.to_model(id).set(self);
         id
     }
-    fn get_attack_speed(self: @IWorldDispatcher, id: u128) -> u8 {
+    fn get_attack_speed(self: @IWorldDispatcher, id: felt252) -> u8 {
         AttackStore::get_speed(*self, id)
     }
     // fn get_available_attack(

@@ -40,7 +40,7 @@ enum Target {
 #[derive(Drop, Serde)]
 struct Attack {
     #[key]
-    id: u128,
+    id: felt252,
     name: ByteArray,
     speed: u8,
     accuracy: u8,
@@ -53,9 +53,9 @@ struct Attack {
 #[derive(Drop, Serde, Copy)]
 struct AvailableAttack {
     #[key]
-    combatant_id: u128,
+    combatant_id: felt252,
     #[key]
-    attack_id: u128,
+    attack_id: felt252,
     available: bool,
     last_used: u32,
 }

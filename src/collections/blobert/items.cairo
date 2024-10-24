@@ -5,17 +5,17 @@ use blob_arena::{
     components::{stats::{Stats}, item::{ItemTrait, ItemsTrait, AttackInput}},
 };
 use core::hash::into_felt252_based;
-type SeedIds = TTupleSize5<u128>;
+type SeedIds = TTupleSize5<felt252>;
 
 const SEED_TRAIT_TYPE: felt252 = 'seed';
 const CUSTOM_TRAIT_TYPE: felt252 = 'custom';
 
 struct BlobertTraitsSeed {
-    background: u128,
-    armour: u128,
-    jewelry: u128,
-    mask: u128,
-    weapon: u128,
+    background: felt252,
+    armour: felt252,
+    jewelry: felt252,
+    mask: felt252,
+    weapon: felt252,
 }
 
 impl U8IntoBlobertSeedImpl of Into<u8, Seed> {
@@ -70,7 +70,7 @@ struct ItemMap {
     blobert_trait: BlobertTrait,
     #[key]
     blobert_trait_id: u8,
-    item_id: u128,
+    item_id: felt252,
 }
 
 #[generate_trait]
@@ -80,7 +80,7 @@ impl BlobertItems of BlobertItemsTrait {
         trait_type: felt252,
         blobert_trait: BlobertTrait,
         blobert_trait_id: u8,
-        item_id: u128
+        item_id: felt252
     ) {
         ItemMap { trait_type, blobert_trait, blobert_trait_id, item_id, }.set(self);
     }
@@ -89,7 +89,7 @@ impl BlobertItems of BlobertItemsTrait {
         trait_type: felt252,
         blobert_trait: BlobertTrait,
         blobert_trait_id: u8
-    ) -> u128 {
+    ) -> felt252 {
         ItemMapStore::get_item_id(*self, trait_type, blobert_trait, blobert_trait_id)
     }
     fn get_seed_item_ids(self: @IWorldDispatcher, trait_type: felt252, traits: Seed) -> SeedIds {
@@ -112,7 +112,7 @@ impl BlobertItems of BlobertItemsTrait {
 
 #[generate_trait]
 impl BlobertStatsImpl of BlobertStatsTrait {
-    fn get_blobert_item_ids(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Array<u128> {
+    fn get_blobert_item_ids(self: @IWorldDispatcher, blobert_trait: TokenTrait) -> Array<felt252> {
         let (background, armour, jewelry, mask, weapon) = self.get_item_ids(blobert_trait);
         array![background, armour, jewelry, mask, weapon]
     }
@@ -128,7 +128,7 @@ impl BlobertStatsImpl of BlobertStatsTrait {
         }
     }
     fn blobert_has_attack(
-        self: @IWorldDispatcher, blobert_trait: TokenTrait, item_id: u128, attack_id: u128
+        self: @IWorldDispatcher, blobert_trait: TokenTrait, item_id: felt252, attack_id: felt252
     ) -> bool {
         let mut item_ids = self.get_blobert_item_ids(blobert_trait);
         let mut has = false;

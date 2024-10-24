@@ -16,33 +16,33 @@ type Salts = Array<felt252>;
 
 #[generate_trait]
 impl SaltsImpl of SaltsTrait {
-    fn get_salts_model(self: IWorldDispatcher, id: u128) -> SaltsModel {
+    fn get_salts_model(self: IWorldDispatcher, id: felt252) -> SaltsModel {
         get!(self, id, SaltsModel)
     }
 
-    fn set_salts(self: IWorldDispatcher, id: u128, salts: Salts) {
+    fn set_salts(self: IWorldDispatcher, id: felt252, salts: Salts) {
         set!(self, (SaltsModel { id, salts: salts },));
     }
 
-    fn append_salt(self: IWorldDispatcher, id: u128, salt: felt252) {
+    fn append_salt(self: IWorldDispatcher, id: felt252, salt: felt252) {
         let mut salts = self.get_salts(id);
         salts.append(salt);
         self.set_salts(id, salts);
     }
 
-    fn reset_salts(self: IWorldDispatcher, id: u128) {
+    fn reset_salts(self: IWorldDispatcher, id: felt252) {
         set!(self, (SaltsModel { id, salts: array![] }));
     }
-    fn get_salts(self: IWorldDispatcher, id: u128) -> Salts {
+    fn get_salts(self: IWorldDispatcher, id: felt252) -> Salts {
         self.get_salts_model(id).salts
     }
 
 
-    fn get_salts_hash(self: IWorldDispatcher, id: u128) -> felt252 {
+    fn get_salts_hash(self: IWorldDispatcher, id: felt252) -> felt252 {
         poseidon_hash_span(self.get_salts(id).span())
     }
 
-    fn get_salts_hash_state(self: IWorldDispatcher, id: u128) -> HashState {
+    fn get_salts_hash_state(self: IWorldDispatcher, id: felt252) -> HashState {
         PoseidonTrait::new().update_with(self.get_salts(id))
     }
 }
@@ -62,22 +62,22 @@ impl PhaseImpl of PhaseTrait {
 
 #[generate_trait]
 impl CombatStateImpl of CombatStateTrait {
-    fn get_combat_state(self: @IWorldDispatcher, id: u128) -> CombatState {
+    fn get_combat_state(self: @IWorldDispatcher, id: felt252) -> CombatState {
         CombatStateStore::get(*self, id)
     }
-    fn new_combat_state(self: IWorldDispatcher, id: u128) {
+    fn new_combat_state(self: IWorldDispatcher, id: felt252) {
         CombatState { id, phase: Phase::Commit, round: 1, block_number: get_block_number() }
             .set(self)
     }
-    fn get_combat_phase(self: @IWorldDispatcher, id: u128) -> Phase {
+    fn get_combat_phase(self: @IWorldDispatcher, id: felt252) -> Phase {
         self.get_combat_state(id).phase
     }
-    fn get_running_combat_state(self: @IWorldDispatcher, id: u128) -> CombatState {
+    fn get_running_combat_state(self: @IWorldDispatcher, id: felt252) -> CombatState {
         let state = self.get_combat_state(id);
         state.phase.assert_running();
         state
     }
-    fn next_round(self: IWorldDispatcher, mut state: CombatState, combatants: Span<u128>) {
+    fn next_round(self: IWorldDispatcher, mut state: CombatState, combatants: Span<felt252>) {
         self.reset_salts(state.id);
         self.clear_commitments_with(combatants);
         self.clear_planned_attacks(combatants);
@@ -88,9 +88,9 @@ impl CombatStateImpl of CombatStateTrait {
 }
 #[generate_trait]
 impl CombatStatesImpl of CombatStatesTrait {
-    fn get_combatants_mortality(mut self: Array<CombatantState>) -> (Array<u128>, Array<u128>) {
-        let mut alive = ArrayTrait::<u128>::new();
-        let mut dead = ArrayTrait::<u128>::new();
+    fn get_combatants_mortality(mut self: Array<CombatantState>) -> (Array<felt252>, Array<felt252>) {
+        let mut alive = ArrayTrait::<felt252>::new();
+        let mut dead = ArrayTrait::<felt252>::new();
         loop {
             match self.pop_front() {
                 Option::Some(state) => {
@@ -105,7 +105,7 @@ impl CombatStatesImpl of CombatStatesTrait {
         };
         (alive, dead)
     }
-    fn end_combat(self: IWorldDispatcher, mut state: CombatState, winner: u128) {
+    fn end_combat(self: IWorldDispatcher, mut state: CombatState, winner: felt252) {
         state.phase = Phase::Ended(winner);
         state.set(self);
     }
@@ -114,10 +114,10 @@ impl CombatStatesImpl of CombatStatesTrait {
 
 #[generate_trait]
 impl PlannedAttackImpl of PlannedAttackTrait {
-    fn get_planned_attack(self: @IWorldDispatcher, id: u128) -> PlannedAttack {
+    fn get_planned_attack(self: @IWorldDispatcher, id: felt252) -> PlannedAttack {
         PlannedAttackStore::get(*self, id)
     }
-    fn get_planned_attacks(self: @IWorldDispatcher, ids: Span<u128>) -> Span<PlannedAttack> {
+    fn get_planned_attacks(self: @IWorldDispatcher, ids: Span<felt252>) -> Span<PlannedAttack> {
         let (mut n, len) = (0, ids.len());
         let mut attacks = ArrayTrait::<PlannedAttack>::new();
         while n < len {
@@ -142,10 +142,10 @@ impl PlannedAttackImpl of PlannedAttackTrait {
         set
     }
 
-    fn clear_planned_attack(self: IWorldDispatcher, id: u128) {
+    fn clear_planned_attack(self: IWorldDispatcher, id: felt252) {
         PlannedAttack { id, attack: 0, target: 0 }.set(self);
     }
-    fn clear_planned_attacks(self: IWorldDispatcher, ids: Span<u128>) {
+    fn clear_planned_attacks(self: IWorldDispatcher, ids: Span<felt252>) {
         let (mut n, len) = (0, ids.len());
         while n < len {
             self.clear_planned_attack(*ids.at(n));

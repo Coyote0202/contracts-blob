@@ -8,39 +8,43 @@ use blob_arena::{
         stats::{Stats, TStats, StatTypes, TStatsTrait},
         attack::{Attack, AttackIdsImpl, IdsTrait, AttackTrait},
     },
-    models::{CombatantInfo, CombatantState, CombatantStats, AvailableAttack}, utils::value_to_uuid,
+    models::{CombatantInfo, CombatantState, CombatantStats, AvailableAttack}, utils::hash_value,
     collections::{get_collection_dispatcher, ICollectionDispatcher, ICollectionDispatcherTrait}
 };
 
-fn get_combatant_id(collection_address: ContractAddress, token_id: u256, combat_id: u128) -> u128 {
-    value_to_uuid((collection_address, token_id, combat_id))
+fn get_combatant_id(
+    collection_address: ContractAddress, token_id: u256, combat_id: felt252
+) -> felt252 {
+    hash_value((collection_address, token_id, combat_id))
 }
 
 
 #[generate_trait]
 impl CombatantImpl of CombatantTrait {
-    fn get_combatant_info(self: @IWorldDispatcher, id: u128) -> CombatantInfo {
+    fn get_combatant_info(self: @IWorldDispatcher, id: felt252) -> CombatantInfo {
         get!((*self), id, CombatantInfo)
     }
 
-    fn get_combatant_state(self: @IWorldDispatcher, id: u128) -> CombatantState {
+    fn get_combatant_state(self: @IWorldDispatcher, id: felt252) -> CombatantState {
         get!((*self), id, CombatantState)
     }
 
-    fn get_combatant_stats(self: @IWorldDispatcher, id: u128) -> CombatantStats {
+    fn get_combatant_stats(self: @IWorldDispatcher, id: felt252) -> CombatantStats {
         get!((*self), id, CombatantStats)
     }
-    fn get_available_attack(self: @IWorldDispatcher, id: u128, attack_id: u128) -> AvailableAttack {
+    fn get_available_attack(
+        self: @IWorldDispatcher, id: felt252, attack_id: felt252
+    ) -> AvailableAttack {
         get!((*self), (id, attack_id), AvailableAttack)
     }
     fn set_available_attack(
-        self: IWorldDispatcher, combatant_id: u128, attack_id: u128, last_used: u32
+        self: IWorldDispatcher, combatant_id: felt252, attack_id: felt252, last_used: u32
     ) {
         set!(
             self, AvailableAttack { combatant_id, attack_id, available: true, last_used: last_used }
         );
     }
-    fn get_combatant_info_in_combat(self: @IWorldDispatcher, id: u128) -> CombatantInfo {
+    fn get_combatant_info_in_combat(self: @IWorldDispatcher, id: felt252) -> CombatantInfo {
         let combatant = self.get_combatant_info(id);
         assert(combatant.combat_id.is_non_zero(), 'Not valid combatant');
         combatant
@@ -49,8 +53,8 @@ impl CombatantImpl of CombatantTrait {
         self: @IWorldDispatcher,
         collection: ICollectionDispatcher,
         token_id: u256,
-        item_id: u128,
-        attack_id: u128
+        item_id: felt252,
+        attack_id: felt252
     ) -> bool {
         collection.has_attack(token_id, item_id, attack_id)
     }
@@ -58,8 +62,8 @@ impl CombatantImpl of CombatantTrait {
         self: IWorldDispatcher,
         collection: ICollectionDispatcher,
         token_id: u256,
-        combatant_id: u128,
-        attacks: Span<(u128, u128)>
+        combatant_id: felt252,
+        attacks: Span<(felt252, felt252)>
     ) {
         let (len, mut n): (usize, usize) = (attacks.len(), 0);
         while n < len {
@@ -74,9 +78,9 @@ impl CombatantImpl of CombatantTrait {
         self: IWorldDispatcher,
         collection: ICollectionDispatcher,
         token_id: u256,
-        combat_id: u128,
+        combat_id: felt252,
         player: ContractAddress,
-        attacks: Span<(u128, u128)>
+        attacks: Span<(felt252, felt252)>
     ) -> CombatantInfo {
         let Stats { strength, vitality, dexterity, luck } = collection.get_stats(token_id);
         let health = collection.get_health(token_id);
@@ -99,9 +103,9 @@ impl CombatantImpl of CombatantTrait {
         self: IWorldDispatcher,
         collection_address: ContractAddress,
         token_id: u256,
-        challenge_id: u128,
+        challenge_id: felt252,
         player: ContractAddress,
-        attacks: Span<(u128, u128)>
+        attacks: Span<(felt252, felt252)>
     ) -> CombatantInfo {
         let collection = get_collection_dispatcher(collection_address);
         let owner = collection.get_owner(token_id);
@@ -109,7 +113,7 @@ impl CombatantImpl of CombatantTrait {
         self.create_combatant(collection, token_id, challenge_id, player, attacks)
     }
 
-    fn get_player_combatant_info(self: @IWorldDispatcher, id: u128) -> CombatantInfo {
+    fn get_player_combatant_info(self: @IWorldDispatcher, id: felt252) -> CombatantInfo {
         let combatant = self.get_combatant_info(id);
         combatant.assert_player();
         combatant

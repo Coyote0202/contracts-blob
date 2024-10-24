@@ -5,14 +5,14 @@ enum Phase {
     Setup,
     Commit,
     Reveal,
-    Ended: u128,
+    Ended: felt252,
 }
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy, Introspect)]
 struct CombatState {
     #[key]
-    id: u128,
+    id: felt252,
     round: u32,
     phase: Phase,
     block_number: u64,
@@ -23,10 +23,10 @@ struct CombatState {
 #[derive(Drop, Serde)]
 struct AttackResult {
     #[key]
-    combatant_id: u128,
+    combatant_id: felt252,
     #[key]
     round: u32,
-    target: u128,
+    target: felt252,
     result: AttackOutcomes,
 }
 
@@ -60,7 +60,7 @@ struct DamageResult {
 #[derive(Drop, Serde)]
 struct Salts {
     #[key]
-    id: u128,
+    id: felt252,
     salts: Array<felt252>
 }
 

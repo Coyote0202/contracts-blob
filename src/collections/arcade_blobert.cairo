@@ -16,7 +16,7 @@ trait IArcadeBlobert<TContractState> {
 
 #[dojo::interface]
 trait IAMMABlobert<TContractState> {
-    fn mint_amma(ref world: IWorldDispatcher, fighter: u8) -> u128;
+    fn mint_amma(ref world: IWorldDispatcher, fighter: u8) -> felt252;
     fn set_amma_fighter(
         ref world: IWorldDispatcher, fighter_id: u8, name: ByteArray, custom_id: u8
     );
@@ -44,7 +44,7 @@ mod arcade_blobert_actions {
         fn get_owner(world: @IWorldDispatcher, token_id: u256) -> ContractAddress {
             world.get_arcade_blobert_owner(token_id)
         }
-        fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<u128> {
+        fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<felt252> {
             let traits = world.get_arcade_blobert_traits(token_id);
             world.get_blobert_item_ids(traits).span()
         }
@@ -57,7 +57,7 @@ mod arcade_blobert_actions {
             world.get_blobert_stats(traits)
         }
         fn has_attack(
-            world: @IWorldDispatcher, token_id: u256, item_id: u128, attack_id: u128
+            world: @IWorldDispatcher, token_id: u256, item_id: felt252, attack_id: felt252
         ) -> bool {
             let traits = world.get_arcade_blobert_traits(token_id);
             world.blobert_has_attack(traits, item_id, attack_id)
@@ -81,7 +81,7 @@ mod arcade_blobert_actions {
 
     #[abi(embed_v0)]
     impl IAMMABlobertImpl of IAMMABlobert<ContractState> {
-        fn mint_amma(ref world: IWorldDispatcher, fighter: u8) -> u128 {
+        fn mint_amma(ref world: IWorldDispatcher, fighter: u8) -> felt252 {
             let caller = get_caller_address();
             world.mint_amma_blobert(caller, fighter)
         }

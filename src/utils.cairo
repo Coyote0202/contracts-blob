@@ -1,6 +1,6 @@
 use core::{
     num::traits::Bounded, hash::{HashStateTrait, HashStateExTrait, Hash},
-    poseidon::{PoseidonTrait, HashState}
+    poseidon::{PoseidonTrait, HashState, poseidon_hash_span}
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use starknet::{
@@ -20,11 +20,11 @@ fn value_to_uuid<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> u128 {
     felt252_to_uuid(hash_value(value))
 }
 
-fn uuid(world: IWorldDispatcher) -> u128 {
+fn uuid(world: IWorldDispatcher) -> felt252 {
     let values = (
         dojo::world::IWorldDispatcherTrait::uuid(world), get_tx_info().unbox().transaction_hash
     );
-    felt252_to_uuid(PoseidonTrait::new().update_with(values).finalize())
+    hash_value(values)
 }
 
 impl ArrayHash<
@@ -65,7 +65,7 @@ impl RandomnessImpl of RandomnessTrait {
 }
 
 trait ToHash<T> {
-    fn to_hash(self: @HashState, value: T) -> felt252;
+    fn update_to(self: @HashState, value: T) -> felt252;
 }
 
 fn felt252_to_u128(value: felt252) -> u128 {
@@ -73,7 +73,7 @@ fn felt252_to_u128(value: felt252) -> u128 {
 }
 
 impl TToHashImpl<T, +Hash<T, HashState>, +Drop<T>> of ToHash<T> {
-    fn to_hash(self: @HashState, value: T) -> felt252 {
+    fn update_to(self: @HashState, value: T) -> felt252 {
         (*self).update_with(value).finalize()
     }
 }

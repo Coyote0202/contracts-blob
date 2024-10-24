@@ -1,16 +1,16 @@
 use core::{num::traits::{Zero, One, Bounded}, fmt::{Display, Formatter, Error}};
 
 trait IdTrait<T> {
-    fn id(self: @T) -> u128;
+    fn id(self: @T) -> felt252;
 }
 
 trait IdsTrait<T> {
-    fn ids(self: Span<T>) -> Span<u128>;
+    fn ids(self: Span<T>) -> Span<felt252>;
 }
 
 impl TIdsImpl<T, +IdTrait<T>, +Drop<T>> of IdsTrait<T> {
-    fn ids(self: Span<T>) -> Span<u128> {
-        let mut ids: Array<u128> = ArrayTrait::new();
+    fn ids(self: Span<T>) -> Span<felt252> {
+        let mut ids: Array<felt252> = ArrayTrait::new();
         let (len, mut n) = (self.len(), 0_usize);
         while (n < len) {
             ids.append(self.at(n).id());

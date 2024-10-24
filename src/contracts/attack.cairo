@@ -11,7 +11,7 @@ trait IAttackActions {
         cooldown: u8,
         hit: Array<EffectInput>,
         miss: Array<EffectInput>,
-    ) -> u128;
+    ) -> felt252;
 }
 
 
@@ -36,7 +36,7 @@ mod attack_actions {
             cooldown: u8,
             hit: Array<EffectInput>,
             miss: Array<EffectInput>,
-        ) -> u128 {
+        ) -> felt252 {
             let id = uuid(world);
             let attack = AttackModel {
                 id, name, speed, accuracy, cooldown, hit: hit.into(), miss: miss.into(),

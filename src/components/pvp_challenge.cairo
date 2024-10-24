@@ -10,11 +10,11 @@ use blob_arena::{
 
 #[derive(Copy, Drop, Serde)]
 struct PvPChallenge {
-    id: u128,
+    id: felt252,
     sender: ContractAddress,
     receiver: ContractAddress,
-    sender_combatant: u128,
-    receiver_combatant: u128,
+    sender_combatant: felt252,
+    receiver_combatant: felt252,
     phase_time: u64,
     invite_open: bool,
     response_open: bool,
@@ -41,11 +41,11 @@ fn make_challenge(
 
 #[generate_trait]
 impl PvPChallengeImpl of PvPChallengeTrait {
-    fn get_challenge_invite(self: @IWorldDispatcher, challenge_id: u128) -> PvPChallengeInvite {
+    fn get_challenge_invite(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallengeInvite {
         get!((*self), challenge_id, PvPChallengeInvite)
     }
 
-    fn get_challenge_response(self: @IWorldDispatcher, challenge_id: u128) -> PvPChallengeResponse {
+    fn get_challenge_response(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallengeResponse {
         get!((*self), challenge_id, PvPChallengeResponse)
     }
 
@@ -59,11 +59,11 @@ impl PvPChallengeImpl of PvPChallengeTrait {
 
     fn send_challenge_invite(
         self: IWorldDispatcher,
-        challenge_id: u128,
+        challenge_id: felt252,
         sender: ContractAddress,
         receiver: ContractAddress,
         collection_address: ContractAddress,
-        combatant_id: u128,
+        combatant_id: felt252,
         phase_time: u64,
     ) {
         set!(
@@ -92,13 +92,13 @@ impl PvPChallengeImpl of PvPChallengeTrait {
         caller
     }
 
-    fn get_challenge(self: @IWorldDispatcher, challenge_id: u128) -> PvPChallenge {
+    fn get_challenge(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallenge {
         make_challenge(
             self, self.get_challenge_invite(challenge_id), self.get_challenge_response(challenge_id)
         )
     }
 
-    fn get_open_challenge(self: @IWorldDispatcher, challenge_id: u128) -> PvPChallenge {
+    fn get_open_challenge(self: @IWorldDispatcher, challenge_id: felt252) -> PvPChallenge {
         let challenge = self.get_challenge(challenge_id);
         assert(challenge.invite_open, 'Challenge already closed');
 

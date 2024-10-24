@@ -11,15 +11,15 @@ use blob_arena::{
 
 #[generate_trait]
 impl PvPCombatImpl of PvPCombatTrait {
-    fn set_pvp_combatants<T, +Into<T, (u128, u128)>>(
-        self: IWorldDispatcher, id: u128, combatants: T
+    fn set_pvp_combatants<T, +Into<T, (felt252, felt252)>>(
+        self: IWorldDispatcher, id: felt252, combatants: T
     ) {
         set!(self, PvPCombatantsModel { id, combatants: combatants.into() });
     }
-    fn get_pvp_combatants_model(self: @IWorldDispatcher, id: u128) -> PvPCombatantsModel {
+    fn get_pvp_combatants_model(self: @IWorldDispatcher, id: felt252) -> PvPCombatantsModel {
         get!((*self), id, PvPCombatantsModel)
     }
-    fn get_pvp_combatants(self: @IWorldDispatcher, id: u128) -> ABT<u128> {
+    fn get_pvp_combatants(self: @IWorldDispatcher, id: felt252) -> ABT<felt252> {
         let combatants = ABTTrait::new_from_tuple(self.get_pvp_combatants_model(id).combatants);
         assert(combatants.is_neither_zero(), 'Combatants not set');
         combatants

@@ -6,8 +6,8 @@ use blob_arena::{components::{stats::TStats}};
 #[derive(Drop, Serde, Copy)]
 struct CombatantInfo {
     #[key]
-    id: u128,
-    combat_id: u128,
+    id: felt252,
+    combat_id: felt252,
     player: ContractAddress,
     collection_address: ContractAddress,
     token_id: u256,
@@ -17,7 +17,7 @@ struct CombatantInfo {
 #[derive(Drop, Serde, Copy)]
 struct CombatantStats {
     #[key]
-    id: u128,
+    id: felt252,
     strength: u8,
     vitality: u8,
     dexterity: u8,
@@ -28,7 +28,7 @@ struct CombatantStats {
 #[derive(Drop, Serde, Copy)]
 struct CombatantState {
     #[key]
-    id: u128,
+    id: felt252,
     health: u8,
     stun_chance: u8,
     buffs: TStats<i8>,
@@ -39,7 +39,7 @@ struct CombatantState {
 #[derive(Drop, Serde, Copy)]
 struct PlannedAttack {
     #[key]
-    id: u128,
-    attack: u128,
-    target: u128,
+    id: felt252,
+    attack: felt252,
+    target: felt252,
 }

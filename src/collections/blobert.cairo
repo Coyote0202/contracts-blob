@@ -9,10 +9,10 @@ use blob_arena::{
 #[dojo::interface]
 trait IBlobertItems {
     fn set_seed_item_id(
-        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: felt252
     );
     fn set_custom_item_id(
-        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+        ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: felt252
     );
     fn new_seed_item_with_attacks(
         ref world: IWorldDispatcher,
@@ -75,12 +75,12 @@ mod blobert_actions {
             let traits = world.get_blobert_traits(token_id);
             world.get_blobert_stats(traits)
         }
-        fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<u128> {
+        fn get_item_ids(world: @IWorldDispatcher, token_id: u256) -> Span<felt252> {
             let traits = world.get_blobert_traits(token_id);
             world.get_blobert_item_ids(traits).span()
         }
         fn has_attack(
-            world: @IWorldDispatcher, token_id: u256, item_id: u128, attack_id: u128
+            world: @IWorldDispatcher, token_id: u256, item_id: felt252, attack_id: felt252
         ) -> bool {
             let traits = world.get_blobert_traits(token_id);
             world.blobert_has_attack(traits, item_id, attack_id)
@@ -89,13 +89,13 @@ mod blobert_actions {
     #[abi(embed_v0)]
     impl IBlobertItemsImpl of IBlobertItems<ContractState> {
         fn set_seed_item_id(
-            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: felt252
         ) {
             world.assert_caller_is_owner();
             world.set_item_id(SEED_TRAIT_TYPE, blobert_trait, trait_id, item_id);
         }
         fn set_custom_item_id(
-            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: u128
+            ref world: IWorldDispatcher, blobert_trait: BlobertTrait, trait_id: u8, item_id: felt252
         ) {
             world.assert_caller_is_owner();
             world.set_item_id(CUSTOM_TRAIT_TYPE, blobert_trait, trait_id, item_id);

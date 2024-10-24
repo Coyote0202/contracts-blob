@@ -15,7 +15,7 @@ use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 impl PvPCombatSystemImpl of PvPCombatSystemTrait {
     fn run_round(
         self: IWorldDispatcher,
-        combatant_ids: ABT<u128>,
+        combatant_ids: ABT<felt252>,
         planned_attacks: ABT<PlannedAttack>,
         round: u32,
         hash: HashState

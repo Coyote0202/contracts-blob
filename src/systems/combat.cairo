@@ -1,4 +1,3 @@
-use SeedProbability;
 use core::{
     hash::{HashStateTrait, HashStateExTrait}, poseidon::{PoseidonTrait, HashState},
     {integer::u128_safe_divmod, cmp::min}
@@ -36,9 +35,9 @@ const NZ_100: NonZero<u128> = 100;
 
 #[derive(Drop, Serde)]
 struct PlannedAttack {
-    combatant: u128,
+    combatant: felt252,
     attack: Attack,
-    target: u128,
+    target: felt252,
 }
 
 fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
@@ -217,7 +216,7 @@ fn run_effects(
 #[generate_trait]
 impl CombatWorldImp of CombatWorldTraits {
     fn run_attack_check(
-        self: IWorldDispatcher, combatant_id: u128, attack_id: u128, cooldown: u8, round: u32
+        self: IWorldDispatcher, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32
     ) -> bool {
         let attack_available = self.get_available_attack(combatant_id, attack_id);
         if !attack_available.available {

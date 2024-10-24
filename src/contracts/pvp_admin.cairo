@@ -13,10 +13,10 @@ trait IPvPAdminActions {
         player_b: ContractAddress,
         token_a_id: u256,
         token_b_id: u256,
-        attacks_a: Span<(u128, u128)>,
-        attacks_b: Span<(u128, u128)>,
-    ) -> u128;
-    fn set_winner(ref world: IWorldDispatcher, combatant_id: u128);
+        attacks_a: Span<(felt252, felt252)>,
+        attacks_b: Span<(felt252, felt252)>,
+    ) -> felt252;
+    fn set_winner(ref world: IWorldDispatcher, combatant_id: felt252);
 }
 
 #[dojo::contract]
@@ -42,9 +42,9 @@ mod pvp_admin_actions {
             player_b: ContractAddress,
             token_a_id: u256,
             token_b_id: u256,
-            attacks_a: Span<(u128, u128)>,
-            attacks_b: Span<(u128, u128)>,
-        ) -> u128 {
+            attacks_a: Span<(felt252, felt252)>,
+            attacks_b: Span<(felt252, felt252)>,
+        ) -> felt252 {
             world.assert_caller_is_owner();
             let combat_id = uuid(world);
             let collection_a = get_collection_dispatcher(collection_address_a);
@@ -57,7 +57,7 @@ mod pvp_admin_actions {
             world.set_pvp_combatants(combat_id, (combatant_a.id, combatant_b.id));
             combat_id
         }
-        fn set_winner(ref world: IWorldDispatcher, combatant_id: u128) {
+        fn set_winner(ref world: IWorldDispatcher, combatant_id: felt252) {
             world.assert_caller_is_owner();
 
             let winner = world.get_combatant_info(combatant_id);

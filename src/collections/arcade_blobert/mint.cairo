@@ -57,10 +57,8 @@ impl ArcadeBlobertMintImpl of ArcadeBlobertMintTrait {
             assert(timestamp > self.get_last_mint(caller) + SECONDS_IN_DAY, 'Only one mint in 24h');
         }
 
-        let random = hash_value(('arcade', timestamp, uuid(self)));
-        let token_id = felt252_to_uuid(random);
-
-        let seed = generate_seed(random);
+        let token_id = hash_value(('arcade', timestamp, uuid(self)));
+        let seed = generate_seed(token_id);
 
         self.set_arcade_blobert(token_id, caller, TokenTrait::Regular(seed));
         self.set_last_mint(caller, timestamp);
