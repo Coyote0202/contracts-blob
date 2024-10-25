@@ -1234,10 +1234,10 @@
         ]
       }
     ],
-    "address": "0x408be4e854df5a9f419e68a3e2b24e94960fddb08080193d075cf3b75cd5916",
-    "transaction_hash": "0x19951612880eba1b72784fed446bfcbf234d90082da14891212a81b848cd08e",
+    "address": "0x712f842f548ae15fb64f3a56388a0e1ce5c46b9fc09fd59a3b798cb2218a79a",
+    "transaction_hash": "0x726200253fbea2c3eaffa466be9cf615871121c1ddc6b8818d1d42c6094a3d4",
     "block_number": null,
-    "seed": "blob-arena-0.4-alpha.17-1",
+    "seed": "blob-arena-0.4-alpha.17-3",
     "metadata": {
       "profile_name": "sepolia",
       "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
@@ -1255,9 +1255,9 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x1c0fa7e89c80f45324bca526d94e986696f5ec84d3e5611cc2a799c985b55f9",
-      "class_hash": "0x7130811dfc73ce419f4f06c4b601aa12a67c05786c68920217e4bcf98e181a4",
-      "original_class_hash": "0x7130811dfc73ce419f4f06c4b601aa12a67c05786c68920217e4bcf98e181a4",
+      "address": "0xf5503d813205b122369c981bf37619ab3640a44fa36ce2fb6f51cfabbe4fb4",
+      "class_hash": "0x27bf5fc6e3b2ae4c04a98df2460a0ee6c57320c434b8c67a60bf9682c08e7b9",
+      "original_class_hash": "0x27bf5fc6e3b2ae4c04a98df2460a0ee6c57320c434b8c67a60bf9682c08e7b9",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1408,11 +1408,11 @@
         },
         {
           "type": "struct",
-          "name": "core::array::Span::<core::integer::u128>",
+          "name": "core::array::Span::<core::felt252>",
           "members": [
             {
               "name": "snapshot",
-              "type": "@core::array::Array::<core::integer::u128>"
+              "type": "@core::array::Array::<core::felt252>"
             }
           ]
         },
@@ -1483,7 +1483,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::array::Span::<core::integer::u128>"
+                  "type": "core::array::Span::<core::felt252>"
                 }
               ],
               "state_mutability": "view"
@@ -1530,11 +1530,11 @@
                 },
                 {
                   "name": "item_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "attack_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [
@@ -1664,7 +1664,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "external"
@@ -1784,9 +1784,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0xbfa11da7e39050d84798ddc595e94face7fec1ca33ad17c41883ac3ab2328e",
-      "class_hash": "0x13e753fe7c4aec7ed7e6b9aea6440e82379a407bac5fe7a01675366a58cb28d",
-      "original_class_hash": "0x13e753fe7c4aec7ed7e6b9aea6440e82379a407bac5fe7a01675366a58cb28d",
+      "address": "0x659b50c515eac09607b0d72bef7b03edff57b91d51288c3975652f17e10e401",
+      "class_hash": "0x34663f6093365fc30a3513bb7fc56aa9202b329df4d5b7aca238de4fda6381f",
+      "original_class_hash": "0x34663f6093365fc30a3513bb7fc56aa9202b329df4d5b7aca238de4fda6381f",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2110,7 +2110,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "external"
@@ -2206,9 +2206,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x379a2c32efc48a8456f3b5420ca6978f7ee6e426d7626b72b245c71f35307e1",
-      "class_hash": "0x34bc6b72fd0b5f4235c1fc1f42ce80bcc127f3335b5b7e8b4e51773eece5eb5",
-      "original_class_hash": "0x34bc6b72fd0b5f4235c1fc1f42ce80bcc127f3335b5b7e8b4e51773eece5eb5",
+      "address": "0x6ca779500ea5014a99d31838e7de601e621cf00e16c59b401dccd39b6af10f3",
+      "class_hash": "0xf41e0083ce3d4e67d8617dc2a4f3e664fb1fa70e490fce29b3b38495ad95de",
+      "original_class_hash": "0xf41e0083ce3d4e67d8617dc2a4f3e664fb1fa70e490fce29b3b38495ad95de",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2359,11 +2359,11 @@
         },
         {
           "type": "struct",
-          "name": "core::array::Span::<core::integer::u128>",
+          "name": "core::array::Span::<core::felt252>",
           "members": [
             {
               "name": "snapshot",
-              "type": "@core::array::Array::<core::integer::u128>"
+              "type": "@core::array::Array::<core::felt252>"
             }
           ]
         },
@@ -2434,7 +2434,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::array::Span::<core::integer::u128>"
+                  "type": "core::array::Span::<core::felt252>"
                 }
               ],
               "state_mutability": "view"
@@ -2481,11 +2481,11 @@
                 },
                 {
                   "name": "item_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "attack_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [
@@ -2716,7 +2716,7 @@
                 },
                 {
                   "name": "item_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -2736,7 +2736,7 @@
                 },
                 {
                   "name": "item_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -2897,9 +2897,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x6fc503aa39636611b0554c4390bbad5e3aa422a797b732f7f368781868491cb",
-      "class_hash": "0x3d36d100e27474a4e42f9b3f79e46b4434b0a7892c47606fbbd7fb46f4977e2",
-      "original_class_hash": "0x3d36d100e27474a4e42f9b3f79e46b4434b0a7892c47606fbbd7fb46f4977e2",
+      "address": "0x3e8948468f24a36e0be7609bc6e4acec1bd0748f7b9d208fb6c0d76463fa7cb",
+      "class_hash": "0x26070ca5990aa151860299e59278bdd3889e85b026409a0295b1b991fc46b8d",
+      "original_class_hash": "0x26070ca5990aa151860299e59278bdd3889e85b026409a0295b1b991fc46b8d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3259,7 +3259,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "external"
@@ -3283,7 +3283,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "external"
@@ -3381,9 +3381,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0xbfa625bdff42f2cd7f7ee1e4e3b410b5492dd856efbee4bd61c217941a6e6f",
-      "class_hash": "0x5f94aea4f75e1bbcab952f17f294967829d70fd0aa252834ec3d17e9b790ad4",
-      "original_class_hash": "0x5f94aea4f75e1bbcab952f17f294967829d70fd0aa252834ec3d17e9b790ad4",
+      "address": "0x2af5e2099e31c0a9e5efa4b68e50c434f863f1ae93e422f9055a9c55d851d95",
+      "class_hash": "0x37f3d577afe04a027699952f22fde16d068622f30e03f0e78c8616ae46e9eb9",
+      "original_class_hash": "0x37f3d577afe04a027699952f22fde16d068622f30e03f0e78c8616ae46e9eb9",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3534,11 +3534,11 @@
         },
         {
           "type": "struct",
-          "name": "core::array::Span::<(core::integer::u128, core::integer::u128)>",
+          "name": "core::array::Span::<(core::felt252, core::felt252)>",
           "members": [
             {
               "name": "snapshot",
-              "type": "@core::array::Array::<(core::integer::u128, core::integer::u128)>"
+              "type": "@core::array::Array::<(core::felt252, core::felt252)>"
             }
           ]
         },
@@ -3564,7 +3564,7 @@
                 },
                 {
                   "name": "attacks",
-                  "type": "core::array::Span::<(core::integer::u128, core::integer::u128)>"
+                  "type": "core::array::Span::<(core::felt252, core::felt252)>"
                 },
                 {
                   "name": "phase_time",
@@ -3573,7 +3573,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "external"
@@ -3584,7 +3584,7 @@
               "inputs": [
                 {
                   "name": "challenge_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3596,7 +3596,7 @@
               "inputs": [
                 {
                   "name": "challenge_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "token_id",
@@ -3604,7 +3604,7 @@
                 },
                 {
                   "name": "attacks",
-                  "type": "core::array::Span::<(core::integer::u128, core::integer::u128)>"
+                  "type": "core::array::Span::<(core::felt252, core::felt252)>"
                 }
               ],
               "outputs": [],
@@ -3616,7 +3616,7 @@
               "inputs": [
                 {
                   "name": "challenge_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3628,7 +3628,7 @@
               "inputs": [
                 {
                   "name": "challenge_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3640,7 +3640,7 @@
               "inputs": [
                 {
                   "name": "challenge_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3652,7 +3652,7 @@
               "inputs": [
                 {
                   "name": "challenge_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3675,7 +3675,7 @@
               "inputs": [
                 {
                   "name": "combatant_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "hash",
@@ -3691,11 +3691,11 @@
               "inputs": [
                 {
                   "name": "combatant_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "attack",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 },
                 {
                   "name": "salt",
@@ -3711,7 +3711,7 @@
               "inputs": [
                 {
                   "name": "combat_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3723,7 +3723,7 @@
               "inputs": [
                 {
                   "name": "combatant_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3735,7 +3735,7 @@
               "inputs": [
                 {
                   "name": "combatant_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3856,9 +3856,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x4f813d151d264b534a827865941e93388d793fbcfda690c0f5a51fc66da1a52",
-      "class_hash": "0x5c60fbd4712b3d7c68c9ef157054769833a6187541c9fff645b73762b9a866b",
-      "original_class_hash": "0x5c60fbd4712b3d7c68c9ef157054769833a6187541c9fff645b73762b9a866b",
+      "address": "0x704d3ae415470090a24e177bb673823f4257e60acf202298c3079082ea3e0f4",
+      "class_hash": "0x4b52211e5fbcf19a8a2a7cedae481f6be97293030436001af1eddaf6c21ea2d",
+      "original_class_hash": "0x4b52211e5fbcf19a8a2a7cedae481f6be97293030436001af1eddaf6c21ea2d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -4009,11 +4009,11 @@
         },
         {
           "type": "struct",
-          "name": "core::array::Span::<(core::integer::u128, core::integer::u128)>",
+          "name": "core::array::Span::<(core::felt252, core::felt252)>",
           "members": [
             {
               "name": "snapshot",
-              "type": "@core::array::Array::<(core::integer::u128, core::integer::u128)>"
+              "type": "@core::array::Array::<(core::felt252, core::felt252)>"
             }
           ]
         },
@@ -4051,16 +4051,16 @@
                 },
                 {
                   "name": "attacks_a",
-                  "type": "core::array::Span::<(core::integer::u128, core::integer::u128)>"
+                  "type": "core::array::Span::<(core::felt252, core::felt252)>"
                 },
                 {
                   "name": "attacks_b",
-                  "type": "core::array::Span::<(core::integer::u128, core::integer::u128)>"
+                  "type": "core::array::Span::<(core::felt252, core::felt252)>"
                 }
               ],
               "outputs": [
                 {
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "state_mutability": "external"
@@ -4071,7 +4071,7 @@
               "inputs": [
                 {
                   "name": "combatant_id",
-                  "type": "core::integer::u128"
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -4616,7 +4616,7 @@
       "members": [
         {
           "name": "token_id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -4630,8 +4630,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x2589577ca70051021adfd89dff130cfffd6cd8932dec04ee7afe924a0db6ca",
-      "original_class_hash": "0x2589577ca70051021adfd89dff130cfffd6cd8932dec04ee7afe924a0db6ca",
+      "class_hash": "0x6fff2a2479e63e7a0965611f8777268e72852fda8df7d02c6323953c7145b9e",
+      "original_class_hash": "0x6fff2a2479e63e7a0965611f8777268e72852fda8df7d02c6323953c7145b9e",
       "abi": [
         {
           "type": "impl",
@@ -5046,7 +5046,7 @@
           "members": [
             {
               "name": "token_id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "owner",
@@ -5092,7 +5092,7 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -5126,8 +5126,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x31d14ea111ef23ed4e694c974b8122e88f6a96d6de3b8324b5ff688f3aadd2",
-      "original_class_hash": "0x31d14ea111ef23ed4e694c974b8122e88f6a96d6de3b8324b5ff688f3aadd2",
+      "class_hash": "0x75eb07c0f4fef04807d398ff4a555d8281daaf18a14c0a34d035bbcd3154e47",
+      "original_class_hash": "0x75eb07c0f4fef04807d398ff4a555d8281daaf18a14c0a34d035bbcd3154e47",
       "abi": [
         {
           "type": "impl",
@@ -5628,7 +5628,7 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "name",
@@ -5690,12 +5690,549 @@
       "members": [
         {
           "name": "combatant_id",
-          "type": "u128",
+          "type": "felt252",
+          "key": true
+        },
+        {
+          "name": "round",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "target",
+          "type": "felt252",
+          "key": false
+        },
+        {
+          "name": "result",
+          "type": "AttackOutcomes",
+          "key": false
+        }
+      ],
+      "class_hash": "0x3d7258a6d5d4a203d6ac32e21d74d1c3a2db93a2bd3581e95c597edb045bf04",
+      "original_class_hash": "0x3d7258a6d5d4a203d6ac32e21d74d1c3a2db93a2bd3581e95c597edb045bf04",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::model::IModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::option::Option::<core::integer::u32>",
+          "variants": [
+            {
+              "name": "Some",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "None",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::layout::FieldLayout",
+          "members": [
+            {
+              "name": "selector",
+              "type": "core::felt252"
+            },
+            {
+              "name": "layout",
+              "type": "dojo::model::layout::Layout"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::layout::FieldLayout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::layout::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::layout::Layout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::layout::Layout>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::model::layout::Layout",
+          "variants": [
+            {
+              "name": "Fixed",
+              "type": "core::array::Span::<core::integer::u8>"
+            },
+            {
+              "name": "Struct",
+              "type": "core::array::Span::<dojo::model::layout::FieldLayout>"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::model::layout::Layout>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::model::layout::Layout>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            },
+            {
+              "name": "Enum",
+              "type": "core::array::Span::<dojo::model::layout::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Member",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "ty",
+              "type": "dojo::model::introspect::Ty"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::introspect::Member>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<dojo::model::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, dojo::model::introspect::Ty)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, dojo::model::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, dojo::model::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::introspect::Ty>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::introspect::Ty>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::model::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::model::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::model::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::model::introspect::Ty>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::model::introspect::Ty>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::model::IModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "tag",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "version",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "selector",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "name_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::model::layout::Layout"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::model::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "attack_resultImpl",
+          "interface_name": "blob_arena::models::combat::Iattack_result"
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::models::attack::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::models::combat::DamageResult",
+          "members": [
+            {
+              "name": "damage",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "critical",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::models::combat::AffectResult",
+          "variants": [
+            {
+              "name": "Success",
+              "type": "()"
+            },
+            {
+              "name": "Damage",
+              "type": "blob_arena::models::combat::DamageResult"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::models::combat::EffectResult",
+          "members": [
+            {
+              "name": "target",
+              "type": "blob_arena::models::attack::Target"
+            },
+            {
+              "name": "affect",
+              "type": "blob_arena::models::combat::AffectResult"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::models::combat::AttackOutcomes",
+          "variants": [
+            {
+              "name": "Failed",
+              "type": "()"
+            },
+            {
+              "name": "Stunned",
+              "type": "()"
+            },
+            {
+              "name": "Miss",
+              "type": "core::array::Array::<blob_arena::models::combat::EffectResult>"
+            },
+            {
+              "name": "Hit",
+              "type": "core::array::Array::<blob_arena::models::combat::EffectResult>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::models::combat::AttackResult",
+          "members": [
+            {
+              "name": "combatant_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "round",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "target",
+              "type": "core::felt252"
+            },
+            {
+              "name": "result",
+              "type": "blob_arena::models::combat::AttackOutcomes"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::models::combat::Iattack_result",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "blob_arena::models::combat::AttackResult"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::models::combat::attack_result::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "tag": "blob_arena-AttackResult",
+      "qualified_path": "blob_arena::models::combat::attack_result",
+      "manifest_name": "blob_arena-AttackResult-13e6ce9d"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "combatant_id",
+          "type": "felt252",
           "key": true
         },
         {
           "name": "attack_id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -5709,8 +6246,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x65e5fe5046ffe15afd41dd1d08880be3086f5b0c0778c103353fdb122c084ba",
-      "original_class_hash": "0x65e5fe5046ffe15afd41dd1d08880be3086f5b0c0778c103353fdb122c084ba",
+      "class_hash": "0x5813f95780aefb5a8c2cfc9af938572fd4824db30856212043561fdb7419001",
+      "original_class_hash": "0x5813f95780aefb5a8c2cfc9af938572fd4824db30856212043561fdb7419001",
       "abi": [
         {
           "type": "impl",
@@ -6099,11 +6636,11 @@
           "members": [
             {
               "name": "combatant_id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "attack_id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "available",
@@ -6149,7 +6686,7 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -6168,8 +6705,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x35ebb379f47575193c62bfa6de97bdd5d9960779ebd9652e86f6c7da82913a2",
-      "original_class_hash": "0x35ebb379f47575193c62bfa6de97bdd5d9960779ebd9652e86f6c7da82913a2",
+      "class_hash": "0x2a24fa7b7daeebbba9c1286ba4e666a338996f9aa50468a43bf2c4b94db3b55",
+      "original_class_hash": "0x2a24fa7b7daeebbba9c1286ba4e666a338996f9aa50468a43bf2c4b94db3b55",
       "abi": [
         {
           "type": "impl",
@@ -6556,7 +7093,7 @@
             },
             {
               "name": "Ended",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             }
           ]
         },
@@ -6566,7 +7103,7 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "round",
@@ -6616,12 +7153,12 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
           "name": "combat_id",
-          "type": "u128",
+          "type": "felt252",
           "key": false
         },
         {
@@ -6640,8 +7177,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x63c240b8c2d249d8a9b6b87d26ba1181aaded00b4510a673bbdf37dbd7f5d83",
-      "original_class_hash": "0x63c240b8c2d249d8a9b6b87d26ba1181aaded00b4510a673bbdf37dbd7f5d83",
+      "class_hash": "0x60d7a9327394fd8f334dec60ee9dbd3e5b01dc3ea19707c88d1dec10afd9589",
+      "original_class_hash": "0x60d7a9327394fd8f334dec60ee9dbd3e5b01dc3ea19707c88d1dec10afd9589",
       "abi": [
         {
           "type": "impl",
@@ -7030,11 +7567,11 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "combat_id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "player",
@@ -7084,7 +7621,7 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -7103,8 +7640,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x34039ccb8d8f70cec0d220698bf8036db4846f1b55fc9ed9413e65ed8cc3358",
-      "original_class_hash": "0x34039ccb8d8f70cec0d220698bf8036db4846f1b55fc9ed9413e65ed8cc3358",
+      "class_hash": "0x366adfb059e88f038bd1b9fc6763aa047445cabb43afcbcee9d7b6b15269f5c",
+      "original_class_hash": "0x366adfb059e88f038bd1b9fc6763aa047445cabb43afcbcee9d7b6b15269f5c",
       "abi": [
         {
           "type": "impl",
@@ -7501,7 +8038,7 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "health",
@@ -7551,7 +8088,7 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -7575,8 +8112,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4eb30614df2377bb3b9e053c242044b7c6c3f94f468919dd0c8ca7e45c73bd5",
-      "original_class_hash": "0x4eb30614df2377bb3b9e053c242044b7c6c3f94f468919dd0c8ca7e45c73bd5",
+      "class_hash": "0x3a2d6b54ff8241e9a357e068934cf2310dfdeb4a8a7c0b3de036a8df8e88a77",
+      "original_class_hash": "0x3a2d6b54ff8241e9a357e068934cf2310dfdeb4a8a7c0b3de036a8df8e88a77",
       "abi": [
         {
           "type": "impl",
@@ -7951,7 +8488,7 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "strength",
@@ -8432,12 +8969,12 @@
       "members": [
         {
           "name": "item_id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
           "name": "attack_id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -8446,8 +8983,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x71d1310310723835ef7264c03941cc68105ed623707189e28ad727c8e8e3f04",
-      "original_class_hash": "0x71d1310310723835ef7264c03941cc68105ed623707189e28ad727c8e8e3f04",
+      "class_hash": "0x7f1ef66f789bd3978640cb0c73fce1f1ff5a57ea9b011d06e50561f16ffcc39",
+      "original_class_hash": "0x7f1ef66f789bd3978640cb0c73fce1f1ff5a57ea9b011d06e50561f16ffcc39",
       "abi": [
         {
           "type": "impl",
@@ -8836,11 +9373,11 @@
           "members": [
             {
               "name": "item_id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "attack_id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "has",
@@ -8882,7 +9419,7 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -8896,8 +9433,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4e42dacd653addf3dec74f912dffdca0c9367d668c5053f2a59f12601708add",
-      "original_class_hash": "0x4e42dacd653addf3dec74f912dffdca0c9367d668c5053f2a59f12601708add",
+      "class_hash": "0x63f91442fdfd4cb58829bc5c545990a3ce94ea1393fbeaa00542cdb6d7bb0a",
+      "original_class_hash": "0x63f91442fdfd4cb58829bc5c545990a3ce94ea1393fbeaa00542cdb6d7bb0a",
       "abi": [
         {
           "type": "impl",
@@ -9294,7 +9831,7 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "name",
@@ -9355,12 +9892,12 @@
         },
         {
           "name": "item_id",
-          "type": "u128",
+          "type": "felt252",
           "key": false
         }
       ],
-      "class_hash": "0x4f05e88fb1a3eff91e293b30113de9136d22c4693425d7fe00c20935c56c8b9",
-      "original_class_hash": "0x4f05e88fb1a3eff91e293b30113de9136d22c4693425d7fe00c20935c56c8b9",
+      "class_hash": "0x6b255a636b39a973ec1a5b1a30e7d61b25dfb300b5ba3a44443a7a79461349f",
+      "original_class_hash": "0x6b255a636b39a973ec1a5b1a30e7d61b25dfb300b5ba3a44443a7a79461349f",
       "abi": [
         {
           "type": "impl",
@@ -9773,7 +10310,7 @@
             },
             {
               "name": "item_id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             }
           ]
         },
@@ -10238,22 +10775,22 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
           "name": "attack",
-          "type": "u128",
+          "type": "felt252",
           "key": false
         },
         {
           "name": "target",
-          "type": "u128",
+          "type": "felt252",
           "key": false
         }
       ],
-      "class_hash": "0x3024f53c6d5849697044ce6704a1fe25f07d413362cd556f386b63640b44498",
-      "original_class_hash": "0x3024f53c6d5849697044ce6704a1fe25f07d413362cd556f386b63640b44498",
+      "class_hash": "0x53f474afd9d9352b1591280c73fd7fb8f0b1009080f7472ab3fd1027e84d74d",
+      "original_class_hash": "0x53f474afd9d9352b1591280c73fd7fb8f0b1009080f7472ab3fd1027e84d74d",
       "abi": [
         {
           "type": "impl",
@@ -10628,15 +11165,15 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "attack",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "target",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             }
           ]
         },
@@ -10674,7 +11211,7 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
@@ -10694,7 +11231,7 @@
         },
         {
           "name": "combatant",
-          "type": "u128",
+          "type": "felt252",
           "key": false
         },
         {
@@ -10708,8 +11245,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6e97b68e1bb5ae8113aa53908c8ac1afaa3f41665ddbaed97e8ffbea4fcadbb",
-      "original_class_hash": "0x6e97b68e1bb5ae8113aa53908c8ac1afaa3f41665ddbaed97e8ffbea4fcadbb",
+      "class_hash": "0x3a0a4e27509d30080dce1cd6d33ca4a4a346d8dc7ad7fad49c7cc1a7dbebaa6",
+      "original_class_hash": "0x3a0a4e27509d30080dce1cd6d33ca4a4a346d8dc7ad7fad49c7cc1a7dbebaa6",
       "abi": [
         {
           "type": "impl",
@@ -11098,7 +11635,7 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "sender",
@@ -11114,7 +11651,7 @@
             },
             {
               "name": "combatant",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "phase_time",
@@ -11160,12 +11697,12 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
           "name": "combatant",
-          "type": "u128",
+          "type": "felt252",
           "key": false
         },
         {
@@ -11174,8 +11711,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x3353e072d4873086693d6ef2e255954a04f09d56dff168eb7c45f499dcc3e7f",
-      "original_class_hash": "0x3353e072d4873086693d6ef2e255954a04f09d56dff168eb7c45f499dcc3e7f",
+      "class_hash": "0x3b4f4a7c3b7a3ca4d28d30e0438b3ba8b60bc23274debbf234e4471e3b77f78",
+      "original_class_hash": "0x3b4f4a7c3b7a3ca4d28d30e0438b3ba8b60bc23274debbf234e4471e3b77f78",
       "abi": [
         {
           "type": "impl",
@@ -11564,11 +12101,11 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "combatant",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "open",
@@ -12091,17 +12628,17 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
           "name": "combatants",
-          "type": "(u128, u128)",
+          "type": "(felt252, felt252)",
           "key": false
         }
       ],
-      "class_hash": "0xe83222c58f4cdbaad957c74cf0cc282244d57a0109be25c741b4456e29f740",
-      "original_class_hash": "0xe83222c58f4cdbaad957c74cf0cc282244d57a0109be25c741b4456e29f740",
+      "class_hash": "0x5bf2573c4e6462da3cb1e79d1621c903060329b0f5af14ca33f6537494a04aa",
+      "original_class_hash": "0x5bf2573c4e6462da3cb1e79d1621c903060329b0f5af14ca33f6537494a04aa",
       "abi": [
         {
           "type": "impl",
@@ -12476,11 +13013,11 @@
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "combatants",
-              "type": "(core::integer::u128, core::integer::u128)"
+              "type": "(core::felt252, core::felt252)"
             }
           ]
         },
@@ -12959,17 +13496,17 @@
       "members": [
         {
           "name": "id",
-          "type": "u128",
+          "type": "felt252",
           "key": true
         },
         {
           "name": "salts",
-          "type": "Option<Array<felt252>>",
+          "type": "Array<felt252>",
           "key": false
         }
       ],
-      "class_hash": "0x2ec506f64feecf26a726b15dd5bd306e08a8e454dd900e7c6bce0b1e8e1f710",
-      "original_class_hash": "0x2ec506f64feecf26a726b15dd5bd306e08a8e454dd900e7c6bce0b1e8e1f710",
+      "class_hash": "0x4717339368058d40e540d6a378cc4f928d85a6beedaefa675c4f1d4de2b04e9",
+      "original_class_hash": "0x4717339368058d40e540d6a378cc4f928d85a6beedaefa675c4f1d4de2b04e9",
       "abi": [
         {
           "type": "impl",
@@ -13339,30 +13876,16 @@
           "interface_name": "blob_arena::models::combat::Isalts"
         },
         {
-          "type": "enum",
-          "name": "core::option::Option::<core::array::Array::<core::felt252>>",
-          "variants": [
-            {
-              "name": "Some",
-              "type": "core::array::Array::<core::felt252>"
-            },
-            {
-              "name": "None",
-              "type": "()"
-            }
-          ]
-        },
-        {
           "type": "struct",
           "name": "blob_arena::models::combat::Salts",
           "members": [
             {
               "name": "id",
-              "type": "core::integer::u128"
+              "type": "core::felt252"
             },
             {
               "name": "salts",
-              "type": "core::option::Option::<core::array::Array::<core::felt252>>"
+              "type": "core::array::Array::<core::felt252>"
             }
           ]
         },
