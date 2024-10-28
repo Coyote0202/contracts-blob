@@ -10,7 +10,7 @@ sierra-replace-ids = true
 sort-module-level-items = true
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.17" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.0-alpha.19" }
 alexandria_math = { git = "https://github.com/keep-starknet-strange/alexandria.git" }
 cubit = { git = "https://github.com/dojoengine/cubit", branch = "cairo_2.7" }
 
