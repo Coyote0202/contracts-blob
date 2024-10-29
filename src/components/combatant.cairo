@@ -123,6 +123,12 @@ impl CombatantImpl of CombatantTrait {
         assert(get_caller_address() == self.player, 'Not combatant player'); //#
         self.player
     }
+
+    fn create_new_state(self: @CombatantStats) -> CombatantState {
+        CombatantState {
+            id: *self.id, health: 100 + *self.vitality, stun_chance: 0, buffs: Default::default(),
+        }
+    }
 }
 
 
@@ -132,29 +138,29 @@ fn make_stat_in_range(base: u8, buff: i8) -> i8 {
 
 #[generate_trait]
 impl CombatantStateImpl of CombatantStateTrait {
-    fn limit_buffs(ref self: CombatantState, stats: CombatantStats) {
+    fn limit_buffs(ref self: CombatantState, stats: @CombatantStats) {
         self
             .buffs =
                 TStats {
-                    strength: make_stat_in_range(stats.strength, self.buffs.strength),
-                    vitality: make_stat_in_range(stats.vitality, self.buffs.vitality),
-                    dexterity: make_stat_in_range(stats.dexterity, self.buffs.dexterity),
-                    luck: make_stat_in_range(stats.luck, self.buffs.luck),
+                    strength: make_stat_in_range(*stats.strength, self.buffs.strength),
+                    vitality: make_stat_in_range(*stats.vitality, self.buffs.vitality),
+                    dexterity: make_stat_in_range(*stats.dexterity, self.buffs.dexterity),
+                    luck: make_stat_in_range(*stats.luck, self.buffs.luck),
                 }
     }
 
-    fn apply_buffs(ref self: CombatantState, stats: CombatantStats, buff: TStats<i8>) {
-        self.buffs = self.buffs.saturating_add(buff);
+    fn apply_buffs(ref self: CombatantState, stats: @CombatantStats, buff: @TStats<i8>) {
+        self.buffs = self.buffs.saturating_add(*buff);
         self.limit_buffs(stats);
     }
 
-    fn modify_health(ref self: CombatantState, stats: CombatantStats, health: i16) {
+    fn modify_health(ref self: CombatantState, stats: @CombatantStats, health: i16) {
         self
             .health =
-                min(stats.get_max_health(self), (self.health.into() + health).saturating_into());
+                min(stats.get_max_health(@self), (self.health.into() + health).saturating_into());
     }
 
-    fn apply_buff(ref self: CombatantState, stats: CombatantStats, stat: StatTypes, amount: i8) {
+    fn apply_buff(ref self: CombatantState, stats: @CombatantStats, stat: StatTypes, amount: i8) {
         self
             .buffs
             .set_stat(
@@ -169,7 +175,7 @@ impl CombatantStateImpl of CombatantStateTrait {
 
 #[generate_trait]
 impl CombatantStatsImpl of CombatantStatsTrait {
-    fn get_buffed_stats(self: @CombatantStats, state: CombatantState) -> TStats<u8> {
+    fn get_buffed_stats(self: @CombatantStats, state: @CombatantState) -> TStats<u8> {
         TStats::<
             u8
         > {
@@ -189,21 +195,21 @@ impl CombatantStatsImpl of CombatantStatsTrait {
         }
     }
 
-    fn get_max_health(self: @CombatantStats, state: CombatantState) -> u8 {
-        ((*self.vitality + STARTING_HEALTH).try_into().unwrap() + state.buffs.vitality)
+    fn get_max_health(self: @CombatantStats, state: @CombatantState) -> u8 {
+        ((*self.vitality + STARTING_HEALTH).try_into().unwrap() + *state.buffs.vitality)
             .saturating_into()
     }
 
-    fn get_luck(self: @CombatantStats, state: CombatantState) -> u8 {
-        ((*self.luck).try_into().unwrap() + state.buffs.luck).saturating_into()
+    fn get_luck(self: @CombatantStats, state: @CombatantState) -> u8 {
+        ((*self.luck).try_into().unwrap() + *state.buffs.luck).saturating_into()
     }
-    fn get_strength(self: @CombatantStats, state: CombatantState) -> u8 {
-        ((*self.strength).try_into().unwrap() + state.buffs.strength).saturating_into()
+    fn get_strength(self: @CombatantStats, state: @CombatantState) -> u8 {
+        ((*self.strength).try_into().unwrap() + *state.buffs.strength).saturating_into()
     }
-    fn get_vitality(self: @CombatantStats, state: CombatantState) -> u8 {
-        ((*self.vitality).try_into().unwrap() + state.buffs.vitality).saturating_into()
+    fn get_vitality(self: @CombatantStats, state: @CombatantState) -> u8 {
+        ((*self.vitality).try_into().unwrap() + *state.buffs.vitality).saturating_into()
     }
-    fn get_dexterity(self: @CombatantStats, state: CombatantState) -> u8 {
-        ((*self.dexterity).try_into().unwrap() + state.buffs.dexterity).saturating_into()
+    fn get_dexterity(self: @CombatantStats, state: @CombatantState) -> u8 {
+        ((*self.dexterity).try_into().unwrap() + *state.buffs.dexterity).saturating_into()
     }
 }
