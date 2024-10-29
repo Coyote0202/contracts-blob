@@ -1,6 +1,7 @@
 mod blobert;
 mod mint;
 mod amma;
+mod models;
 use starknet::ContractAddress;
 use dojo::world::{IWorldDispatcher};
 use blob_arena::collections::blobert::external::TokenTrait;

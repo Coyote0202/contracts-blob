@@ -12,7 +12,7 @@ enum WhitelistTier {
     Four
 }
 
-#[derive(Copy, Drop, Serde, Hash, PartialEq, Introspect)]
+#[derive(Copy, Drop, Serde, Hash, PartialEq, Introspect, Default)]
 struct Seed {
     background: u8,
     armour: u8,

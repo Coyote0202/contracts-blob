@@ -1,8 +1,8 @@
 {
   "world": {
     "kind": "WorldContract",
-    "class_hash": "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce",
-    "original_class_hash": "0x6f38d5d9507c5d9546290e1a27e309efe5a9af3770b6cc1627db4a1b90a7dce",
+    "class_hash": "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e",
+    "original_class_hash": "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e",
     "abi": [
       {
         "type": "impl",
@@ -1234,10 +1234,10 @@
         ]
       }
     ],
-    "address": "0x3767faa0837e5a4251e2deb4a22816be8ef38f2c545d8f633292299bcb67c1",
-    "transaction_hash": "0xcd75144114b998cf2cbd3da74d2bb4d102f09001972e7c0ed12b140f0d213e",
+    "address": "0x6bb97f3349c5bb3d3082da83c2cf11bd936c86c6e98788a39d4e48a9efffdda",
+    "transaction_hash": "0x484666852c4597a57af5d9862177452f1fc69992f0b7d6372e2f6ba47aa5c04",
     "block_number": null,
-    "seed": "blob-arena-0.4-alpha.19-1",
+    "seed": "blob-arena-0.4-alpha.12-fix-1",
     "metadata": {
       "profile_name": "sepolia",
       "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
@@ -1255,9 +1255,9 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x379866dccf1cbc122267b14a80087320a870edcd942f75ce8c84472e69bedc4",
-      "class_hash": "0x27bf5fc6e3b2ae4c04a98df2460a0ee6c57320c434b8c67a60bf9682c08e7b9",
-      "original_class_hash": "0x27bf5fc6e3b2ae4c04a98df2460a0ee6c57320c434b8c67a60bf9682c08e7b9",
+      "address": "0x733233fe697f871f13dcab6e7167e80ce14d0d424eecc38cf6a90840f957f59",
+      "class_hash": "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e",
+      "original_class_hash": "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1289,7 +1289,7 @@
           "items": [
             {
               "type": "function",
-              "name": "name",
+              "name": "contract_name",
               "inputs": [],
               "outputs": [
                 {
@@ -1784,9 +1784,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x10cf4a1abb4530f80c337c41020ad506b0b9f9c26c57df72e0a87532fa4b21e",
-      "class_hash": "0x34663f6093365fc30a3513bb7fc56aa9202b329df4d5b7aca238de4fda6381f",
-      "original_class_hash": "0x34663f6093365fc30a3513bb7fc56aa9202b329df4d5b7aca238de4fda6381f",
+      "address": "0x46d093a1a0a82ccfff2376bf93191c07ed88047f77b78359e31ebda4be9e93c",
+      "class_hash": "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d",
+      "original_class_hash": "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1818,7 +1818,7 @@
           "items": [
             {
               "type": "function",
-              "name": "name",
+              "name": "contract_name",
               "inputs": [],
               "outputs": [
                 {
@@ -2206,9 +2206,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x200e74ee3100dc212e0faec7aff90be6e68329979be482dcf38cc54285235e8",
-      "class_hash": "0xf41e0083ce3d4e67d8617dc2a4f3e664fb1fa70e490fce29b3b38495ad95de",
-      "original_class_hash": "0xf41e0083ce3d4e67d8617dc2a4f3e664fb1fa70e490fce29b3b38495ad95de",
+      "address": "0x46d1dd238eb2a4da7f4858d62253c509558c3a6e1cddf1d1b9e58095c103024",
+      "class_hash": "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d",
+      "original_class_hash": "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2240,7 +2240,7 @@
           "items": [
             {
               "type": "function",
-              "name": "name",
+              "name": "contract_name",
               "inputs": [],
               "outputs": [
                 {
@@ -2897,9 +2897,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x645a1c6bcb2fd18743fcb384af9b3fe8db387417f886ced7ab41503ce294ade",
-      "class_hash": "0x26070ca5990aa151860299e59278bdd3889e85b026409a0295b1b991fc46b8d",
-      "original_class_hash": "0x26070ca5990aa151860299e59278bdd3889e85b026409a0295b1b991fc46b8d",
+      "address": "0x6fcb608d94b7561ce072f3cad8e93b002e7ea8a9cfe7b222e177df526e45ddf",
+      "class_hash": "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f",
+      "original_class_hash": "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2931,7 +2931,7 @@
           "items": [
             {
               "type": "function",
-              "name": "name",
+              "name": "contract_name",
               "inputs": [],
               "outputs": [
                 {
@@ -3381,9 +3381,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x4bcc399d8ce707dccb98115b185723541d10326a7af1f65b7178864e9f93990",
-      "class_hash": "0x37f3d577afe04a027699952f22fde16d068622f30e03f0e78c8616ae46e9eb9",
-      "original_class_hash": "0x37f3d577afe04a027699952f22fde16d068622f30e03f0e78c8616ae46e9eb9",
+      "address": "0x7f356eecab6bbfa689aa3e3ccbb44b17a64071e3cc30aa90c1bf53609a1ab78",
+      "class_hash": "0x7453118b10750ee323111a9cde0d8ee0d77d4f99fcfd618183fe95e6a3047ec",
+      "original_class_hash": "0x7453118b10750ee323111a9cde0d8ee0d77d4f99fcfd618183fe95e6a3047ec",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3415,7 +3415,7 @@
           "items": [
             {
               "type": "function",
-              "name": "name",
+              "name": "contract_name",
               "inputs": [],
               "outputs": [
                 {
@@ -3856,9 +3856,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x4bbe464fcd3f0a4284e4ef7bf7ec05142baaee5b10834fee5a1d521c566b958",
-      "class_hash": "0x4b52211e5fbcf19a8a2a7cedae481f6be97293030436001af1eddaf6c21ea2d",
-      "original_class_hash": "0x4b52211e5fbcf19a8a2a7cedae481f6be97293030436001af1eddaf6c21ea2d",
+      "address": "0xb137495ca9fa5440d6e8168acc63daef298e54d1e7aa54c8247f30201f545b",
+      "class_hash": "0xfbfb2f09726aa0b63f0221c7c92f9545c64a8f499385b725fa9f385aaeee8c",
+      "original_class_hash": "0xfbfb2f09726aa0b63f0221c7c92f9545c64a8f499385b725fa9f385aaeee8c",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3890,7 +3890,7 @@
           "items": [
             {
               "type": "function",
-              "name": "name",
+              "name": "contract_name",
               "inputs": [],
               "outputs": [
                 {
@@ -4625,13 +4625,23 @@
           "key": false
         },
         {
-          "name": "traits",
-          "type": "TokenTrait",
+          "name": "is_custom",
+          "type": "bool",
+          "key": false
+        },
+        {
+          "name": "custom_id",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "seed",
+          "type": "Seed",
           "key": false
         }
       ],
-      "class_hash": "0x6fff2a2479e63e7a0965611f8777268e72852fda8df7d02c6323953c7145b9e",
-      "original_class_hash": "0x6fff2a2479e63e7a0965611f8777268e72852fda8df7d02c6323953c7145b9e",
+      "class_hash": "0x1973d422be0b17184c8948cb2fd3cf6af4d381edd74dfa20d5956e04081a81e",
+      "original_class_hash": "0x1973d422be0b17184c8948cb2fd3cf6af4d381edd74dfa20d5956e04081a81e",
       "abi": [
         {
           "type": "impl",
@@ -4998,7 +5008,21 @@
         {
           "type": "impl",
           "name": "arcade_blobertImpl",
-          "interface_name": "blob_arena::collections::arcade_blobert::blobert::Iarcade_blobert"
+          "interface_name": "blob_arena::collections::arcade_blobert::models::Iarcade_blobert"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
         },
         {
           "type": "struct",
@@ -5027,22 +5051,8 @@
           ]
         },
         {
-          "type": "enum",
-          "name": "blob_arena::collections::blobert::external::TokenTrait",
-          "variants": [
-            {
-              "name": "Regular",
-              "type": "blob_arena::collections::blobert::external::Seed"
-            },
-            {
-              "name": "Custom",
-              "type": "core::integer::u8"
-            }
-          ]
-        },
-        {
           "type": "struct",
-          "name": "blob_arena::collections::arcade_blobert::blobert::ArcadeBlobert",
+          "name": "blob_arena::collections::arcade_blobert::models::ArcadeBlobert",
           "members": [
             {
               "name": "token_id",
@@ -5053,14 +5063,22 @@
               "type": "core::starknet::contract_address::ContractAddress"
             },
             {
-              "name": "traits",
-              "type": "blob_arena::collections::blobert::external::TokenTrait"
+              "name": "is_custom",
+              "type": "core::bool"
+            },
+            {
+              "name": "custom_id",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "seed",
+              "type": "blob_arena::collections::blobert::external::Seed"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "blob_arena::collections::arcade_blobert::blobert::Iarcade_blobert",
+          "name": "blob_arena::collections::arcade_blobert::models::Iarcade_blobert",
           "items": [
             {
               "type": "function",
@@ -5068,7 +5086,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "blob_arena::collections::arcade_blobert::blobert::ArcadeBlobert"
+                  "type": "blob_arena::collections::arcade_blobert::models::ArcadeBlobert"
                 }
               ],
               "outputs": [],
@@ -5078,13 +5096,13 @@
         },
         {
           "type": "event",
-          "name": "blob_arena::collections::arcade_blobert::blobert::arcade_blobert::Event",
+          "name": "blob_arena::collections::arcade_blobert::models::arcade_blobert::Event",
           "kind": "enum",
           "variants": []
         }
       ],
       "tag": "blob_arena-ArcadeBlobert",
-      "qualified_path": "blob_arena::collections::arcade_blobert::blobert::arcade_blobert",
+      "qualified_path": "blob_arena::collections::arcade_blobert::models::arcade_blobert",
       "manifest_name": "blob_arena-ArcadeBlobert-773995d0"
     },
     {
