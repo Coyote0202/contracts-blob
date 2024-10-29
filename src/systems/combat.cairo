@@ -84,20 +84,10 @@ impl SeedProbabilityImpl<T, +Into<T, u128>,> of SeedProbability<T> {
     }
 }
 
-fn did_hit(accuracy: u8, seed: u128) -> (u128, bool) {
-    let (seed, value) = u128_safe_divmod(seed, NZ_100);
-    (seed, value < accuracy.into())
-}
-
 fn did_critical(chance: u8, luck: u8, seed: u128) -> (u128, bool) {
     let critical: u8 = apply_luck_modifier(chance, luck);
     let (seed, value) = u128_safe_divmod(seed, NZ_255);
     (seed, value < critical.into())
-}
-
-fn is_stunned(stun_chance: u8, seed: u128) -> (u128, bool) {
-    let (seed, value) = u128_safe_divmod(seed, NZ_255);
-    (seed, value < stun_chance.into())
 }
 
 #[generate_trait]
@@ -110,7 +100,7 @@ impl AttackerImpl of AttackerTrait {
 }
 
 fn effect_health(ref self: CombatantState, stats: CombatantStats, health: i16) {
-    let max_health = stats.get_max_health(self).into();
+    let max_health = stats.get_max_health(@self).into();
     let mut new_health = self.health.into() + health;
     if new_health > max_health {
         new_health = max_health
@@ -124,11 +114,11 @@ fn apply_stun(ref self: CombatantState, luck: u8, stun: u8) {
 
 
 fn run_effect(
-    attacker_stats: CombatantStats,
-    defender_stats: CombatantStats,
+    attacker_stats: @CombatantStats,
+    defender_stats: @CombatantStats,
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
-    effect: Effect,
+    effect: @Effect,
     hash_state: HashState,
 ) -> (EffectResult, HashState) {
     let result = match effect.affect {
@@ -142,19 +132,19 @@ fn run_effect(
         Affect::Stat(Stat { stat,
         amount }) => {
             match effect.target {
-                Target::Player => { attacker_state.apply_buff(attacker_stats, stat, amount) },
-                Target::Opponent => { defender_state.apply_buff(defender_stats, stat, amount) },
+                Target::Player => { attacker_state.apply_buff(attacker_stats, *stat, *amount) },
+                Target::Opponent => { defender_state.apply_buff(defender_stats, *stat, *amount) },
             };
             AffectResult::Success
         },
         Affect::Damage(damage) => {
             let seed = hash_state.update_to_u128('salt');
             let (_seed, critical) = did_critical(
-                damage.critical, attacker_stats.get_luck(attacker_state), seed
+                *damage.critical, attacker_stats.get_luck(@attacker_state), seed
             );
 
             let damage = damage_calculation(
-                damage.power, attacker_stats.get_strength(attacker_state), critical
+                *damage.power, attacker_stats.get_strength(@attacker_state), critical
             );
             match effect.target {
                 Target::Player => { attacker_state.health -= min(attacker_state.health, damage) },
@@ -165,31 +155,31 @@ fn run_effect(
         Affect::Stun(stun) => {
             match effect.target {
                 Target::Player => {
-                    apply_stun(ref attacker_state, attacker_stats.get_luck(attacker_state), stun)
+                    apply_stun(ref attacker_state, attacker_stats.get_luck(@attacker_state), *stun)
                 },
                 Target::Opponent => {
-                    apply_stun(ref attacker_state, attacker_stats.get_luck(attacker_state), stun)
+                    apply_stun(ref attacker_state, attacker_stats.get_luck(@attacker_state), *stun)
                 },
             };
             AffectResult::Success
         },
         Affect::Health(health) => {
             match effect.target {
-                Target::Player => { attacker_state.modify_health(attacker_stats, health) },
-                Target::Opponent => { defender_state.modify_health(defender_stats, health) },
+                Target::Player => { attacker_state.modify_health(attacker_stats, *health) },
+                Target::Opponent => { defender_state.modify_health(defender_stats, *health) },
             };
             AffectResult::Success
         },
     };
-    (EffectResult { target: effect.target, affect: result, }, hash_state)
+    (EffectResult { target: *effect.target, affect: result, }, hash_state)
 }
 
 fn run_effects(
-    attacker_stats: CombatantStats,
-    defender_stats: CombatantStats,
+    attacker_stats: @CombatantStats,
+    defender_stats: @CombatantStats,
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
-    mut effects: Array<Effect>,
+    mut effects: Span<Effect>,
     mut hash_state: HashState,
 ) -> Array<EffectResult> {
     let mut results: Array<EffectResult> = ArrayTrait::new();
@@ -215,6 +205,11 @@ fn run_effects(
 
 #[generate_trait]
 impl CombatWorldImp of CombatWorldTraits {
+    fn get_attacker_attack_speed(
+        self: @IWorldDispatcher, stats: @CombatantStats, state: @CombatantState, attack: @Attack
+    ) -> u8 {
+        stats.get_dexterity(state) + *attack.speed
+    }
     fn run_attack_check(
         self: IWorldDispatcher, combatant_id: felt252, attack_id: felt252, cooldown: u8, round: u32
     ) -> bool {
@@ -236,29 +231,29 @@ impl CombatWorldImp of CombatWorldTraits {
 
     fn run_attack(
         self: IWorldDispatcher,
-        attacker_stats: CombatantStats,
-        defender_stats: CombatantStats,
+        attacker_stats: @CombatantStats,
+        defender_stats: @CombatantStats,
         ref attacker_state: CombatantState,
         ref defender_state: CombatantState,
-        attack: Attack,
+        attack: @Attack,
         round: u32,
         hash_state: HashState
     ) {
-        let hash_state = hash_state.update_with(attacker_stats.id);
+        let hash_state = hash_state.update_with(*attacker_stats.id);
         let mut seed = hash_state.to_u128();
         let result = if !self
-            .run_attack_check(attacker_stats.id, attack.id, attack.cooldown, round) {
+            .run_attack_check(*attacker_stats.id, *attack.id, *attack.cooldown, round) {
             AttackOutcomes::Failed
         } else if attacker_state.run_stun(ref seed) {
             AttackOutcomes::Stunned
-        } else if seed.get_outcome(NZ_100, attack.accuracy) {
+        } else if seed.get_outcome(NZ_100, *attack.accuracy) {
             AttackOutcomes::Hit(
                 run_effects(
                     attacker_stats,
                     defender_stats,
                     ref attacker_state,
                     ref defender_state,
-                    attack.hit,
+                    attack.hit.span(),
                     hash_state
                 )
             )
@@ -269,7 +264,7 @@ impl CombatWorldImp of CombatWorldTraits {
                     defender_stats,
                     ref attacker_state,
                     ref defender_state,
-                    attack.miss,
+                    attack.miss.span(),
                     hash_state
                 )
             )
@@ -277,7 +272,7 @@ impl CombatWorldImp of CombatWorldTraits {
         emit!(
             self,
             AttackResult {
-                combatant_id: attacker_stats.id, round, target: defender_stats.id, result
+                combatant_id: *attacker_stats.id, round, target: *defender_stats.id, result
             }
         )
     }
