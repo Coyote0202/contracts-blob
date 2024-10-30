@@ -8,6 +8,7 @@ use starknet::{
 };
 use blob_arena::core::Felt252BitAnd;
 
+
 fn hash_value<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> felt252 {
     PoseidonTrait::new().update_with(value).finalize()
 }
@@ -43,6 +44,10 @@ impl ArrayHash<
 
 fn array_to_hash_state<T, +Hash<T, HashState>, +Drop<Array<T>>,>(arr: Array<T>) -> HashState {
     Hash::update_state(PoseidonTrait::new(), arr)
+}
+
+fn make_hash_state<T, +Hash<T, HashState>, +Drop<T>>(value: T) -> HashState {
+    PoseidonTrait::new().update_with(value)
 }
 
 #[dojo::model]
