@@ -5,7 +5,6 @@ writes = [
     "blob_arena-Salts",
     "blob_arena-CombatantInfo",
     "blob_arena-CombatantState",
-    "blob_arena-CombatantStats",
     "blob_arena-PlannedAttack",
     "blob_arena-Commitment",
     "blob_arena-Item",
