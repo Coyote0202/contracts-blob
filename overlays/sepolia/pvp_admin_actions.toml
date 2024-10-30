@@ -4,6 +4,5 @@ writes = [
     "blob_arena-CombatState",
     "blob_arena-CombatantInfo",
     "blob_arena-CombatantState",
-    "blob_arena-CombatantStats",
     "blob_arena-PvPCombatants",
 ]
