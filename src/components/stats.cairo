@@ -1,6 +1,7 @@
-use core::option::OptionTrait;
-use core::fmt::{Display, Formatter, Error, Debug};
-use blob_arena::core::{SaturatingAdd, SaturatingSub};
+use core::{fmt::{Display, Formatter, Error, Debug}, cmp::min};
+use blob_arena::{core::{SaturatingAdd, SaturatingSub, SaturatingInto}, consts::STARTING_HEALTH};
+
+const MAX_STAT: u8 = 100;
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
 struct TStats<T> {
@@ -24,6 +25,37 @@ type Stats = TStats<u8>;
 impl TIntoTStats<T, +Copy<T>> of Into<T, TStats<T>> {
     fn into(self: T) -> TStats<T> {
         TStats { strength: self, vitality: self, dexterity: self, luck: self, }
+    }
+}
+
+fn add_buff(stat: u8, buff: i8) -> u8 {
+    min(stat.saturating_into().saturating_add(buff).saturating_into(), 100)
+}
+
+#[generate_trait]
+impl StatsImpl of StatsTrait {
+    fn limit_stats(ref self: Stats) {
+        self.strength = min(self.strength, MAX_STAT);
+        self.vitality = min(self.vitality, MAX_STAT);
+        self.dexterity = min(self.dexterity, MAX_STAT);
+        self.luck = min(self.luck, MAX_STAT);
+    }
+    fn apply_buff(ref self: Stats, stat: StatTypes, amount: i8) {
+        match stat {
+            StatTypes::Strength => { self.strength = add_buff(self.strength, amount) },
+            StatTypes::Vitality => { self.vitality = add_buff(self.vitality, amount) },
+            StatTypes::Dexterity => { self.dexterity = add_buff(self.dexterity, amount) },
+            StatTypes::Luck => { self.luck = add_buff(self.luck, amount) },
+        }
+    }
+    fn apply_buffs(ref self: Stats, buffs: @TStats<i8>) {
+        self.strength = add_buff(self.strength, *buffs.strength);
+        self.vitality = add_buff(self.vitality, *buffs.vitality);
+        self.dexterity = add_buff(self.dexterity, *buffs.dexterity);
+        self.luck = add_buff(self.luck, *buffs.luck);
+    }
+    fn get_max_health(self: @Stats) -> u8 {
+        *self.vitality + STARTING_HEALTH
     }
 }
 
@@ -130,12 +162,25 @@ impl TStatsIntoTStata<
     }
 }
 
+impl TStatsSaturatingIntoTStats<
+    T, S, +SaturatingInto<T, S>, +Drop<T>, +Copy<T>, +Drop<S>
+> of SaturatingInto<TStats<T>, TStats<S>> {
+    fn saturating_into(self: TStats<T>) -> TStats<S> {
+        TStats {
+            strength: self.strength.saturating_into(),
+            vitality: self.vitality.saturating_into(),
+            dexterity: self.dexterity.saturating_into(),
+            luck: self.luck.saturating_into(),
+        }
+    }
+}
+
 
 impl StatsDisplayImpl<T, +Debug<T>, +Drop<T>, +Copy<T>> of Display<TStats<T>> {
     fn fmt(self: @TStats<T>, ref f: Formatter) -> Result<(), Error> {
         write!(
             f,
-            "Stats: strength: {:?}, vitality: {:?}, dexterity: {:?}, luck: {:?}",
+            "strength: {:?}, vitality: {:?}, dexterity: {:?}, luck: {:?}",
             *self.strength,
             *self.vitality,
             *self.dexterity,

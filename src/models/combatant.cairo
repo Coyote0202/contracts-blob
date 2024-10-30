@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
-use blob_arena::{components::{stats::TStats}};
-
+use blob_arena::{components::{stats::Stats}, utils};
+use core::fmt::{Display, Formatter, Error, Debug};
 
 #[dojo::model]
 #[derive(Drop, Serde, Copy)]
@@ -14,24 +14,13 @@ struct CombatantInfo {
 }
 
 #[dojo::model]
-#[derive(Drop, Serde, Copy)]
-struct CombatantStats {
-    #[key]
-    id: felt252,
-    strength: u8,
-    vitality: u8,
-    dexterity: u8,
-    luck: u8,
-}
-
-#[dojo::model]
-#[derive(Drop, Serde, Copy)]
+#[derive(Drop, Serde, Copy, PartialEq)]
 struct CombatantState {
     #[key]
     id: felt252,
     health: u8,
     stun_chance: u8,
-    buffs: TStats<i8>,
+    stats: Stats,
 }
 
 
@@ -43,3 +32,18 @@ struct PlannedAttack {
     attack: felt252,
     target: felt252,
 }
+
+impl CombatantStateDisplayImpl of Display<CombatantState> {
+    fn fmt(self: @CombatantState, ref f: Formatter) -> Result<(), Error> {
+        write!(
+            f,
+            "id: {}, health: {}, stun_chance: {}, buffs: {:?}",
+            self.id,
+            self.health,
+            self.stun_chance,
+            *self.stats
+        )
+    }
+}
+
+impl CombatantStateDebugImpl = utils::TDebugImpl<CombatantState>;

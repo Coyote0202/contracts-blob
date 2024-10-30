@@ -12,7 +12,7 @@ use blob_arena::models::{
         Target, Affect, Stat
     },
     combatant::{
-        CombatantInfoStore, CombatantInfo, CombatantStatsStore, CombatantStats, CombatantStateStore,
+        CombatantInfoStore, CombatantInfo, CombatantStateStore,
         CombatantState, PlannedAttackStore, PlannedAttack
     },
     item::{ItemStore, Item as ItemModel, HasAttack},
