@@ -56,9 +56,10 @@ fn apply_luck_modifier<T, +TryInto<Fixed, T>, +Into<u8, T>, +Zeroable<T>>(
     }
 }
 
-fn get_new_stun_chance(current_stun: u8, attack_stun: u8, luck: u8) -> u8 {
-    let stun_chance = apply_luck_modifier(attack_stun, luck);
-    (current_stun.into() + stun_chance - (current_stun.into() * stun_chance / 255_u16))
+fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
+    (current_stun.into()
+        + attack_stun.into()
+        - (current_stun.into() * attack_stun.into() / 100_u16))
         .saturating_into()
 }
 
@@ -92,10 +93,10 @@ fn did_critical(chance: u8, luck: u8, seed: u128) -> (u128, bool) {
 
 #[generate_trait]
 impl AttackerImpl of AttackerTrait {
-    fn run_stun(ref self: CombatantState, ref seed: u128) -> bool {
-        let stunned = seed.get_outcome(NZ_255, self.stun_chance);
+    fn run_stun(ref self: CombatantState, ref seed: u128, luck: u8) -> bool {
+        let stun_chance: u8 = apply_luck_modifier(self.stun_chance, 100 - luck);
         self.stun_chance = 0;
-        stunned
+        seed.get_outcome(NZ_255, stun_chance)
     }
 }
 
@@ -108,8 +109,8 @@ fn effect_health(ref self: CombatantState, stats: CombatantStats, health: i16) {
     self.health = new_health.saturating_into();
 }
 
-fn apply_stun(ref self: CombatantState, luck: u8, stun: u8) {
-    self.stun_chance = get_new_stun_chance(self.stun_chance, stun, luck)
+fn apply_stun(ref self: CombatantState, stun: u8) {
+    self.stun_chance = get_new_stun_chance(self.stun_chance, stun)
 }
 
 
@@ -154,12 +155,8 @@ fn run_effect(
         },
         Affect::Stun(stun) => {
             match effect.target {
-                Target::Player => {
-                    apply_stun(ref attacker_state, attacker_stats.get_luck(@attacker_state), *stun)
-                },
-                Target::Opponent => {
-                    apply_stun(ref attacker_state, attacker_stats.get_luck(@attacker_state), *stun)
-                },
+                Target::Player => { apply_stun(ref attacker_state, *stun) },
+                Target::Opponent => { apply_stun(ref defender_state, *stun) },
             };
             AffectResult::Success
         },
@@ -244,7 +241,7 @@ impl CombatWorldImp of CombatWorldTraits {
         let result = if !self
             .run_attack_check(*attacker_stats.id, *attack.id, *attack.cooldown, round) {
             AttackOutcomes::Failed
-        } else if attacker_state.run_stun(ref seed) {
+        } else if attacker_state.run_stun(ref seed, attacker_stats.get_luck(@attacker_state)) {
             AttackOutcomes::Stunned
         } else if seed.get_outcome(NZ_100, *attack.accuracy) {
             AttackOutcomes::Hit(
