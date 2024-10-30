@@ -31,26 +31,6 @@ fn stat_effect_span(stat: StatTypes, amount: i8, target: Target) -> Span<Effect>
 
 #[test]
 fn test_luck_modifier() {
-    // let (l1, l2, l3): (u8, u8, u8) = (
-    //     apply_luck_modifier(10, 0), apply_luck_modifier(50, 0), apply_luck_modifier(90, 0)
-    // );
-    // println!("chance {:?} {:?} {:?}", l1, l2, l3);
-
-    // let (l1, l2, l3): (u8, u8, u8) = (
-    //     apply_luck_modifier(10, 25), apply_luck_modifier(50, 25), apply_luck_modifier(90, 25)
-    // );
-    // println!("chance {:?} {:?} {:?}", l1, l2, l3);
-
-    // let (l1, l2, l3): (u8, u8, u8) = (
-    //     apply_luck_modifier(10, 75), apply_luck_modifier(50, 75), apply_luck_modifier(90, 75)
-    // );
-    // println!("chance {:?} {:?} {:?}", l1, l2, l3);
-
-    // let (l1, l2, l3): (u8, u8, u8) = (
-    //     apply_luck_modifier(10, 100), apply_luck_modifier(50, 100), apply_luck_modifier(90, 100)
-    // );
-    // println!("chance {:?} {:?} {:?}", l1, l2, l3);
-
     assert_eq!(0_u8, apply_luck_modifier(0, 0));
     assert_eq!(8_u8, apply_luck_modifier(10, 0));
     assert_eq!(90_u8, apply_luck_modifier(50, 0));
