@@ -25,6 +25,10 @@ fn effect_span(affect: Affect, target: Target) -> Span<Effect> {
     array![Effect { target, affect }].span()
 }
 
+fn stat_effect_span(stat: StatTypes, amount: i8, target: Target) -> Span<Effect> {
+    effect_span(Affect::Stat(Stat { stat, amount }), Target::Player)
+}
+
 #[test]
 fn test_luck_modifier() {
     // let (l1, l2, l3): (u8, u8, u8) = (
@@ -112,27 +116,27 @@ fn test_stun() {
     let mut state_2 = make_combatant_state(2, @STATS_AVG);
     let hash_state = make_hash_state(0);
 
-    let mut new_1_state = state_1;
-    let mut new_2_state = state_2;
+    let mut new_state_1 = state_1;
+    let mut new_state_2 = state_2;
 
     let stun_oppo = effect_span(Affect::Stun(50), Target::Opponent);
     let stun_self = effect_span(Affect::Stun(50), Target::Player);
 
     run_effects(ref state_1, ref state_2, stun_oppo, hash_state);
-    new_2_state.stun_chance = 50;
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2));
+    new_state_2.stun_chance = 50;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
     run_effects(ref state_1, ref state_2, stun_oppo, hash_state);
-    new_2_state.stun_chance = 75;
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2));
+    new_state_2.stun_chance = 75;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
     run_effects(ref state_1, ref state_2, stun_self, hash_state);
-    new_1_state.stun_chance = 50;
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2));
+    new_state_1.stun_chance = 50;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
     run_effects(ref state_1, ref state_2, stun_self, hash_state);
-    new_1_state.stun_chance = 75;
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2));
+    new_state_1.stun_chance = 75;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 }
 
 
@@ -142,199 +146,182 @@ fn test_buff() {
     let mut state_2 = make_combatant_state(2, @STATS_AVG);
     let hash_state = make_hash_state(0);
 
-    let mut new_1_state = state_1;
-    let mut new_2_state = state_2;
+    let mut new_state_1 = state_1;
+    let mut new_state_2 = state_2;
 
     let effects = stats_effect_span(10, Target::Player);
 
     run_effects(ref state_1, ref state_2, effects, hash_state);
-    new_1_state.stats = 60_u8.into();
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 1");
+    new_state_1.stats = 60_u8.into();
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 1");
 
     run_effects(ref state_1, ref state_2, effects, hash_state);
-    new_1_state.stats = 70_u8.into();
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 2");
+    new_state_1.stats = 70_u8.into();
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 2");
 
     run_effects(ref state_1, ref state_2, stats_effect_span(-30, Target::Player), hash_state);
-    new_1_state.stats = 40_u8.into();
-    new_1_state.health = 140;
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 3");
+    new_state_1.stats = 40_u8.into();
+    new_state_1.health = 140;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 3");
 
     run_effects(ref state_1, ref state_2, stats_effect_span(100, Target::Player), hash_state);
-    new_1_state.stats = 100_u8.into();
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 4");
+    new_state_1.stats = 100_u8.into();
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 4");
 
     let effect = Effect { target: Target::Player, affect: Affect::Stats((-100_i8).into()) };
 
     run_effects(ref state_1, ref state_2, array![effect, effect].span(), hash_state);
-    new_1_state.stats = 0_u8.into();
-    new_1_state.health = 100;
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 5");
+    new_state_1.stats = 0_u8.into();
+    new_state_1.health = 100;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 5");
 
     let effects = stats_effect_span(10, Target::Opponent);
 
     run_effects(ref state_1, ref state_2, effects, hash_state);
-    new_2_state.stats = 60_u8.into();
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 6");
+    new_state_2.stats = 60_u8.into();
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 6");
 
     run_effects(ref state_1, ref state_2, effects, hash_state);
-    new_2_state.stats = 70_u8.into();
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 7");
+    new_state_2.stats = 70_u8.into();
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 7");
 
     run_effects(ref state_1, ref state_2, stats_effect_span(-30, Target::Opponent), hash_state);
-    new_2_state.stats = 40_u8.into();
-    new_2_state.health = 140;
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2), "round 8");
+    new_state_2.stats = 40_u8.into();
+    new_state_2.health = 140;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2), "round 8");
 }
 
 #[test]
-fn test_damage_self() {
+fn test_damage() {
     let mut state_1 = make_combatant_state(1, @STATS_AVG);
     let mut state_2 = make_combatant_state(2, @STATS_AVG);
     let hash_state = make_hash_state(0);
 
-    let mut new_1_state = state_1;
-    let mut new_2_state = state_2;
+    let mut new_state_1 = state_1;
+    let mut new_state_2 = state_2;
     let damage_effect = effect_span(
         Affect::Damage(Damage { critical: 0, power: 50, }), Target::Opponent
     );
 
     run_effects(ref state_1, ref state_2, damage_effect, hash_state);
-    new_2_state.health -= 30;
+    new_state_2.health -= 30;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-    assert_eq!((new_1_state, new_2_state), (state_1, state_2));
+    let damage_effect = effect_span(
+        Affect::Damage(Damage { critical: 100, power: 100, }), Target::Opponent
+    );
+    run_effects(ref state_1, ref state_2, damage_effect, hash_state);
+    new_state_2.health = 0;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+
+    let damage_effect = effect_span(
+        Affect::Damage(Damage { critical: 0, power: 50, }), Target::Player
+    );
+
+    run_effects(ref state_1, ref state_2, damage_effect, hash_state);
+    new_state_1.health -= 30;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+
+    let mut state_1 = make_combatant_state(1, @STATS_MAX);
+    let mut state_2 = make_combatant_state(2, @STATS_AVG);
+    let mut new_state_1 = state_1;
+    let mut new_state_2 = state_2;
+    let damage_effect = effect_span(
+        Affect::Damage(Damage { critical: 0, power: 50, }), Target::Opponent
+    );
+
+    run_effects(ref state_1, ref state_2, damage_effect, hash_state);
+    new_state_2.health -= 40;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 }
-// #[test]
-// fn test_attack() {
-//     let mut fighter1 = CombatantState {
-//         id: 1,
-//         health: 100,
-//         stun_chance: 0,
-//         buffs: TStats {
-//             attack: 10,
-//             defense: 5,
-//             speed: 0,
-//             strength: 0,
-//         }
-//     };
 
-//     let fighter1_stats = CombatantStats {
-//         id: 1,
-//         attack: 10,
-//         defense: 5,
-//         speed: 0,
-//         strength: 0,
-//     };
 
-//     let mut fighter1_attack_hit = ArrayTrait::new();
-//     fighter1_attack_hit.append(Effect {
-//         target: Target::Opponent,
-//         affect: Affect::Damage(Damage {
-//             critical: 10,
-//             power: 20
-//         })
-//     });
+fn test_health() {
+    let mut state_1 = make_combatant_state(1, @STATS_AVG);
+    let mut state_2 = make_combatant_state(2, @STATS_AVG);
+    let hash_state = make_hash_state(0);
 
-//     let mut fighter1_attack_miss = ArrayTrait::new();
-//     fighter1_attack_miss.append(Effect {
-//         target: Target::Opponent,
-//         affect: Affect::Damage(Damage {
-//                 critical: 0,
-//                 power: 8,
-//             }),
-//     });
+    let mut new_state_1 = state_1;
+    let mut new_state_2 = state_2;
 
-//     let mut fighter1_effect = Effect {
-//         target: Target::Opponent,
-//         affect: Affect::Damage(Damage {
-//             critical: 10,
-//             power: 20
-//         })
-//     };
+    run_effects(
+        ref state_1, ref state_2, effect_span(Affect::Health(-50), Target::Player), hash_state
+    );
+    new_state_1.health -= 50;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-//     let mut fighter2 = CombatantState {
-//         id: 2,
-//         health: 100,
-//         stun_chance: 0,
-//         buffs: TStats {
-//             attack: 20,
-//             defense: 50,
-//             speed: 0,
-//             strength: 0,
-//         }
-//     };
+    run_effects(
+        ref state_1, ref state_2, effect_span(Affect::Health(-200), Target::Player), hash_state
+    );
+    new_state_1.health = 0;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-//     let fighter2_stats = CombatantStats {
-//         id: 2,
-//         attack: 20,
-//         defense: 50,
-//         speed: 0,
-//         strength: 0,
-//     };
+    run_effects(
+        ref state_1, ref state_2, effect_span(Affect::Health(20), Target::Player), hash_state
+    );
+    new_state_1.health = 20;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-//     // expected results for the action, if calculation changes, update here
-//     let fighter2_assertionResult = CombatantState {
-//         id: 2,
-//         health: 78,
-//         stun_chance: 0,
-//         buffs: TStats {
-//             attack: 20,
-//             defense: 50,
-//             speed: 0,
-//             strength: 0,
-//         }
-//     };
+    run_effects(
+        ref state_1, ref state_2, effect_span(Affect::Health(200), Target::Player), hash_state
+    );
+    new_state_1.health = 150;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+}
 
-//     let fighter1_assertionResult = CombatantStats {
-//         id: 1,
-//         attack: 10,
-//         defense: 5,
-//         speed: 0,
-//         strength: 0,
-//     };
 
-//     let fighter1_attack = fighter1_stats.get_stat(StatTypes::Attack);
-//     let fighter1_defense = fighter1_stats.get_stat(StatTypes::Defense);
-//     let fighter1_speed = fighter1_stats.get_stat(StatTypes::Speed);
-//     let fighter1_strength = fighter1_stats.get_stat(StatTypes::Strength);
+fn test_stat() {
+    let mut state_1 = make_combatant_state(1, @STATS_AVG);
+    let mut state_2 = make_combatant_state(2, @STATS_AVG);
+    let hash_state = make_hash_state(0);
 
-//     run_effect(fighter1_stats, fighter2_stats, ref fighter1, ref fighter2, fighter1_effect, 0);
-//     assert_eq!(fighter2.health, fighter2_assertionResult.health);
-//     assert_eq!(fighter1_attack, fighter1_assertionResult.attack);
-//     assert_eq!(fighter1_defense, fighter1_assertionResult.defense);
-//     assert_eq!(fighter1_speed, fighter1_assertionResult.speed);
-//     assert_eq!(fighter1_strength, fighter1_assertionResult.strength);
-// }
+    let mut new_state_1 = state_1;
+    let mut new_state_2 = state_2;
 
-// #[test]
-// fn test_single_buff() {
-//     let mut fighter1 = CombatantState {
-//         id: 1,
-//         health: 100,
-//         stun_chance: 0,
-//         buffs: TStats {
-//             attack: 10,
-//             defense: 5,
-//             speed: 0,
-//             strength: 0,
-//         }
-//     };
+    run_effects(
+        ref state_1,
+        ref state_2,
+        stat_effect_span(StatTypes::Dexterity, 100, Target::Player),
+        hash_state
+    );
+    new_state_1.stats.dexterity = 100;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-//     let fighter1_stats = CombatantStats {
-//         id: 1,
-//         attack: 10,
-//         defense: 5,
-//         speed: 0,
-//         strength: 0,
-//     };
+    run_effects(
+        ref state_1,
+        ref state_2,
+        stat_effect_span(StatTypes::Luck, -100, Target::Player),
+        hash_state
+    );
+    new_state_1.stats.luck = 0;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-//     let fighter1_attackAddition = 50;
+    run_effects(
+        ref state_1,
+        ref state_2,
+        stat_effect_span(StatTypes::Strength, -30, Target::Opponent),
+        hash_state
+    );
+    new_state_2.stats.strength = 20;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-//     // expected results for the action, if calculation changes, update here
-//     let fighter1_attackValue = 60;
+    run_effects(
+        ref state_1,
+        ref state_2,
+        stat_effect_span(StatTypes::Vitality, 40, Target::Player),
+        hash_state
+    );
+    new_state_1.stats.vitality = 90;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
 
-//     fighter1.apply_buff(fighter1_stats, StatTypes::Attack, fighter1_attackAddition);
-//     assert_eq!(fighter1.buffs.attack, fighter1_attackValue);
-// }
-
+    run_effects(
+        ref state_1,
+        ref state_2,
+        stat_effect_span(StatTypes::Vitality, -40, Target::Opponent),
+        hash_state
+    );
+    new_state_1.stats.vitality = 10;
+    new_state_1.health = 110;
+    assert_eq!((new_state_1, new_state_2), (state_1, state_2));
+}
 
