@@ -86,7 +86,12 @@ fn test_damage_calculation() {
     assert_eq!(damage_calculation(75, 75, false), 52);
     assert_eq!(damage_calculation(75, 100, false), 60);
 
+    assert_eq!(damage_calculation(100, 0, false), 40);
+    assert_eq!(damage_calculation(100, 25, false), 50);
+    assert_eq!(damage_calculation(100, 50, false), 60);
+    assert_eq!(damage_calculation(100, 75, false), 70);
     assert_eq!(damage_calculation(100, 100, false), 80);
+
     assert_eq!(damage_calculation(100, 100, true), 160);
 }
 
