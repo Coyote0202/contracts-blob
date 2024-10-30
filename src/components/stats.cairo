@@ -1,5 +1,5 @@
 use core::option::OptionTrait;
-use core::fmt::{Display, Formatter, Error};
+use core::fmt::{Display, Formatter, Error, Debug};
 use blob_arena::core::{SaturatingAdd, SaturatingSub};
 
 #[derive(Copy, Drop, Serde, PartialEq, Introspect, Default)]
@@ -129,3 +129,23 @@ impl TStatsIntoTStata<
         }
     }
 }
+
+
+impl StatsDisplayImpl<T, +Debug<T>, +Drop<T>, +Copy<T>> of Display<TStats<T>> {
+    fn fmt(self: @TStats<T>, ref f: Formatter) -> Result<(), Error> {
+        write!(
+            f,
+            "Stats: strength: {:?}, vitality: {:?}, dexterity: {:?}, luck: {:?}",
+            *self.strength,
+            *self.vitality,
+            *self.dexterity,
+            *self.luck
+        )
+    }
+}
+impl StatsDebugImpl<T, +Display<TStats<T>>> of Debug<TStats<T>> {
+    fn fmt(self: @TStats<T>, ref f: Formatter) -> Result<(), Error> {
+        Display::fmt(self, ref f)
+    }
+}
+
