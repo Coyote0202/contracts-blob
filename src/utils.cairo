@@ -1,6 +1,7 @@
 use core::{
     num::traits::Bounded, hash::{HashStateTrait, HashStateExTrait, Hash},
-    poseidon::{PoseidonTrait, HashState, poseidon_hash_span}
+    poseidon::{PoseidonTrait, HashState, poseidon_hash_span},
+    fmt::{Display, Formatter, Error, Debug}
 };
 use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 use starknet::{
@@ -97,3 +98,8 @@ impl HashToU128Impl of UpdateHashToU128 {
     }
 }
 
+impl TDebugImpl<T, +Display<T>> of Debug<T> {
+    fn fmt(self: @T, ref f: Formatter) -> Result<(), Error> {
+        Display::fmt(self, ref f)
+    }
+}
