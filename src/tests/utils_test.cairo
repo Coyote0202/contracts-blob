@@ -15,7 +15,6 @@ fn test_array_hash() {
         array.append(n);
         let new_hash = hash_state.update_with(array.clone()).finalize();
         assert_ne!(hash, new_hash);
-        println!("Hash: {}, New Hash: {}", hash, new_hash);
         hash = new_hash;
         n += 1;
     }
