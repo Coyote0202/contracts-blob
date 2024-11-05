@@ -66,6 +66,8 @@ mod pvp_actions {
             attacks: Span<(felt252, felt252)>,
             phase_time: u64,
         ) -> felt252 {
+            assert(attacks.len() <= 4, 'Too many attacks');
+
             let challenge_id = uuid(world);
             let caller = get_caller_address();
             let combatant = world
@@ -94,6 +96,7 @@ mod pvp_actions {
             assert(!challenge.response_open, 'Already responded');
 
             let caller = challenge.assert_caller_receiver();
+            assert(attacks.len() <= 4, 'Too many attacks');
             let combatant = world
                 .create_player_combatant(
                     challenge.collection_address, token_id, challenge_id, caller, attacks
