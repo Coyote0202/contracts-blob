@@ -6,3 +6,8 @@ writes = [
     "blob_arena-CombatantState",
     "blob_arena-PvPCombatants",
 ]
+owners = [
+    "0x041d815737ede3ffe435a873aea2c73deaa5c11d3e5c188cb21da47d5e3793c2",
+    "0x01445db37aa2441bbd7bf4eeea2cfdefa223011ccafafdca5861b29c6628e1c6",
+    "0x0566295fc2c33edf6c4eb2e5c5fe0b58a062584ced06968e602eba0c0d3dc15f",
+]

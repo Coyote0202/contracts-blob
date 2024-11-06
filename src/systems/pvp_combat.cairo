@@ -41,7 +41,7 @@ impl PvPCombatSystemImpl of PvPCombatSystemTrait {
         self.run_attack(ref state_1, ref state_2, attack_1, round, hash);
         if state_1.health > 0 && state_2.health > 0 {
             self.run_attack(ref state_2, ref state_1, attack_2, round, hash);
-        }
+        };
         state_1.set(self);
         state_2.set(self);
         array![state_1, state_2]

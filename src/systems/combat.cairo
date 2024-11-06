@@ -11,13 +11,12 @@ use cubit::f128::types::fixed::{FixedTrait, Fixed, HALF};
 use blob_arena::{
     core::{SaturatingInto, SaturatingSub}, utils::{UpdateHashToU128},
     components::{
-        combat::Phase,
+        combat::{Phase, AffectResult, DamageResult},
         combatant::{CombatantState, CombatantInfo, CombatantTrait, CombatantStateTrait},
         attack::{Attack, AttackTrait, AvailableAttack}, utils::{AB, ABT, ABTTrait}, stats::{Stats},
     },
     models::{
-        Effect, Affect, Damage, Target, Stat, AttackOutcomes, EffectResult, AffectResult,
-        DamageResult, AttackResult
+        Effect, Affect, Damage, Target, Stat, AttackOutcomes, DamageResultEvent, AttackResult,
     },
 };
 use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
@@ -107,9 +106,10 @@ fn run_effect(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
     effect: @Effect,
+    move_n: u8,
     hash_state: HashState,
-) -> (EffectResult, HashState) {
-    let result = match effect.affect {
+) -> AffectResult {
+    match effect.affect {
         Affect::Stats(stats_effect) => {
             match effect.target {
                 Target::Player => { attacker_state.apply_buffs(stats_effect) },
@@ -126,7 +126,7 @@ fn run_effect(
             AffectResult::Success
         },
         Affect::Damage(damage) => {
-            let seed = hash_state.update_to_u128('salt');
+            let seed = hash_state.update_to_u128(move_n);
             let (_seed, critical) = did_critical(*damage.critical, attacker_state.stats.luck, seed);
 
             let damage = damage_calculation(*damage.power, attacker_state.stats.strength, critical);
@@ -134,7 +134,9 @@ fn run_effect(
                 Target::Player => { attacker_state.modify_health::<i16>(-(damage.into())) },
                 Target::Opponent => { defender_state.modify_health::<i16>(-(damage.into())) },
             };
-            AffectResult::Damage(DamageResult { critical, damage })
+            AffectResult::Damage(
+                DamageResult { critical, damage, move: move_n, target: *effect.target }
+            )
         },
         Affect::Stun(stun) => {
             match effect.target {
@@ -150,35 +152,68 @@ fn run_effect(
             };
             AffectResult::Success
         },
-    };
-    (EffectResult { target: *effect.target, affect: result, }, hash_state)
+    }
 }
 
 fn run_effects(
     ref attacker_state: CombatantState,
     ref defender_state: CombatantState,
     mut effects: Span<Effect>,
-    mut hash_state: HashState,
-) -> Array<EffectResult> {
-    let mut results: Array<EffectResult> = ArrayTrait::new();
+    hash_state: HashState,
+) -> Span<AffectResult> {
+    let mut results: Array<AffectResult> = ArrayTrait::new();
+    let mut n = 0;
     loop {
         match effects.pop_front() {
             Option::Some(effect) => {
-                let (result, _hash_state) = run_effect(
-                    ref attacker_state, ref defender_state, effect, hash_state,
-                );
-                hash_state = _hash_state;
-                results.append(result);
+                results
+                    .append(
+                        run_effect(ref attacker_state, ref defender_state, effect, n, hash_state,)
+                    );
+                n += 1;
             },
             Option::None => { break; },
         }
     };
-    results
+    results.span()
 }
 
 
 #[generate_trait]
 impl CombatWorldImp of CombatWorldTraits {
+    fn emit_attack_result(
+        self: IWorldDispatcher,
+        combatant_id: felt252,
+        round: u32,
+        target: felt252,
+        result: AttackOutcomes,
+        mut effects: Span<AffectResult>,
+    ) {
+        emit!(self, AttackResult { combatant_id, round, target, result });
+        loop {
+            match effects.pop_front() {
+                Option::Some(effect) => {
+                    match effect {
+                        AffectResult::Damage(damage) => {
+                            emit!(
+                                self,
+                                DamageResultEvent {
+                                    combatant_id,
+                                    round,
+                                    move: *damage.move,
+                                    target: *damage.target,
+                                    damage: *damage.damage,
+                                    critical: *damage.critical
+                                }
+                            );
+                        },
+                        AffectResult::Success => {},
+                    }
+                },
+                Option::None => { break; },
+            }
+        }
+    }
     fn get_attacker_attack_speed(
         self: @IWorldDispatcher, state: @CombatantState, attack: @Attack
     ) -> u8 {
@@ -213,26 +248,39 @@ impl CombatWorldImp of CombatWorldTraits {
     ) {
         let hash_state = hash_state.update_with(attacker_state.id);
         let mut seed = hash_state.to_u128();
-        let result = if !self
-            .run_attack_check(attacker_state.id, *attack.id, *attack.cooldown, round) {
-            AttackOutcomes::Failed
+        if !self.run_attack_check(attacker_state.id, *attack.id, *attack.cooldown, round) {
+            self
+                .emit_attack_result(
+                    attacker_state.id, round, defender_state.id, AttackOutcomes::Failed, [].span()
+                );
         } else if attacker_state.run_stun(ref seed) {
-            AttackOutcomes::Stunned
+            self
+                .emit_attack_result(
+                    attacker_state.id, round, defender_state.id, AttackOutcomes::Stunned, [].span()
+                );
         } else if seed.get_outcome(NZ_100, *attack.accuracy) {
-            AttackOutcomes::Hit(
-                run_effects(ref attacker_state, ref defender_state, attack.hit.span(), hash_state)
-            )
+            self
+                .emit_attack_result(
+                    attacker_state.id,
+                    round,
+                    defender_state.id,
+                    AttackOutcomes::Hit,
+                    run_effects(
+                        ref attacker_state, ref defender_state, attack.hit.span(), hash_state
+                    )
+                );
         } else {
-            AttackOutcomes::Miss(
-                run_effects(ref attacker_state, ref defender_state, attack.miss.span(), hash_state)
-            )
+            self
+                .emit_attack_result(
+                    attacker_state.id,
+                    round,
+                    defender_state.id,
+                    AttackOutcomes::Miss,
+                    run_effects(
+                        ref attacker_state, ref defender_state, attack.miss.span(), hash_state
+                    )
+                );
         };
-        emit!(
-            self,
-            AttackResult {
-                combatant_id: attacker_state.id, round, target: defender_state.id, result
-            }
-        )
     }
 }
 

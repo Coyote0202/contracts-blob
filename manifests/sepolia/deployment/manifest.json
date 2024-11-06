@@ -1234,10 +1234,10 @@
         ]
       }
     ],
-    "address": "0x179db58df013ecd4172bb463a353021540458b93babeb92f42bcaf42f3ac199",
-    "transaction_hash": "0x31741fce72ecc81751b05d86d6292880650774e9e4a98d951e7c63438f8417b",
+    "address": "0x2d06dcca871bd99885bcaf019455d567ce454637db740b4b8dde4d4cc6d38ae",
+    "transaction_hash": "0x449da8123777a2d1f9a47ba019233674cf3ddf34453a70e81b5b86256a0cec5",
     "block_number": null,
-    "seed": "blob-arena-0.4-alpha.12-fix-4",
+    "seed": "blob-arena-0.4-alpha.12-fix-5",
     "metadata": {
       "profile_name": "sepolia",
       "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
@@ -1255,7 +1255,7 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x6e3c293fa70e05af651227d2b74ce1297933c6d89968f256f751aca87bbcc37",
+      "address": "0x9b0adefc63d5911206b895f2553b41db2c616bed237df502dad7c8fc216ab1",
       "class_hash": "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e",
       "original_class_hash": "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -1777,12 +1777,14 @@
       ],
       "init_calldata": [],
       "tag": "blob_arena-arcade_blobert_actions",
-      "systems": ["set_amma_fighter"],
+      "systems": [
+        "set_amma_fighter"
+      ],
       "manifest_name": "blob_arena-arcade_blobert_actions-64e66191"
     },
     {
       "kind": "DojoContract",
-      "address": "0x1d49c6f9d5e9afa730a9fe1b6d97e2f8501baa73c74fc84eae09f6ea1a52fb8",
+      "address": "0x2a137a59a749202dc90ec5d7c64f76ea94bd64cefdb6f2f141476fdb8955da9",
       "class_hash": "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d",
       "original_class_hash": "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2194,7 +2196,9 @@
         }
       ],
       "reads": [],
-      "writes": ["blob_arena-Attack"],
+      "writes": [
+        "blob_arena-Attack"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-attack_actions",
       "systems": [],
@@ -2202,7 +2206,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x75ecd934053c84e32edf6fae4a427130eabc3ca1a52e08a6cc0e124fed2036c",
+      "address": "0x50e1858b97ccc07877075dc36c902f5d7042f326eb3f95233df71228ffa50c2",
       "class_hash": "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d",
       "original_class_hash": "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2893,7 +2897,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x32e39ddcb5f3a9495db4b298c42598f8aee9b98a4e217bd5194c7a8e47935f5",
+      "address": "0x461fa552177c6e6ad7ae042d0227bcc834487049df309e75cdfaa2af8e6b327",
       "class_hash": "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f",
       "original_class_hash": "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -3377,9 +3381,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x67f5d661a62af98e4b34f7eb2120860e3107130bbd531f9af13e5ed9cccdf68",
-      "class_hash": "0x3d0fcd471a023eb27f98ae1aa16cfb338b6704c3013393334f56c590245b665",
-      "original_class_hash": "0x3d0fcd471a023eb27f98ae1aa16cfb338b6704c3013393334f56c590245b665",
+      "address": "0x5dc5d700ea6ce7b23cfea6a1ba51f4e1c7da32cdac514a57f104e1c8b46845f",
+      "class_hash": "0x3bdf9cd8b8887e43873c3364807816c1fff048397bad80785f216cdf88c842",
+      "original_class_hash": "0x3bdf9cd8b8887e43873c3364807816c1fff048397bad80785f216cdf88c842",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3851,7 +3855,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x3e439123d7a21350eeb8f18c9ceb09b0c3b52fce5417621c45dc9dbdb80548e",
+      "address": "0x6001fb3e130792f7aabe3b2a51ba67433967826a54638bd632f8df2322bea7a",
       "class_hash": "0x38d8fdd8b69026219feeb4690db40eda2a282b64c3ce42cd6536963a76dbb0c",
       "original_class_hash": "0x38d8fdd8b69026219feeb4690db40eda2a282b64c3ce42cd6536963a76dbb0c",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -4162,7 +4166,9 @@
       ],
       "init_calldata": [],
       "tag": "blob_arena-pvp_admin_actions",
-      "systems": ["set_winner"],
+      "systems": [
+        "set_winner"
+      ],
       "manifest_name": "blob_arena-pvp_admin_actions-2959c1bc"
     }
   ],
@@ -5719,8 +5725,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x3d7258a6d5d4a203d6ac32e21d74d1c3a2db93a2bd3581e95c597edb045bf04",
-      "original_class_hash": "0x3d7258a6d5d4a203d6ac32e21d74d1c3a2db93a2bd3581e95c597edb045bf04",
+      "class_hash": "0x1c916d8383adc9ea49792cca54d52fb034159ce3ccad7240409c6336b79f999",
+      "original_class_hash": "0x1c916d8383adc9ea49792cca54d52fb034159ce3ccad7240409c6336b79f999",
       "abi": [
         {
           "type": "impl",
@@ -6087,81 +6093,11 @@
         {
           "type": "impl",
           "name": "attack_resultImpl",
-          "interface_name": "blob_arena::models::combat::Iattack_result"
+          "interface_name": "blob_arena::models::results::Iattack_result"
         },
         {
           "type": "enum",
-          "name": "blob_arena::models::attack::Target",
-          "variants": [
-            {
-              "name": "Player",
-              "type": "()"
-            },
-            {
-              "name": "Opponent",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "core::bool",
-          "variants": [
-            {
-              "name": "False",
-              "type": "()"
-            },
-            {
-              "name": "True",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "blob_arena::models::combat::DamageResult",
-          "members": [
-            {
-              "name": "damage",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "critical",
-              "type": "core::bool"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "blob_arena::models::combat::AffectResult",
-          "variants": [
-            {
-              "name": "Success",
-              "type": "()"
-            },
-            {
-              "name": "Damage",
-              "type": "blob_arena::models::combat::DamageResult"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "blob_arena::models::combat::EffectResult",
-          "members": [
-            {
-              "name": "target",
-              "type": "blob_arena::models::attack::Target"
-            },
-            {
-              "name": "affect",
-              "type": "blob_arena::models::combat::AffectResult"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "blob_arena::models::combat::AttackOutcomes",
+          "name": "blob_arena::models::results::AttackOutcomes",
           "variants": [
             {
               "name": "Failed",
@@ -6173,17 +6109,17 @@
             },
             {
               "name": "Miss",
-              "type": "core::array::Array::<blob_arena::models::combat::EffectResult>"
+              "type": "()"
             },
             {
               "name": "Hit",
-              "type": "core::array::Array::<blob_arena::models::combat::EffectResult>"
+              "type": "()"
             }
           ]
         },
         {
           "type": "struct",
-          "name": "blob_arena::models::combat::AttackResult",
+          "name": "blob_arena::models::results::AttackResult",
           "members": [
             {
               "name": "combatant_id",
@@ -6199,13 +6135,13 @@
             },
             {
               "name": "result",
-              "type": "blob_arena::models::combat::AttackOutcomes"
+              "type": "blob_arena::models::results::AttackOutcomes"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "blob_arena::models::combat::Iattack_result",
+          "name": "blob_arena::models::results::Iattack_result",
           "items": [
             {
               "type": "function",
@@ -6213,7 +6149,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "blob_arena::models::combat::AttackResult"
+                  "type": "blob_arena::models::results::AttackResult"
                 }
               ],
               "outputs": [],
@@ -6223,13 +6159,13 @@
         },
         {
           "type": "event",
-          "name": "blob_arena::models::combat::attack_result::Event",
+          "name": "blob_arena::models::results::attack_result::Event",
           "kind": "enum",
           "variants": []
         }
       ],
       "tag": "blob_arena-AttackResult",
-      "qualified_path": "blob_arena::models::combat::attack_result",
+      "qualified_path": "blob_arena::models::results::attack_result",
       "manifest_name": "blob_arena-AttackResult-13e6ce9d"
     },
     {
@@ -8519,6 +8455,497 @@
       "tag": "blob_arena-Commitment",
       "qualified_path": "blob_arena::models::commitment::commitment",
       "manifest_name": "blob_arena-Commitment-42bf7339"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "combatant_id",
+          "type": "felt252",
+          "key": true
+        },
+        {
+          "name": "round",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "move",
+          "type": "u8",
+          "key": true
+        },
+        {
+          "name": "target",
+          "type": "Target",
+          "key": false
+        },
+        {
+          "name": "damage",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "critical",
+          "type": "bool",
+          "key": false
+        }
+      ],
+      "class_hash": "0x3526d855aa9021f69282c2cf95ceaaab176d9e0c75e546ea82e27b11d7787a9",
+      "original_class_hash": "0x3526d855aa9021f69282c2cf95ceaaab176d9e0c75e546ea82e27b11d7787a9",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::model::IModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::option::Option::<core::integer::u32>",
+          "variants": [
+            {
+              "name": "Some",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "None",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::layout::FieldLayout",
+          "members": [
+            {
+              "name": "selector",
+              "type": "core::felt252"
+            },
+            {
+              "name": "layout",
+              "type": "dojo::model::layout::Layout"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::layout::FieldLayout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::layout::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::layout::Layout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::layout::Layout>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::model::layout::Layout",
+          "variants": [
+            {
+              "name": "Fixed",
+              "type": "core::array::Span::<core::integer::u8>"
+            },
+            {
+              "name": "Struct",
+              "type": "core::array::Span::<dojo::model::layout::FieldLayout>"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::model::layout::Layout>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::model::layout::Layout>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            },
+            {
+              "name": "Enum",
+              "type": "core::array::Span::<dojo::model::layout::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Member",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "ty",
+              "type": "dojo::model::introspect::Ty"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::introspect::Member>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<dojo::model::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, dojo::model::introspect::Ty)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, dojo::model::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, dojo::model::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::introspect::Ty>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::introspect::Ty>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::model::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::model::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::model::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::model::introspect::Ty>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::model::introspect::Ty>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::model::IModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "tag",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "version",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "selector",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "name_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::model::layout::Layout"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::model::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "damage_resultImpl",
+          "interface_name": "blob_arena::models::results::Idamage_result"
+        },
+        {
+          "type": "enum",
+          "name": "blob_arena::models::attack::Target",
+          "variants": [
+            {
+              "name": "Player",
+              "type": "()"
+            },
+            {
+              "name": "Opponent",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "blob_arena::models::results::DamageResult",
+          "members": [
+            {
+              "name": "combatant_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "round",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "move",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "target",
+              "type": "blob_arena::models::attack::Target"
+            },
+            {
+              "name": "damage",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "critical",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "blob_arena::models::results::Idamage_result",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "blob_arena::models::results::DamageResult"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "blob_arena::models::results::damage_result::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "tag": "blob_arena-DamageResult",
+      "qualified_path": "blob_arena::models::results::damage_result",
+      "manifest_name": "blob_arena-DamageResult-35507a84"
     },
     {
       "kind": "DojoModel",

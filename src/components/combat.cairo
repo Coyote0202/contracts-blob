@@ -7,12 +7,26 @@ use dojo::{world::{IWorldDispatcher, IWorldDispatcherTrait}, model::Model};
 use blob_arena::{
     components::{utils::{ABT, Status, Winner}, commitment::Commitment},
     models::{
-        SaltsModel, Phase, CombatState, CombatStateStore, PlannedAttack,
-        PlannedAttackStore, CombatantState
+        SaltsModel, Phase, CombatState, CombatStateStore, PlannedAttack, PlannedAttackStore,
+        CombatantState, Target
     },
     utils::ArrayHash
 };
 type Salts = Array<felt252>;
+
+#[derive(Drop, Serde, PartialEq, Introspect)]
+enum AffectResult {
+    Success,
+    Damage: DamageResult,
+}
+
+#[derive(Drop, Serde, PartialEq, Introspect)]
+struct DamageResult {
+    move: u8,
+    target: Target,
+    damage: u8,
+    critical: bool,
+}
 
 #[generate_trait]
 impl SaltsImpl of SaltsTrait {
@@ -88,7 +102,9 @@ impl CombatStateImpl of CombatStateTrait {
 }
 #[generate_trait]
 impl CombatStatesImpl of CombatStatesTrait {
-    fn get_combatants_mortality(mut self: Array<CombatantState>) -> (Array<felt252>, Array<felt252>) {
+    fn get_combatants_mortality(
+        mut self: Array<CombatantState>
+    ) -> (Array<felt252>, Array<felt252>) {
         let mut alive = ArrayTrait::<felt252>::new();
         let mut dead = ArrayTrait::<felt252>::new();
         loop {

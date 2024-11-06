@@ -3,9 +3,9 @@ kind = "WorldContract"
 class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
 original_class_hash = "0x6f4515274ee23404789c3351a77107d0ec07508530119822046600ca6948d6e"
 abi = "manifests/sepolia/deployment/abis/dojo-world.json"
-address = "0x179db58df013ecd4172bb463a353021540458b93babeb92f42bcaf42f3ac199"
-transaction_hash = "0x31741fce72ecc81751b05d86d6292880650774e9e4a98d951e7c63438f8417b"
-seed = "blob-arena-0.4-alpha.12-fix-4"
+address = "0x2d06dcca871bd99885bcaf019455d567ce454637db740b4b8dde4d4cc6d38ae"
+transaction_hash = "0x449da8123777a2d1f9a47ba019233674cf3ddf34453a70e81b5b86256a0cec5"
+seed = "blob-arena-0.4-alpha.12-fix-5"
 manifest_name = "dojo-world"
 
 [world.metadata]
@@ -22,7 +22,7 @@ manifest_name = "dojo-base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x6e3c293fa70e05af651227d2b74ce1297933c6d89968f256f751aca87bbcc37"
+address = "0x9b0adefc63d5911206b895f2553b41db2c616bed237df502dad7c8fc216ab1"
 class_hash = "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e"
 original_class_hash = "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -40,7 +40,7 @@ manifest_name = "blob_arena-arcade_blobert_actions-64e66191"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x1d49c6f9d5e9afa730a9fe1b6d97e2f8501baa73c74fc84eae09f6ea1a52fb8"
+address = "0x2a137a59a749202dc90ec5d7c64f76ea94bd64cefdb6f2f141476fdb8955da9"
 class_hash = "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d"
 original_class_hash = "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -54,7 +54,7 @@ manifest_name = "blob_arena-attack_actions-1aec710d"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x75ecd934053c84e32edf6fae4a427130eabc3ca1a52e08a6cc0e124fed2036c"
+address = "0x50e1858b97ccc07877075dc36c902f5d7042f326eb3f95233df71228ffa50c2"
 class_hash = "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d"
 original_class_hash = "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -78,13 +78,17 @@ manifest_name = "blob_arena-blobert_actions-6e38837a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x32e39ddcb5f3a9495db4b298c42598f8aee9b98a4e217bd5194c7a8e47935f5"
+address = "0x461fa552177c6e6ad7ae042d0227bcc834487049df309e75cdfaa2af8e6b327"
 class_hash = "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f"
 original_class_hash = "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-item_actions-7087862a.json"
 reads = []
-writes = ["blob_arena-Item", "blob_arena-Attack", "blob_arena-HasAttack"]
+writes = [
+    "blob_arena-Item",
+    "blob_arena-Attack",
+    "blob_arena-HasAttack",
+]
 init_calldata = []
 tag = "blob_arena-item_actions"
 systems = []
@@ -92,9 +96,9 @@ manifest_name = "blob_arena-item_actions-7087862a"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x67f5d661a62af98e4b34f7eb2120860e3107130bbd531f9af13e5ed9cccdf68"
-class_hash = "0x3d0fcd471a023eb27f98ae1aa16cfb338b6704c3013393334f56c590245b665"
-original_class_hash = "0x3d0fcd471a023eb27f98ae1aa16cfb338b6704c3013393334f56c590245b665"
+address = "0x5dc5d700ea6ce7b23cfea6a1ba51f4e1c7da32cdac514a57f104e1c8b46845f"
+class_hash = "0x3bdf9cd8b8887e43873c3364807816c1fff048397bad80785f216cdf88c842"
+original_class_hash = "0x3bdf9cd8b8887e43873c3364807816c1fff048397bad80785f216cdf88c842"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/sepolia/deployment/abis/contracts/blob_arena-pvp_actions-2371c4eb.json"
 reads = []
@@ -131,7 +135,7 @@ manifest_name = "blob_arena-pvp_actions-2371c4eb"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x3e439123d7a21350eeb8f18c9ceb09b0c3b52fce5417621c45dc9dbdb80548e"
+address = "0x6001fb3e130792f7aabe3b2a51ba67433967826a54638bd632f8df2322bea7a"
 class_hash = "0x38d8fdd8b69026219feeb4690db40eda2a282b64c3ce42cd6536963a76dbb0c"
 original_class_hash = "0x38d8fdd8b69026219feeb4690db40eda2a282b64c3ce42cd6536963a76dbb0c"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
@@ -253,11 +257,11 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x3d7258a6d5d4a203d6ac32e21d74d1c3a2db93a2bd3581e95c597edb045bf04"
-original_class_hash = "0x3d7258a6d5d4a203d6ac32e21d74d1c3a2db93a2bd3581e95c597edb045bf04"
+class_hash = "0x1c916d8383adc9ea49792cca54d52fb034159ce3ccad7240409c6336b79f999"
+original_class_hash = "0x1c916d8383adc9ea49792cca54d52fb034159ce3ccad7240409c6336b79f999"
 abi = "manifests/sepolia/deployment/abis/models/blob_arena-AttackResult-13e6ce9d.json"
 tag = "blob_arena-AttackResult"
-qualified_path = "blob_arena::models::combat::attack_result"
+qualified_path = "blob_arena::models::results::attack_result"
 manifest_name = "blob_arena-AttackResult-13e6ce9d"
 
 [[models.members]]
@@ -418,6 +422,45 @@ key = true
 [[models.members]]
 name = "commitment"
 type = "felt252"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x3526d855aa9021f69282c2cf95ceaaab176d9e0c75e546ea82e27b11d7787a9"
+original_class_hash = "0x3526d855aa9021f69282c2cf95ceaaab176d9e0c75e546ea82e27b11d7787a9"
+abi = "manifests/sepolia/deployment/abis/models/blob_arena-DamageResult-35507a84.json"
+tag = "blob_arena-DamageResult"
+qualified_path = "blob_arena::models::results::damage_result"
+manifest_name = "blob_arena-DamageResult-35507a84"
+
+[[models.members]]
+name = "combatant_id"
+type = "felt252"
+key = true
+
+[[models.members]]
+name = "round"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "move"
+type = "u8"
+key = true
+
+[[models.members]]
+name = "target"
+type = "Target"
+key = false
+
+[[models.members]]
+name = "damage"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "critical"
+type = "bool"
 key = false
 
 [[models]]
