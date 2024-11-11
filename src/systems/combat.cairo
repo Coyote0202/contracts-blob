@@ -62,9 +62,9 @@ fn get_new_stun_chance(current_stun: u8, attack_stun: u8) -> u8 {
 // power * (1 + 0.004 * strength)
 fn damage_calculation(move_power: u8, strength: u8, critical: bool) -> u8 {
     (move_power.into() * (100 + strength.into()) / if critical {
-        125_u128
+        100_u128
     } else {
-        250_u128
+        200_u128
     })
         .saturating_into()
 }

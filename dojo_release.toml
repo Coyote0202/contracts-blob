@@ -6,5 +6,5 @@ seed = "0.5.0"
 default = "blob_arena"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
-account_address = "0x058e3B49d870f08C96a02f794C82b5f6C868c074DeaDD6bA04E8d2194723B5bd"
+rpc_url = "https://api.cartridge.gg/x/starknet/mainnet"
+account_address = "0x049848982e9b089A1F4eb5e1cd12aB58bE55Feb6937bc9CfcAD34c2Dfd0a6df8"

@@ -1234,13 +1234,13 @@
         ]
       }
     ],
-    "address": "0x2d06dcca871bd99885bcaf019455d567ce454637db740b4b8dde4d4cc6d38ae",
-    "transaction_hash": "0x449da8123777a2d1f9a47ba019233674cf3ddf34453a70e81b5b86256a0cec5",
+    "address": "0x464c5dcf539a2cf060be9b13d8d52e998194b180cbb60705721b80cda5fd503",
+    "transaction_hash": "0x4741c2b46766eaf708c0b5f9bd164ea21cf95dff0fc9119085b5b7cfa345851",
     "block_number": null,
-    "seed": "blob-arena-0.4-alpha.12-fix-5",
+    "seed": "0.5.0",
     "metadata": {
-      "profile_name": "sepolia",
-      "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
+      "profile_name": "release",
+      "rpc_url": "https://api.cartridge.gg/x/starknet/mainnet"
     },
     "manifest_name": "dojo-world"
   },
@@ -1248,14 +1248,14 @@
     "kind": "Class",
     "class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
     "original_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
-    "abi": "manifests/sepolia/deployment/abis/dojo-base.json",
+    "abi": "manifests/release/deployment/abis/dojo-base.json",
     "tag": "dojo-base",
     "manifest_name": "dojo-base"
   },
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x9b0adefc63d5911206b895f2553b41db2c616bed237df502dad7c8fc216ab1",
+      "address": "0x42ded4365955e636bb906b4b6890850a268bdcca29f1d858e1b9ddda60994ee",
       "class_hash": "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e",
       "original_class_hash": "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382f149016e",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -1770,11 +1770,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "blob_arena-ArcadeBlobert",
-        "blob_arena-LastMint",
-        "blob_arena-AMMABlobert"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "blob_arena-arcade_blobert_actions",
       "systems": [
@@ -1784,7 +1780,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x2a137a59a749202dc90ec5d7c64f76ea94bd64cefdb6f2f141476fdb8955da9",
+      "address": "0x24b88cc630ba224276d38f5a38d490e2b1726c47eded7670b8aa93c90a15a49",
       "class_hash": "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d",
       "original_class_hash": "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af5c2dcf6d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -2196,9 +2192,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "blob_arena-Attack"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "blob_arena-attack_actions",
       "systems": [],
@@ -2206,9 +2200,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x50e1858b97ccc07877075dc36c902f5d7042f326eb3f95233df71228ffa50c2",
-      "class_hash": "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d",
-      "original_class_hash": "0x15a9feacf3cd659e1b1ae912f4694f069ad9f2f3d5621584f584e8f5deb56d",
+      "address": "0x36deee600b5219b69247cfc6d61e5732db867b3cdedfc68be26256a95dcb8ec",
+      "class_hash": "0x60e092e0b503af52127250d1906f89364b440c79f7d62b81fe03edab2d34265",
+      "original_class_hash": "0x60e092e0b503af52127250d1906f89364b440c79f7d62b81fe03edab2d34265",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2879,12 +2873,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "blob_arena-ItemMap",
-        "blob_arena-Item",
-        "blob_arena-Attack",
-        "blob_arena-HasAttack"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "blob_arena-blobert_actions",
       "systems": [
@@ -2897,7 +2886,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x461fa552177c6e6ad7ae042d0227bcc834487049df309e75cdfaa2af8e6b327",
+      "address": "0x83cf4502732787e801916b3a02dc937c1294c527fa45dd42d2b2bfc466d28d",
       "class_hash": "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f",
       "original_class_hash": "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c8cc3d24f",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -3369,11 +3358,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "blob_arena-Item",
-        "blob_arena-Attack",
-        "blob_arena-HasAttack"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "blob_arena-item_actions",
       "systems": [],
@@ -3381,9 +3366,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x5dc5d700ea6ce7b23cfea6a1ba51f4e1c7da32cdac514a57f104e1c8b46845f",
-      "class_hash": "0x3bdf9cd8b8887e43873c3364807816c1fff048397bad80785f216cdf88c842",
-      "original_class_hash": "0x3bdf9cd8b8887e43873c3364807816c1fff048397bad80785f216cdf88c842",
+      "address": "0x553acefe51755fbdb246179be5c5150d74b0663274dac95a90d9e9c9e2d62d0",
+      "class_hash": "0x4f30f88bf3b2f6797d109211e6964deca682c54bb35a52621cb3ccfb87e4df5",
+      "original_class_hash": "0x4f30f88bf3b2f6797d109211e6964deca682c54bb35a52621cb3ccfb87e4df5",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -3822,20 +3807,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "blob_arena-AvailableAttack",
-        "blob_arena-CombatState",
-        "blob_arena-Salts",
-        "blob_arena-CombatantInfo",
-        "blob_arena-CombatantState",
-        "blob_arena-PlannedAttack",
-        "blob_arena-Commitment",
-        "blob_arena-Item",
-        "blob_arena-PvPChallengeInvite",
-        "blob_arena-PvPChallengeResponse",
-        "blob_arena-PvPChallengeScore",
-        "blob_arena-PvPCombatants"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "blob_arena-pvp_actions",
       "systems": [
@@ -3855,7 +3827,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x6001fb3e130792f7aabe3b2a51ba67433967826a54638bd632f8df2322bea7a",
+      "address": "0x19706a94e2b6fb9418fd1f5a4f49d43ad411c362d82237ad4eafa047689cb3f",
       "class_hash": "0x38d8fdd8b69026219feeb4690db40eda2a282b64c3ce42cd6536963a76dbb0c",
       "original_class_hash": "0x38d8fdd8b69026219feeb4690db40eda2a282b64c3ce42cd6536963a76dbb0c",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
@@ -4157,13 +4129,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "blob_arena-AvailableAttack",
-        "blob_arena-CombatState",
-        "blob_arena-CombatantInfo",
-        "blob_arena-CombatantState",
-        "blob_arena-PvPCombatants"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "blob_arena-pvp_admin_actions",
       "systems": [
