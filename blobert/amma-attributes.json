@@ -919,7 +919,7 @@
         "attacks": []
       },
       "armour": {
-        "name": "Gallus’s Plate",
+        "name": "Gallus's Plate",
         "stats": {
           "strength": 8,
           "vitality": 20,
@@ -929,7 +929,7 @@
         "attacks": []
       },
       "jewelry": {
-        "name": "Founder’s Pendant",
+        "name": "Founder's Pendant",
         "stats": {
           "strength": 12,
           "vitality": 8,
@@ -939,7 +939,7 @@
         "attacks": []
       },
       "mask": {
-        "name": "Veteran’s Visor",
+        "name": "Veteran's Visor",
         "stats": {
           "strength": 5,
           "vitality": 18,

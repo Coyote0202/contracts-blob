@@ -7,7 +7,7 @@ import json
 
 CONTRACT_PATH = Path(__file__).parent
 
-dotenv.load_dotenv(CONTRACT_PATH / ".env")
+dotenv.load_dotenv(CONTRACT_PATH / ".env.mainnet")
 
 print(os.environ["STARKNET_RPC_URL"])
 print(os.environ["DOJO_ACCOUNT_ADDRESS"])
@@ -59,13 +59,13 @@ def parse_manifest(data):
         
 
 def main():
-    manifest_path = CONTRACT_PATH / f"manifests/sepolia/deployment/manifest.json"
+    manifest_path = CONTRACT_PATH / f"manifests/release/deployment/manifest.json"
     manifest = json.load(manifest_path.open())
 
     world_address = get_world(manifest)
     
     run_cmd(
-        f"sozo --profile sepolia auth grant writer --world {world_address} --private-key {os.environ['DOJO_PRIVATE_KEY']} {parse_manifest(manifest)}"
+        f"sozo --profile release auth grant writer --world {world_address} --private-key {os.environ['DOJO_PRIVATE_KEY']} {parse_manifest(manifest)}"
     )
 
 

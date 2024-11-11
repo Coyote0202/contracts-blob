@@ -1770,7 +1770,11 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "blob_arena-ArcadeBlobert",
+        "blob_arena-LastMint",
+        "blob_arena-AMMABlobert"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-arcade_blobert_actions",
       "systems": [
@@ -2192,7 +2196,9 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "blob_arena-Attack"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-attack_actions",
       "systems": [],
@@ -2873,7 +2879,12 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "blob_arena-ItemMap",
+        "blob_arena-Item",
+        "blob_arena-Attack",
+        "blob_arena-HasAttack"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-blobert_actions",
       "systems": [
@@ -3358,7 +3369,11 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "blob_arena-Item",
+        "blob_arena-Attack",
+        "blob_arena-HasAttack"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-item_actions",
       "systems": [],
@@ -3807,7 +3822,20 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "blob_arena-AvailableAttack",
+        "blob_arena-CombatState",
+        "blob_arena-Salts",
+        "blob_arena-CombatantInfo",
+        "blob_arena-CombatantState",
+        "blob_arena-PlannedAttack",
+        "blob_arena-Commitment",
+        "blob_arena-Item",
+        "blob_arena-PvPChallengeInvite",
+        "blob_arena-PvPChallengeResponse",
+        "blob_arena-PvPChallengeScore",
+        "blob_arena-PvPCombatants"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-pvp_actions",
       "systems": [
@@ -4129,7 +4157,13 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "blob_arena-AvailableAttack",
+        "blob_arena-CombatState",
+        "blob_arena-CombatantInfo",
+        "blob_arena-CombatantState",
+        "blob_arena-PvPCombatants"
+      ],
       "init_calldata": [],
       "tag": "blob_arena-pvp_admin_actions",
       "systems": [

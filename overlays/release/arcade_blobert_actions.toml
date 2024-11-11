@@ -1,0 +1,6 @@
+tag = "blob_arena-arcade_blobert_actions"
+writes = [
+    "blob_arena-ArcadeBlobert",
+    "blob_arena-LastMint",
+    "blob_arena-AMMABlobert",
+]

@@ -28,7 +28,11 @@ original_class_hash = "0x3a3bfb5af2949ae926e4281d628c0087a50a216bde3d3c77d645382
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/release/deployment/abis/contracts/blob_arena-arcade_blobert_actions-64e66191.json"
 reads = []
-writes = []
+writes = [
+    "blob_arena-ArcadeBlobert",
+    "blob_arena-LastMint",
+    "blob_arena-AMMABlobert",
+]
 init_calldata = []
 tag = "blob_arena-arcade_blobert_actions"
 systems = ["set_amma_fighter"]
@@ -42,7 +46,7 @@ original_class_hash = "0x4e36f3b5cf76d2c0e4fced8ca889420d55c712b19c6f8e8dbdae3af
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/release/deployment/abis/contracts/blob_arena-attack_actions-1aec710d.json"
 reads = []
-writes = []
+writes = ["blob_arena-Attack"]
 init_calldata = []
 tag = "blob_arena-attack_actions"
 systems = []
@@ -56,7 +60,12 @@ original_class_hash = "0x60e092e0b503af52127250d1906f89364b440c79f7d62b81fe03eda
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/release/deployment/abis/contracts/blob_arena-blobert_actions-6e38837a.json"
 reads = []
-writes = []
+writes = [
+    "blob_arena-ItemMap",
+    "blob_arena-Item",
+    "blob_arena-Attack",
+    "blob_arena-HasAttack",
+]
 init_calldata = []
 tag = "blob_arena-blobert_actions"
 systems = [
@@ -75,7 +84,11 @@ original_class_hash = "0x4eb6731d53ede69b77a42aa166e81174a63c83894e3205f0fd2427c
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/release/deployment/abis/contracts/blob_arena-item_actions-7087862a.json"
 reads = []
-writes = []
+writes = [
+    "blob_arena-Item",
+    "blob_arena-Attack",
+    "blob_arena-HasAttack",
+]
 init_calldata = []
 tag = "blob_arena-item_actions"
 systems = []
@@ -89,7 +102,20 @@ original_class_hash = "0x4f30f88bf3b2f6797d109211e6964deca682c54bb35a52621cb3ccf
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/release/deployment/abis/contracts/blob_arena-pvp_actions-2371c4eb.json"
 reads = []
-writes = []
+writes = [
+    "blob_arena-AvailableAttack",
+    "blob_arena-CombatState",
+    "blob_arena-Salts",
+    "blob_arena-CombatantInfo",
+    "blob_arena-CombatantState",
+    "blob_arena-PlannedAttack",
+    "blob_arena-Commitment",
+    "blob_arena-Item",
+    "blob_arena-PvPChallengeInvite",
+    "blob_arena-PvPChallengeResponse",
+    "blob_arena-PvPChallengeScore",
+    "blob_arena-PvPCombatants",
+]
 init_calldata = []
 tag = "blob_arena-pvp_actions"
 systems = [
@@ -115,7 +141,13 @@ original_class_hash = "0x38d8fdd8b69026219feeb4690db40eda2a282b64c3ce42cd6536963
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/release/deployment/abis/contracts/blob_arena-pvp_admin_actions-2959c1bc.json"
 reads = []
-writes = []
+writes = [
+    "blob_arena-AvailableAttack",
+    "blob_arena-CombatState",
+    "blob_arena-CombatantInfo",
+    "blob_arena-CombatantState",
+    "blob_arena-PvPCombatants",
+]
 init_calldata = []
 tag = "blob_arena-pvp_admin_actions"
 systems = ["set_winner"]
